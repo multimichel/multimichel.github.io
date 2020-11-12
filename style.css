@@ -1,44 +1,37 @@
-
 @font-face {
-	font-family: 'NHaasGroteskDSPro-25Th';
-	src: url('fonts/NHaasGroteskDSPro-25Th.woff2') format('woff2'),
-		url('fonts/NHaasGroteskDSPro-25Th.woff') format('woff');
-	font-weight: 300;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'NHaasGroteskDSPro-35';
-	src: url('fonts/NHaasGroteskDSPro-35.woff2') format('woff2'),
-		url('fonts/NHaasGroteskDSPro-35.woff') format('woff');
-	font-weight: normal;
-	font-style: normal;
-	font-display: swap;
+	
+	@font-face {
+		font-family: 'NHaasGroteskDSPro-35XLt';
+		src: url('/fonts/NHaasGroteskDSPro-35XLt.woff2') format('woff2'),
+			url('/fontsNHaasGroteskDSPro-35XLt.woff') format('woff');
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+	
 }
 
 @font-face {
 	font-family: 'NHaasGroteskDSPro-55Rg';
-	src: url('fonts/NHaasGroteskDSPro-55Rg.woff2') format('woff2'),
-		url('fonts/NHaasGroteskDSPro-55Rg.woff') format('woff');
+	src: url('/fonts/NHaasGroteskDSPro-55Rg.woff2') format('woff2'),
+		url('/fonts/NHaasGroteskDSPro-55Rg.woff') format('woff');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'NHaasGroteskDSPro-65Md';
+	src: url('/fonts/NHaasGroteskDSPro-65Md.woff2') format('woff2'),
+		url('/fonts/NHaasGroteskDSPro-65Md.woff') format('woff');
 	font-weight: 500;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: 'NHaasGroteskDSPro-65Bd';
-	src: url('fonts/NHaasGroteskDSPro-65Bd.woff2') format('woff2'),
-		url('fonts/NHaasGroteskDSPro-65Bd.woff') format('woff');
-	font-weight: bold;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
 	font-family: 'Tiempos Headline';
-	src: url('fonts/TiemposHeadline-Bold.woff2') format('woff2'),
-		url('fonts/TiemposHeadline-Bold.woff') format('woff');
+	src: url('/fonts/TiemposHeadline-Bold.woff2') format('woff2'),
+		url('/fonts/TiemposHeadline-Bold.woff') format('woff');
 	font-weight: bold;
 	font-style: normal;
 	font-display: swap;
