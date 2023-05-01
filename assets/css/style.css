@@ -1,0 +1,76 @@
+@font-face {
+    font-family: manuka;
+    src: url("../fonts/manuka-medium.woff2") format("woff2");
+    font-weight: 500;
+}
+
+#header { 
+    background-color: #f4bc33;
+    display: block;
+    padding: 48px 16px 16px;
+    position: relative;
+ }
+
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: inherit;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #fff;
+}
+
+#header, #footer {
+    width: 100%;
+    position: relative;
+    background-color: #f4bc33;
+    padding: 48px 16px 16px;
+    position: relative;
+    text-align: center;
+}
+
+#content, #applepodcasts{
+    max-width: 100%;
+    padding: 36px;
+    position: relative;
+    width: 700px;}
+
+ h1{
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    letter-spacing:-2.1px;
+    line-height: 55px;
+    color:#000;
+ }
+
+h2 { 
+    display: block;
+    min-width: 400px;
+    max-width: 1200px;
+    display: block;
+    text-align: left;
+    font-family: manuka;
+    font-weight: 500;
+    font-size: 8em;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    padding: 36px;
+    line-height: 100px;
+    color:#000;
+ }
+
+
+
+p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.5em;
+    color: rgb(136, 136, 136);
+    ramer-font-size: 24px;
+    letter-spacing: -0.7px;
+}
+a{ color: #333; }
