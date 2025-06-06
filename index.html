@@ -1,55 +1,1485 @@
-
 <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Michel Ferreira - Designer, Podcaster &amp; Inclusive Design Advocate</title>
-    <meta name="description" content="Product Designer, design mentor, and host of the Latinxs Who Design Podcast. Join me for conversations on design, diversity, and inclusion in the UX industry.">
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Michel Ferreira - Designer, Podcaster &amp; Inclusive Design Advocate">
-    <meta property="og:description" content="Product Designer, design mentor, and host of the Latinxs Who Design Podcast. Join me for conversations on design, diversity, and inclusion in the UX industry.">
-    <meta property="og:image" content="https://framerusercontent.com/images/UngftlEdqA2yJJLVlEkYslCluvY.jpg">
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Michel Ferreira - Designer, Podcaster &amp; Inclusive Design Advocate">
-    <meta name="twitter:description" content="Product Designer, design mentor, and host of the Latinxs Who Design Podcast. Join me for conversations on design, diversity, and inclusion in the UX industry.">
-    <meta name="twitter:image" content="https://framerusercontent.com/images/UngftlEdqA2yJJLVlEkYslCluvY.jpg">
-    
-    <link rel="stylesheet" href="assets/css/style.css">
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOCUS - Portfolio de classe mundial para designers brasileiros</title>
+    <link href="https://fonts.googleapis.com/css2?family=Satoshi:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Colors - More vibrant like Brazilian sites */
+            --orange-500: #FF6B35;
+            --orange-600: #FF4500;
+            --orange-700: #E63E00;
+            --orange-50: #FFF7ED;
+            --orange-100: #FFEDD5;
+            
+            --neutral-50: #FAFAFA;
+            --neutral-100: #F5F5F5;
+            --neutral-200: #E5E5E5;
+            --neutral-300: #D4D4D4;
+            --neutral-400: #A3A3A3;
+            --neutral-500: #737373;
+            --neutral-600: #525252;
+            --neutral-700: #404040;
+            --neutral-800: #262626;
+            --neutral-900: #171717;
+            
+            --blue-500: #3B82F6;
+            --green-500: #10B981;
+            
+            /* Typography - Tighter spacing */
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, monospace;
+            
+            /* Spacing - Tighter system */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-14: 3.5rem;
+            --space-16: 4rem;
+            --space-20: 5rem;
+            --space-24: 6rem;
+            --space-32: 8rem;
+            --space-40: 10rem;
+            --space-48: 12rem;
+            --space-64: 16rem;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            --radius-3xl: 2rem;
+            --radius-full: 9999px;
+        }
 
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <link rel="icon" href="assets/images/favicon.ico">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+        html {
+            scroll-behavior: smooth;
+            font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+        }
+
+        body {
+            font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: white;
+            color: var(--neutral-900);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Layout Containers */
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-left: var(--space-6);
+            padding-right: var(--space-6);
+        }
+
+        .container-narrow {
+            max-width: 768px;
+        }
+
+        .container-wide {
+            max-width: 1440px;
+        }
+
+        /* Typography System - Tighter */
+        .display-2xl {
+            font-size: clamp(3rem, 8vw, 4.5rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            font-weight: 800;
+        }
+
+        .display-xl {
+            font-size: clamp(2.5rem, 6vw, 3.75rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            font-weight: 800;
+        }
+
+        .display-lg {
+            font-size: clamp(2rem, 5vw, 3rem);
+            line-height: 1;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+        }
+
+        .display-md {
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+            line-height: 1.5;
+        }
+
+        .text-base {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+            line-height: 1.3;
+        }
+
+        /* Weight utilities */
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .font-extrabold { font-weight: 800; }
+        .font-black { font-weight: 900; }
+
+        /* Color utilities */
+        .text-neutral-500 { color: var(--neutral-500); }
+        .text-neutral-600 { color: var(--neutral-600); }
+        .text-neutral-700 { color: var(--neutral-700); }
+        .text-neutral-800 { color: var(--neutral-800); }
+        .text-neutral-900 { color: var(--neutral-900); }
+        .text-orange-600 { color: var(--orange-600); }
+        .text-white { color: white; }
+
+        .bg-neutral-50 { background-color: var(--neutral-50); }
+        .bg-neutral-900 { background-color: var(--neutral-900); }
+        .bg-orange-500 { background-color: var(--orange-500); }
+        .bg-orange-600 { background-color: var(--orange-600); }
+
+        /* Hero Section */
+        .hero {
+            padding-top: var(--space-16);
+            padding-bottom: var(--space-20);
+            background: linear-gradient(135deg, white 0%, var(--neutral-50) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.06) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-3);
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: var(--space-6);
+            border: 1px solid var(--neutral-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-badge .emoji {
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(45deg, #FF6B35, #FF4500);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-5);
+            max-width: 56rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.125rem, 3vw, 1.25rem);
+            color: var(--neutral-600);
+            line-height: 1.5;
+            margin-bottom: var(--space-8);
+            max-width: 42rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-subtitle .highlight {
+            color: var(--orange-600);
+            font-weight: 700;
+        }
+
+        /* Big Round Button - Baseline Style */
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-3);
+            background: var(--orange-600);
+            color: white;
+            padding: var(--space-6) var(--space-10);
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-xl);
+            min-height: 60px;
+        }
+
+        .hero-cta:hover {
+            background: var(--orange-700);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .hero-cta::after {
+            content: '→';
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .hero-meta {
+            margin-top: var(--space-6);
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+            font-weight: 500;
+        }
+
+        /* Company Logos */
+        .company-logos {
+            margin-top: var(--space-12);
+            text-align: center;
+        }
+
+        .company-logos p {
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+            margin-bottom: var(--space-6);
+        }
+
+        .logos-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--space-8);
+            flex-wrap: wrap;
+            opacity: 0.7;
+        }
+
+        .logo-item {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neutral-600);
+            padding: var(--space-2) var(--space-4);
+            background: var(--neutral-100);
+            border-radius: var(--radius-md);
+        }
+
+        /* Section Base */
+        .section {
+            padding: var(--space-20) 0;
+        }
+
+        .section-xl {
+            padding: var(--space-32) 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-16);
+        }
+
+        .section-title {
+            font-size: clamp(1.875rem, 5vw, 3rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-3);
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--neutral-600);
+            line-height: 1.5;
+            max-width: 40rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Michel Section - Stronger */
+        .michel {
+            background: var(--neutral-50);
+        }
+
+        .michel-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: var(--space-20);
+            align-items: start;
+        }
+
+        .michel-image {
+            border-radius: var(--radius-2xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-2xl);
+            position: sticky;
+            top: var(--space-20);
+        }
+
+        .michel-placeholder {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--neutral-300) 0%, var(--neutral-400) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-600);
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        .michel-content h2 {
+            font-size: clamp(1.875rem, 4vw, 2.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-5);
+        }
+
+        .michel-content p {
+            color: var(--neutral-600);
+            line-height: 1.6;
+            margin-bottom: var(--space-4);
+            font-size: 1rem;
+        }
+
+        .michel-content p strong {
+            color: var(--neutral-900);
+            font-weight: 700;
+        }
+
+        .credentials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-2);
+            margin-top: var(--space-6);
+        }
+
+        .credential {
+            background: var(--neutral-200);
+            color: var(--neutral-700);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .credential.featured {
+            background: var(--orange-500);
+            color: white;
+        }
+
+        /* Problem Section - Bold Block */
+        .problem-section {
+            background: white;
+        }
+
+        .problem-block {
+            background: var(--neutral-50);
+            padding: var(--space-16);
+            border-radius: var(--radius-3xl);
+            border: 1px solid var(--neutral-200);
+            text-align: center;
+            margin-bottom: var(--space-16);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.03) 0%, rgba(59, 130, 246, 0.03) 100%);
+        }
+
+        .problem-block > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .problem-title {
+            font-size: clamp(1.875rem, 4vw, 2.5rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-4);
+        }
+
+        .problem-subtitle {
+            font-size: 1.125rem;
+            color: var(--neutral-600);
+            line-height: 1.5;
+            margin-bottom: var(--space-8);
+        }
+
+        .problem-points {
+            display: grid;
+            gap: var(--space-4);
+            max-width: 40rem;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .problem-point {
+            background: white;
+            padding: var(--space-5);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--neutral-200);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-4);
+            transition: all 0.2s ease;
+        }
+
+        .problem-point:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--neutral-300);
+        }
+
+        .problem-point-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: var(--space-1);
+        }
+
+        .problem-point-icon.old { background: #FF6B6B; }
+        .problem-point-icon.generic { background: #4ECDC4; }
+        .problem-point-icon.global { background: #45B7D1; }
+
+        .problem-point-content h4 {
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-1);
+            font-size: 1rem;
+        }
+
+        .problem-point-content p {
+            color: var(--neutral-600);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        /* Stats Section - More Impact */
+        .stats-section {
+            background: white;
+            padding: var(--space-20) 0;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .stats-intro {
+            text-align: center;
+            margin-bottom: var(--space-12);
+        }
+
+        .stats-intro h2 {
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-3);
+        }
+
+        .stats-intro p {
+            font-size: 1rem;
+            color: var(--neutral-600);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--space-8);
+        }
+
+        .stat-card {
+            background: var(--neutral-50);
+            padding: var(--space-8);
+            border-radius: var(--radius-2xl);
+            border: 1px solid var(--neutral-200);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--orange-500);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: white;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--orange-500);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--neutral-900);
+            letter-spacing: -0.03em;
+            margin-bottom: var(--space-2);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-2);
+        }
+
+        .stat-description {
+            font-size: 0.875rem;
+            color: var(--neutral-600);
+            line-height: 1.4;
+        }
+
+        /* Testimonials - More Impact */
+        .testimonials {
+            background: var(--neutral-50);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-6);
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: var(--space-6);
+            border-radius: var(--radius-2xl);
+            border: 1px solid var(--neutral-200);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: var(--space-3);
+            left: var(--space-5);
+            font-size: 2rem;
+            color: var(--orange-500);
+            font-weight: 800;
+            line-height: 1;
+            opacity: 0.7;
+        }
+
+        .testimonial-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+            border-color: var(--orange-500);
+        }
+
+        .testimonial-content {
+            line-height: 1.5;
+            color: var(--neutral-700);
+            margin-bottom: var(--space-5);
+            font-style: italic;
+            padding-left: var(--space-5);
+            font-size: 0.95rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding-left: var(--space-5);
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--orange-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .author-info h4 {
+            font-weight: 700;
+            color: var(--neutral-900);
+            line-height: 1.3;
+            font-size: 0.95rem;
+        }
+
+        .author-info p {
+            color: var(--neutral-600);
+            font-size: 0.85rem;
+            margin-top: var(--space-1);
+        }
+
+        /* Pricing - Fixed Badges */
+        .pricing-section {
+            background: var(--neutral-50);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: var(--space-8);
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-3xl);
+            padding: var(--space-10);
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: visible;
+        }
+
+        .pricing-card:hover {
+            border-color: var(--orange-500);
+            box-shadow: var(--shadow-2xl);
+            transform: translateY(-4px);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--orange-500);
+            background: linear-gradient(135deg, white 0%, var(--orange-50) 100%);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--orange-500);
+            color: white;
+            padding: var(--space-2) var(--space-5);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            z-index: 10;
+            white-space: nowrap;
+            box-shadow: var(--shadow-md);
+        }
+
+        .pricing-badge.standard {
+            background: var(--neutral-700);
+        }
+
+        .pricing-badge .badge-emoji {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: var(--space-1);
+        }
+
+        .pricing-badge.standard .badge-emoji {
+            background: linear-gradient(45deg, #FF6B35, #FF4500);
+        }
+
+        .pricing-badge.vip .badge-emoji {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: var(--space-6);
+            padding-top: var(--space-4);
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: var(--space-1);
+        }
+
+        .pricing-header .subtitle {
+            color: var(--neutral-600);
+            font-size: 0.95rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--neutral-900);
+            text-align: center;
+            letter-spacing: -0.03em;
+            margin: var(--space-4) 0 var(--space-2) 0;
+            line-height: 1;
+        }
+
+        .price-details {
+            color: var(--neutral-600);
+            margin-bottom: var(--space-6);
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .features-list {
+            margin: var(--space-6) 0;
+            list-style: none;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-3);
+            margin-bottom: var(--space-3);
+            color: var(--neutral-700);
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .features-list li::before {
+            content: '✓';
+            color: var(--orange-500);
+            font-weight: 800;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .pricing-cta {
+            width: 100%;
+            background: var(--orange-500);
+            color: white;
+            padding: var(--space-5) var(--space-6);
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            font-weight: 700;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: var(--space-5);
+            font-size: 1rem;
+            min-height: 56px;
+        }
+
+        .pricing-cta:hover {
+            background: var(--orange-600);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pricing-note {
+            text-align: center;
+            margin-top: var(--space-8);
+            color: var(--neutral-600);
+            font-size: 0.875rem;
+        }
+
+        /* Final CTA */
+        .final-cta {
+            background: var(--neutral-900);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+        }
+
+        .final-cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .final-cta h2 {
+            font-size: clamp(1.875rem, 5vw, 3rem);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            font-weight: 800;
+            margin-bottom: var(--space-4);
+        }
+
+        .final-cta .subtitle {
+            font-size: 1.125rem;
+            margin-bottom: var(--space-8);
+            color: var(--neutral-300);
+            line-height: 1.5;
+        }
+
+        .cta-primary-inverse {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-3);
+            background: white;
+            color: var(--neutral-900);
+            padding: var(--space-6) var(--space-10);
+            border-radius: var(--radius-full);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-xl);
+            min-height: 60px;
+        }
+
+        .cta-primary-inverse:hover {
+            background: var(--neutral-100);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-2xl);
+        }
+
+        .urgency-note {
+            margin-top: var(--space-4);
+            font-size: 0.875rem;
+            color: var(--neutral-400);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--neutral-900);
+            color: white;
+            padding: var(--space-12) 0 var(--space-8);
+            text-align: center;
+            border-top: 1px solid var(--neutral-800);
+        }
+
+        .footer h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: var(--space-3);
+            letter-spacing: -0.025em;
+        }
+
+        .footer p {
+            color: var(--neutral-400);
+            font-size: 0.875rem;
+            margin-bottom: var(--space-4);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-4);
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--neutral-400);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: var(--space-4);
+                padding-right: var(--space-4);
+            }
+
+            .hero {
+                padding-top: var(--space-12);
+                padding-bottom: var(--space-16);
+            }
+
+            .hero-badge {
+                margin-bottom: var(--space-5);
+                font-size: 0.8rem;
+                padding: var(--space-2) var(--space-4);
+            }
+
+            .hero-subtitle {
+                margin-bottom: var(--space-6);
+            }
+
+            .hero-cta {
+                padding: var(--space-5) var(--space-8);
+                font-size: 1rem;
+                min-height: 52px;
+            }
+
+            .hero-meta {
+                margin-top: var(--space-5);
+            }
+
+            .section {
+                padding: var(--space-12) 0;
+            }
+
+            .section-xl {
+                padding: var(--space-16) 0;
+            }
+
+            .section-header {
+                margin-bottom: var(--space-10);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--space-4);
+            }
+
+            .michel-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-8);
+                text-align: center;
+            }
+
+            .michel-image {
+                max-width: 280px;
+                margin: 0 auto;
+                position: static;
+            }
+
+            .michel-placeholder {
+                height: 300px;
+            }
+
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-badge {
+                font-size: 0.7rem;
+                padding: var(--space-1) var(--space-4);
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: var(--space-3);
+            }
+
+            .logos-grid {
+                gap: var(--space-4);
+            }
+
+            .logo-item {
+                font-size: 0.875rem;
+                padding: var(--space-1) var(--space-3);
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </head>
-
 <body>
-    <div id="header">
-        <h2>MULTIMICHEL</h2>
-    </div>
-    <div id="content">
+    <header class="hero">
+        <div class="container container-narrow">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="emoji"></span>
+                    5 semanas • 12 vagas • Próxima turma: 17 de julho
+                </div>
+                <h1 class="hero-title">Portfolio de classe mundial para designers brasileiros</h1>
+                <p class="hero-subtitle">
+                    Transforme seu trabalho em narrativas convincentes que <span class="highlight">abrem portas nas melhores empresas do mundo</span>. O único curso que ensina designers brasileiros a competirem globalmente.
+                </p>
+                <a href="#inscricoes" class="hero-cta">Quero meu portfolio de classe mundial</a>
+                
+                <div class="company-logos">
+                    <p>Mentoria e aulas com um profissional com mais de 18 anos de experiência internacional em empresas como</p>
+                    <div class="logos-grid">
+                        <span class="logo-item">Xero</span>
+                        <span class="logo-item">Atlassian</span>
+                        <span class="logo-item">Shopify</span>
+                        <span class="logo-item">Booking.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <h1>My name is Michel Ferreira I’m a designer & podcaster living in Sydney, Australia.</h1>
+    <section class="michel section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Aprenda a contar sua história como um diretor de cinema. Focando só no que importa.</h2>
+            </div>
+            <div class="michel-grid">
+                <div class="michel-image">
+                    <div class="michel-placeholder">MF</div>
+                    <!-- Replace with: <img src="path/to/michel.jpg" alt="Michel Ferreira"> -->
+                </div>
+                <div class="michel-content">
+                    <h2>Quem é o Michel?</h2>
+                    <p>Vivi em 5 países diferentes e passei 18 anos no exterior ajudando designers a competirem globalmente. Direto de Sydney, já mentorei mais de 100 designers da Austrália, Ásia, EUA e Europa que hoje trabalham em empresas de classe mundial.</p>
+                    
+                    <p><strong>Seu portfolio é seu passaporte para oportunidades globais.</strong> Como Lead Product Designer na Xero e com experiência internacional na Atlassian (Austrália), Shopify (Canadá) e Booking.com (Holanda), sei exatamente o que recrutadores globais procuram.</p>
+                    
+                    <p>Entrevistei e contratei centenas de designers através dessas empresas. Agora centralizo toda essa experiência no FOCUS para ensinar você a posicionar sua criatividade como vantagem competitiva no mercado internacional.</p>
+                    
+                    <div class="credentials">
+                        <span class="credential featured">Lead Designer, Xero</span>
+                        <span class="credential featured">Ex-Atlassian</span>
+                        <span class="credential featured">Ex-Shopify</span>
+                        <span class="credential featured">Ex-Booking.com</span>
+                        <span class="credential">100+ mentorados globalmente</span>
+                        <span class="credential">5 países</span>
+                        <span class="credential">18 anos internacionais</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <p>Olá and welcome, I'm Michel, a designer, podcaster, writer, and public  speaker. I'm currently working for Atlassian as a Senior Product Designer.</p>
+    <section class="problem-section section">
+        <div class="container">
+            <div class="problem-block">
+                <h2 class="problem-title">Por que seu portfolio não consegue as vagas que você quer…</h2>
+                <p class="problem-subtitle">Você tem talento, mas seu portfolio segue padrões batidos que não ressoam com recrutadores globais. É hora de mudar isso.</p>
+                
+                <div class="problem-points">
+                    <div class="problem-point">
+                        <span class="problem-point-icon old"></span>
+                        <div class="problem-point-content">
+                            <h4>Portfolio de modelo antigo</h4>
+                            <p>Segue padrões locais que não chamam atenção de recrutadores internacionais que veem centenas de portfolios por dia.</p>
+                        </div>
+                    </div>
+                    <div class="problem-point">
+                        <span class="problem-point-icon generic"></span>
+                        <div class="problem-point-content">
+                            <h4>Case studies genéricos</h4>
+                            <p>Contam "o que" você fez, mas não "por que" e "como" de forma que demonstre pensamento estratégico e impacto.</p>
+                        </div>
+                    </div>
+                    <div class="problem-point">
+                        <span class="problem-point-icon global"></span>
+                        <div class="problem-point-content">
+                            <h4>Desconhecimento do mercado global</h4>
+                            <p>Não sabe quais são os padrões, expectativas e cultura das empresas que contratam designers world class internacionais.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="#inscricoes" class="hero-cta">Quero meu portfolio de classe mundial</a>
+            </div>
+        </div>
+    </section>
 
-    <p>Before Atlassian, I worked at Shopify in Canada developing the <a href="https://www.shopify.com/fulfillment" target="_blank" rel="noopener">Shopify Fulfilment Network</a> and Booking.com in the Netherlands on their mobile web, apps, and Genius Experiences.</p>
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-intro">
+                <h2>Resultados que transformam carreiras</h2>
+                <p>Mentoria de Sucesso</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Mentorados e aplicando o meu modelo</div>
+                    <div class="stat-description">Agora com portfólios mais focados e globais prontos para impressionar recrutadores internacionais.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Deixando a síndrome do impostor de lado</div>
+                    <div class="stat-description">Alunos relatam mais clareza e segurança ao apresentar seus projetos em frente aos gerentes de contratação.</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10+</div>
+                    <div class="stat-label">Alunos contratados no mundo todo</div>
+                    <div class="stat-description">O FOCUS não é só teoria. Designers ganharam espaço em empresas globais em carreiras seniors ou iniciantes.</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <p>I'm also a design mentor for <a href="https://dribbble.com/courses/design-systems" target="_blank">Dribbble's</a> Scaling Design Systems course, and the host of the <a href="https://podcasts.apple.com/au/podcast/latinxs-who-design/id1554011225" target="_blank">Latinxs Who Design Podcast</a> and <a href="https://www.youtube.com/@multimichel" target="_blank">Inclusive Network Youtube</a> channel.</p>
+    <section class="testimonials section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Transformações reais de designers</h2>
+                <p class="section-subtitle">Veja como ex-alunos do FOCUS mudaram suas carreiras trabalhando para empresas globais.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Working with Michel made a huge difference in how I think about design. His feedback was always thoughtful and helped me get to the heart of what mattered."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MJ</div>
+                        <div class="author-info">
+                            <h4>Michael Johnson</h4>
+                            <p>Designer, Internacional</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Michel's guidance transformed not just my portfolio, but my entire approach to design thinking. His international perspective opened doors I didn't even know existed."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">BR</div>
+                        <div class="author-info">
+                            <h4>Berta Rincon</h4>
+                            <p>Lead Designer, Global Tech</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Michel's guidance transformed not just my portfolio, but my entire approach to design thinking. His international perspective opened doors I didn't even know existed."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">BR</div>
+                        <div class="author-info">
+                            <h4>Berta Rincon</h4>
+                            <p>Senior Designer, International</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Working with Michel made a huge difference in how I think about design. His feedback was always thoughtful and helped me get to the heart of what mattered."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MJ</div>
+                        <div class="author-info">
+                            <h4>Michael Johnson</h4>
+                            <p>Product Designer, Tech</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: var(--space-12);">
+                <a href="#inscricoes" class="hero-cta">Quero meu portfolio de classe mundial</a>
+            </div>
+        </div>
+    </section>
 
-    <p>As a <a href="https://multimichel.medium.com/" target="_blank">writer</a> and <a href="https://www.youtube.com/watch?v=4Nk0ray32i0&list=PLIgwFac2sgze1MLww1MJ4Py2k6vW-HcST&index=4" target="_blank">public speaker</a>, I've delivered numerous presentations to audiences around the world.</p>
-    </div>
+    <section class="pricing-section section" id="inscricoes">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Investimento no seu futuro global</h2>
+                <p class="section-subtitle">5 semanas intensivas de transformação com Michel Ferreira. Escolha a experiência que melhor se adapta às suas necessidades.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-badge standard">
+                        <span class="badge-emoji"></span>
+                        Mais Procurado
+                    </div>
+                    <div class="pricing-header">
+                        <h3>FOCUS Standard</h3>
+                        <div class="subtitle">Transformação completa em grupo</div>
+                    </div>
+                    <div class="price">R$ 847</div>
+                    <div class="price-details">9 vagas disponíveis</div>
+                    <ul class="features-list">
+                        <li>5 semanas de mentoria intensiva com Michel</li>
+                        <li>Sessões ao vivo em grupo (máximo 12 pessoas)</li>
+                        <li>Suporte para questões durante o curso</li>
+                        <li>Framework FOCUS completo</li>
+                        <li>Estratégias de networking e carreira global</li>
+                    </ul>
+                    <a href="#apply" class="pricing-cta">
+                        Inscreva-se
+                        <span>→</span>
+                    </a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="pricing-badge vip">
+                        <span class="badge-emoji"></span>
+                        VIP Experience
+                    </div>
+                    <div class="pricing-header">
+                        <h3>FOCUS VIP</h3>
+                        <div class="subtitle">Experiência premium com mentoria 1:1</div>
+                    </div>
+                    <div class="price">R$ 1.694</div>
+                    <div class="price-details">3 vagas • Atenção personalizada</div>
+                    <ul class="features-list">
+                        <li><strong>Tudo do Standard, mais:</strong></li>
+                        <li>2x sessões 1:1 exclusivas com Michel</li>
+                        <li>Feedback personalizado detalhado</li>
+                        <li>Revisão individual de cada projeto</li>
+                        <li>Orientação específica para seu perfil</li>
+                    </ul>
+                    <a href="#apply" class="pricing-cta">
+                        Garantir vaga VIP
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+            <div class="pricing-note">
+                Turma limitada: 12 alunos total
+            </div>
+        </div>
+    </section>
 
-    <div id="applepodcasts">
-        <iframe id="embedPlayer" src="https://embed.podcasts.apple.com/us/podcast/latinxs-who-design/id1554011225?itsct=podcast_box_player&amp;itscg=30200&amp;ls=1&amp;theme=auto" height="450px" frameborder="0" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="autoplay *; encrypted-media *; clipboard-write" style="width: 100%; max-width: 660px; overflow: hidden; border-radius: 10px; transform: translateZ(0px); animation: 2s ease 0s 6 normal none running loading-indicator; background-color: rgb(228, 228, 228);"></iframe>
-    </div>
+    <section class="final-cta section-xl">
+        <div class="container container-narrow">
+            <div class="final-cta-content">
+                <h2>Não deixe seu talento passar despercebido</h2>
+                <p class="subtitle">Transforme seu portfolio em uma ferramenta poderosa que abre portas no mercado global. Próxima turma começa em 17 de julho.</p>
+                <a href="#apply" class="cta-primary-inverse">
+                    Quero meu portfolio de classe mundial
+                    <span>→</span>
+                </a>
+                <div class="urgency-note">
+                    Inscrições encerram quando as vagas acabarem
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div id="footer">
-        <p>Footer Content</p>
-    </div>
+    <footer class="footer">
+        <div class="container">
+            <h1>FOCUS</h1>
+            <p>Criado por Michel Ferreira</p>
+            <p>Mentoria ao vivo para designers transformarem seus portfolios e competirem em empresas world class</p>
+            <div class="footer-links">
+                <a href="mailto:michel@focus.design">michel@focus.design</a>
+                <a href="https://instagram.com/michelfocus">Instagram</a>
+                <a href="https://linkedin.com/in/michelferreira">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling with offset
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const targetPosition = target.offsetTop - 20;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: [0.1, 0.3],
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
+                    entry.target.classList.add('visible');
+                    
+                    // Staggered animation for grid items
+                    const gridItems = entry.target.querySelectorAll('.stat-card, .testimonial-card, .pricing-card');
+                    gridItems.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
+                        }, 100);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections for animations
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // CTA handling with loading states
+        document.querySelectorAll('a[href="#apply"], .pricing-cta').forEach(cta => {
+            cta.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Add loading state
+                const originalText = cta.innerHTML;
+                cta.innerHTML = '<span>Carregando...</span>';
+                cta.style.pointerEvents = 'none';
+                
+                // Simulate loading then redirect
+                setTimeout(() => {
+                    // Replace with your actual Google Form or checkout URL
+                    window.open('https://forms.google.com/your-form-id', '_blank');
+                    
+                    // Reset button
+                    setTimeout(() => {
+                        cta.innerHTML = originalText;
+                        cta.style.pointerEvents = 'auto';
+                    }, 1000);
+                }, 500);
+            });
+        });
+
+        // Hero animation on load
+        window.addEventListener('load', () => {
+            const hero = document.querySelector('.hero');
+            
+            // Stagger hero elements
+            const heroElements = hero.querySelectorAll('.hero-badge, .hero-title, .hero-subtitle, .hero-cta, .company-logos');
+            heroElements.forEach((element, index) => {
+                element.style.animation = `fadeInUp 0.8s ease-out ${index * 0.15}s both`;
+                element.style.opacity = '0';
+            });
+        });
+
+        // Add scroll progress indicator
+        const createScrollProgress = () => {
+            const progressBar = document.createElement('div');
+            progressBar.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 0%;
+                height: 3px;
+                background: linear-gradient(90deg, var(--orange-500), var(--orange-600));
+                z-index: 1000;
+                transition: width 0.1s ease;
+            `;
+            document.body.appendChild(progressBar);
+
+            window.addEventListener('scroll', () => {
+                const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                progressBar.style.width = scrolled + '%';
+            });
+        };
+
+        // Initialize scroll progress
+        createScrollProgress();
+    </script>
 </body>
-
 </html>
