@@ -1,0 +1,202 @@
+/* MultiMichel — homepage styles. All visual values come from tokens.css. */
+@import url("tokens.css?v=15");
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--rail)}
+/* The ground is white. The paper canvas is an inner column inset by
+   --rail-width on both sides, so white shows down each edge for the full
+   height of the page. The contrast break is deliberate. */
+body{
+  background:var(--paper);
+  border-left:var(--rail-width) solid var(--rail);
+  border-right:var(--rail-width) solid var(--rail);
+  color:var(--slate);font-family:var(--font-grotesk);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+b,strong{font-weight:700}
+
+/* Left-biased canvas: anchored to the page edge, not centered with auto margins.
+   Inside the paper column, text is inset a further 16px so it lands at
+   --content-start (72 rail + 16 = 88). The orange blocks pull back that 16px
+   to sit flush on the rail/paper seam and break the text alignment on purpose. */
+.wrap,header.site{max-width:var(--canvas-reference);padding-left:calc(var(--content-start) - var(--rail-width));padding-right:var(--space-16)}
+
+/* Masthead block sits in the white rail too, on the same 8px left edge. */
+.brand i{margin-left:calc(var(--block-inset) - var(--content-start))}
+
+/* ---------- masthead & nav ---------- */
+header.site{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:var(--space-32)}
+.brand{font-family:var(--font-label);font-weight:900;font-size:var(--type-masthead-size);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase;display:flex;align-items:flex-end}
+.brand i{
+  width:var(--block-header-w);height:var(--block-header-h);background:var(--orange);display:inline-block;
+  margin-right:var(--space-16);
+  flex:none;
+}
+nav.main{display:flex;gap:var(--nav-gap);padding-bottom:var(--space-8)}
+nav.main a{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--dim)}
+nav.main a:hover{color:var(--orange)}
+
+/* ---------- hero — large intentional opening whitespace ---------- */
+.hero{padding-top:var(--space-192)}
+h1.display{
+  font-family:var(--font-serif);
+  font-weight:800;
+  font-size:clamp(52px,10.2vw,var(--type-hero-size));
+  letter-spacing:var(--type-hero-tracking);
+  line-height:.96;
+  color:var(--slate);
+}
+@media(max-width:700px){h1.display{letter-spacing:-.03em}}
+
+.lede{max-width:var(--intro-max-width);margin-top:var(--space-32);font-family:var(--font-grotesk);font-weight:400;font-size:clamp(17px,2vw,var(--type-body-size));line-height:1.48;color:var(--slate)}
+.lede p+p{margin-top:var(--space-16)}
+.lede b{font-weight:700}
+.lede a{border-bottom:1.5px solid var(--orange)}
+.lede a:hover{color:var(--orange)}
+
+/* ---------- photo — 1400×788 reference (16:9) ---------- */
+figure.full{margin:var(--space-72) 0 0}
+figure.full img{width:100%;aspect-ratio:1400/788;object-fit:cover}
+figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-label-size);letter-spacing:.4px;color:var(--muted);text-transform:uppercase;margin-top:var(--space-16)}
+
+/* ---------- quote ---------- */
+.quote{
+  text-align:center;
+  font-family:var(--font-serif);
+  font-weight:500;
+  font-size:clamp(28px,4.6vw,var(--type-quote-size));
+  line-height:1.04;
+  letter-spacing:var(--type-quote-tracking);
+  color:var(--ink-quote);
+  max-width:15em;
+  margin:var(--space-144) auto var(--space-144);
+  padding:0 var(--space-16);
+}
+/* z-index:0 gives .hl its own stacking context, so the brush at z-index:-1
+   sits behind the words but still in front of the paper fill on <body>.
+   Without it the brush paints underneath the body background and vanishes. */
+.hl{position:relative;z-index:0;white-space:nowrap;display:inline-block}
+/* The brush is centred on the text, not hung off the baseline: its top edge
+   sits just above the x-height and the bottom clears the descenders. */
+/* Explicit width/height, not left+right / top+bottom: an <img> is a replaced
+   element, so an over-constrained inset box falls back to its intrinsic size
+   instead of stretching. */
+/* Values tuned by Michel in DevTools: height left intrinsic (the brush keeps
+   its own 445:78 proportion) and the box nudged up so the stroke sits on the
+   word rather than under it. */
+.hl-mark{
+  position:absolute;
+  left:-3.5%;top:-8%;
+  width:108%;
+  object-fit:fill;
+  z-index:-1;
+  pointer-events:none;
+}
+
+/* ---------- section markers ----------
+   The marker is taken OUT of flow so it never pushes the label. That keeps
+   every piece of text — section labels and the row titles beneath them — on
+   one column at --content-start, while the square sits out in the white rail
+   (8 → 72), flush against the rail/paper seam. */
+.sechead{position:relative;display:flex;align-items:center;margin-bottom:var(--gap-label-to-rows)}
+.sechead .tab{
+  position:absolute;
+  left:calc(var(--block-inset) - var(--content-start));
+  top:50%;transform:translateY(-50%);
+  width:var(--block-marker);height:var(--block-marker);
+  background:var(--orange);
+}
+.sechead h2{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--muted);text-transform:uppercase}
+.sechead .more{margin-left:auto;font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:1.1px;color:var(--dim);text-transform:uppercase}
+.sechead .more:hover{color:var(--orange)}
+
+/* ---------- editorial rows — the whole row is the link, table-style ---------- */
+a.row,div.row{display:flex;justify-content:space-between;align-items:center;min-height:var(--row-height);gap:var(--space-32);padding:0 var(--space-16);margin:0 calc(-1 * var(--space-16));border-bottom:1px solid var(--rule-light);transition:background .15s}
+a.row{cursor:pointer}
+a.row:hover{background:var(--rule-light)}
+.rowlist .row:first-child{border-top:1px solid var(--rule-light)}
+.row .t{font-family:var(--font-serif);font-weight:500;font-size:var(--type-row-title-size);line-height:var(--type-row-title-leading);color:var(--ink)}
+a.row:hover .t{color:var(--orange)}
+.row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:15px;line-height:1.4;color:var(--muted);margin-top:3px;max-width:640px}
+.row .m{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);white-space:nowrap;text-align:right}
+/* UPCOMING is a solid block, not coloured text — it reads as a sibling of the
+   section markers rather than as a link. */
+.row .m .up{
+  display:inline-block;background:var(--orange);color:var(--rail);
+  font-family:var(--font-label);font-weight:900;font-size:11px;letter-spacing:1.1px;
+  padding:2px var(--space-8);margin-right:var(--space-8);vertical-align:1px;
+}
+
+.aside-note{margin-top:var(--space-32);font-family:var(--font-grotesk);font-size:var(--type-aside-size);color:var(--dim)}
+.aside-note-link{border-bottom:1.5px solid var(--orange)}
+
+/* ---------- per-section rhythm — every value from the 8pt scale.
+   Deliberately uneven: WORK gets the biggest run-up, MEDIA the tightest,
+   so the cadence modulates rather than repeating. ---------- */
+#writing{padding-top:var(--space-72)}
+#speaking{padding-top:var(--gap-writing-to-speaking)}
+#work{padding-top:var(--space-144)}
+#media{padding-top:var(--space-72)}
+#about{padding-top:var(--space-72);padding-bottom:var(--space-8)}
+
+/* ---------- fixed-frame image zoom hover ---------- */
+.zoomframe{overflow:hidden;display:block;background:var(--white)}
+.zoomframe img{transition:transform var(--zoom-duration) var(--zoom-ease);transform:scale(1);will-change:transform}
+.zoomframe:hover img{transform:scale(var(--zoom-scale))}
+
+/* ---------- work — two compact visual case studies, side by side.
+   680×425 reference ratio (8:5), work-gap is a Figma value (24px). ---------- */
+.work-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--work-gap);margin-top:0}
+.work-card{display:block}
+.work-card .zoomframe{aspect-ratio:680/425}
+.work-card .zoomframe img{width:100%;height:100%;object-fit:cover}
+/* CASE STUDY label uses the label face, all-caps — matching node 13:688. */
+.work-label{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);color:var(--orange);text-transform:uppercase;margin-top:var(--space-16)}
+.work-card-title{position:relative;display:inline-block;font-family:var(--font-serif);font-weight:500;font-size:clamp(19px,1.7vw,24px);line-height:1.2;color:var(--ink);margin-top:var(--space-8)}
+/* Hover: the same hand-drawn brush as the quote, in white, swiped behind the
+   title. The title colour does not change — the brush is the whole gesture. */
+.work-card-title .brush{
+  position:absolute;
+  left:-3%;top:40%;
+  width:106%;height:85%;
+  object-fit:fill;
+  z-index:-1;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity var(--zoom-duration) var(--zoom-ease);
+}
+.work-card:hover .work-card-title .brush{opacity:1}
+
+/* ---------- media — visual, real imagery, no embeds (outside Figma-node scope) ---------- */
+.media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-32)}
+.media-card{display:block}
+.media-card .zoomframe{aspect-ratio:1/1}
+.media-card .zoomframe img{width:100%;height:100%;object-fit:cover}
+.media-label{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);color:var(--orange);text-transform:uppercase;margin-top:var(--space-16)}
+.media-card-title{font-family:var(--font-serif);font-weight:500;font-size:var(--type-row-title-size);line-height:1.25;color:var(--ink);margin-top:var(--space-8)}
+.media-card:hover .media-card-title{color:var(--orange)}
+
+/* ---------- footer (outside Figma-node scope) ---------- */
+footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);padding:var(--space-32) var(--space-16) var(--space-48) calc(var(--content-start) - var(--rail-width));display:flex;flex-wrap:wrap;gap:var(--space-16);justify-content:space-between;align-items:center}
+.fineprint{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-label-size);color:var(--muted)}
+footer.site .social a{margin-left:18px}
+footer.site .social a:hover{color:var(--orange)}
+
+@media(prefers-reduced-motion:reduce){
+  .zoomframe img{transition:none}
+  html{scroll-behavior:auto}
+}
+
+@media(max-width:900px){
+  :root{--gutter-page:var(--gutter-page-mobile);--rail-width:var(--space-16);--content-start:var(--space-32);--block-marker:var(--block-marker-mobile);--block-header-w:var(--block-marker-mobile);--block-header-h:var(--block-marker-mobile)}
+  header.site{flex-direction:column;align-items:flex-start;gap:14px;padding-bottom:20px}
+  .brand{font-size:19px}
+  nav.main{gap:16px;flex-wrap:wrap;padding-bottom:2px}
+  a.row,div.row{flex-direction:column;align-items:flex-start;gap:2px;min-height:0;padding:14px 12px;margin:0 -12px}
+  .row .m{text-align:left}
+  .work-grid{grid-template-columns:1fr;gap:40px}
+  .media-grid{grid-template-columns:1fr;gap:32px}
+  #work{padding-top:88px}
+  #speaking{padding-top:56px}
+}
