@@ -63,7 +63,7 @@ h1.display{
 }
 @media(max-width:700px){h1.display{letter-spacing:-.03em}}
 
-.lede{max-width:var(--intro-max-width);margin-top:var(--space-32);font-family:var(--font-grotesk);font-weight:400;font-size:clamp(17px,2vw,var(--type-body-size));line-height:1.48;color:var(--slate)}
+.lede{max-width:var(--intro-max-width);margin-top:var(--space-32);font-family:var(--font-grotesk);font-weight:400;font-size:var(--type-body-fluid);line-height:var(--type-body-leading-ratio);color:var(--slate)}
 .lede p+p{margin-top:var(--space-16)}
 .lede b{font-weight:700}
 .lede a{border-bottom:1.5px solid var(--orange)}
@@ -218,7 +218,7 @@ figure.portrait{margin:var(--space-72) 0 0;max-width:var(--portrait-w)}
 figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 
 /* ---------- prose (about) ---------- */
-.prose{max-width:var(--measure);font-family:var(--font-grotesk);font-size:var(--type-body-size);line-height:var(--type-body-leading);color:var(--slate)}
+.prose{max-width:var(--measure);font-family:var(--font-grotesk);font-size:var(--type-body-fluid);line-height:var(--type-body-leading-ratio);color:var(--slate)}
 .prose p+p{margin-top:var(--space-16)}
 .prose a{border-bottom:1.5px solid var(--orange)}
 .prose a:hover{color:var(--orange)}
@@ -395,6 +395,13 @@ footer.site .social a:hover{color:var(--orange)}
   /* vertical rhythm compresses; the hero keeps its scale */
   .hero{padding-top:var(--space-72)}
   figure.full{margin-top:var(--space-48)}
+  /* Opt-in, per photo: the 16:9 reference frame is a desktop crop, and on a
+     3:2 source it shaves ~5% off the top and bottom — enough to cut the Figma
+     logo and the "SYDNEY" lockup out of the Maker Collective shot. Where the
+     whole frame carries meaning, the photo runs at its own ratio on mobile.
+     Deliberately NOT global: the case-study covers are portrait and would go
+     absurdly tall on a phone if they stopped being cropped. */
+  figure.full.natural img,figure.full.natural video{aspect-ratio:auto;height:auto}
   .quote{margin:var(--space-72) auto;max-width:none}
   #writing{padding-top:var(--space-48)}
   #speaking{padding-top:var(--space-48)}

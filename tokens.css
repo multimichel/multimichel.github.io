@@ -65,6 +65,11 @@
   /* Intro body — grotesk Regular (+ Bold for emphasis) */
   --type-body-size: 24px;
   --type-body-leading: 35.5px;
+  /* Running body text is fluid, and every body surface must use the SAME
+     ramp — a fixed 24px next to a clamped one reads as two different type
+     sizes on a phone even though they match on desktop. */
+  --type-body-fluid: clamp(17px, 2vw, 24px);
+  --type-body-leading-ratio: 1.48;
 
   /* Editorial row title — serif Medium */
   --type-row-title-size: 18px;

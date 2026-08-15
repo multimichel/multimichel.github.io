@@ -7,9 +7,9 @@
 <meta name="description" content="Michel Ferreira — Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
 <meta property="og:title" content="About — Michel Ferreira">
 <meta property="og:description" content="Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
-<link rel="stylesheet" href="tokens.css?v=25">
-<link rel="stylesheet" href="multimichel.css?v=25">
-<link rel="stylesheet" href="grid-overlay.css?v=25">
+<link rel="stylesheet" href="tokens.css?v=26">
+<link rel="stylesheet" href="multimichel.css?v=26">
+<link rel="stylesheet" href="grid-overlay.css?v=26">
 </head>
 <body>
 
@@ -96,9 +96,9 @@
   </p>
 </footer>
 
-<script src="content.js?v=25"></script>
-<script src="nav.js?v=25" defer></script>
-<script src="grid-overlay.js?v=25" defer></script>
+<script src="content.js?v=26"></script>
+<script src="nav.js?v=26" defer></script>
+<script src="grid-overlay.js?v=26" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -114,10 +114,10 @@
     else if (e.start && e.end)      when = e.start + "–" + e.end;
     else                            when = e.start || e.end || "";
     var meta = [e.city, when].filter(Boolean).join(" · ");
-    // roleDetail is a second line of the SAME entry (Atlassian spans two
-    // roles), so it sits inside the title block, not as separate metadata.
-    var detail = e.roleDetail ? '<span class="sub">'+esc(e.roleDetail)+'</span>' : '';
-    return '<div class="row"><span class="rowbody"><span class="t">'+esc(e.company)+' — '+esc(e.role)+'</span>'+detail+'</span><span class="m">'+esc(meta)+'</span></div>';
+    // Every entry is ONE typographic title — a role spanning two titles reads
+    // as a single line ("Senior Product Designer — Design Manager") and may
+    // wrap, but never becomes a title plus a secondary role line.
+    return '<div class="row"><span class="t">'+esc(e.company)+' — '+esc(e.role)+'</span><span class="m">'+esc(meta)+'</span></div>';
   }).join("");
   // Everything before Album Agency lives on LinkedIn — linked, never restated
   // here as a synthetic "early web & design" catch-all row.
