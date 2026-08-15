@@ -174,12 +174,24 @@ a.row:hover{background:var(--rule-light)}
 a.row:hover .t{color:var(--orange)}
 .row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:15px;line-height:1.4;color:var(--muted);margin-top:3px;max-width:640px}
 .row .m{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);white-space:nowrap;text-align:right}
+
+/* ---------- status badge (UPCOMING) ----------
+   Status is metadata, not part of the sentence: it sits top-right of the row
+   while title and date/location stack on the left, so reading order is
+   title → where/when, never interrupted. Driven by status:"upcoming" in the
+   content graph — no per-event CSS. */
+/* .rowbody groups a title with anything that belongs to the SAME entry —
+   a second role line, or the date/location under a badged event. */
+.row .rowbody{display:flex;flex-direction:column;min-width:0}
+.row.has-badge{align-items:flex-start;padding-top:var(--space-16);padding-bottom:var(--space-16)}
+.row.has-badge .rowbody{gap:var(--gap-row-title-to-meta)}
+.row.has-badge .m{text-align:left;white-space:normal}
 /* UPCOMING is a solid block, not coloured text — it reads as a sibling of the
    section markers rather than as a link. */
-.row .m .up{
+.row .up{
   display:inline-block;background:var(--orange);color:var(--rail);
   font-family:var(--font-label);font-weight:900;font-size:11px;letter-spacing:1.1px;
-  padding:2px var(--space-8);margin-right:var(--space-8);vertical-align:1px;
+  padding:2px var(--space-8);vertical-align:1px;flex:none;
 }
 
 .aside-note{margin-top:var(--space-32);font-family:var(--font-grotesk);font-size:var(--type-aside-size);color:var(--dim)}
@@ -381,8 +393,17 @@ footer.site .social a:hover{color:var(--orange)}
   .form,.prose{max-width:100%}
 
   /* metadata reflows under the title rather than fighting it for width */
-  a.row,div.row{flex-direction:column;align-items:flex-start;gap:var(--space-8);min-height:0;padding:var(--space-16) var(--space-8);margin:0 calc(-1 * var(--space-8))}
-  .row .m{text-align:left;white-space:normal}
+  a.row,div.row{flex-direction:column;align-items:flex-start;gap:var(--gap-row-title-to-meta);min-height:0;padding:var(--space-16) var(--space-8);margin:0 calc(-1 * var(--space-8))}
+  .row .m{text-align:left;white-space:normal;line-height:var(--type-row-meta-leading-mobile)}
+  /* A wrapped serif title must read as one unit, not two stacked lines.
+     Size is unchanged — only the leading tightens. */
+  .row .t{line-height:var(--type-row-title-leading-mobile)}
+
+  /* Badge rows keep the badge pinned to the upper right of the row instead of
+     letting it drop between the title and its date — so the reading order
+     stays title → where/when at every width. */
+  a.row.has-badge,div.row.has-badge{flex-direction:row;justify-content:space-between;align-items:flex-start;gap:var(--space-16)}
+  .row.has-badge .rowbody{flex:1 1 auto}
 
   .work-grid{grid-template-columns:1fr;gap:var(--space-48)}
   .media-grid{grid-template-columns:1fr;gap:var(--space-32)}

@@ -74,6 +74,13 @@
   --type-row-meta-size: 14px;
   --type-row-meta-leading: 18px;
 
+  /* Wrapped row titles must read as ONE title, not two lines of prose.
+     Desktop keeps the roomier 28.8px; mobile tightens to a ratio so a
+     two-line serif title stays a single typographic unit. */
+  --type-row-title-leading-mobile: 1.12;
+  --type-row-meta-leading-mobile: 1.25;
+  --gap-row-title-to-meta: 12px;
+
   /* Quote — serif Medium, centered */
   --type-quote-size: 48px;
   --type-quote-leading: 50px;

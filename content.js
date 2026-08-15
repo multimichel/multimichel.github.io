@@ -2,14 +2,16 @@
 // Provenance: research/sources.json. verification: primary | secondary | user | review
 window.MM = {
 person: {name:"Michel Ferreira", aka:"MultiMichel", location:"Sydney, Australia", role:"Designer Advocate at Figma", since:1998, contact:"michel@multimichel.com"},
+// The route is a fast career scan, not a full CV. It stops at Album Agency —
+// everything before 1998–2007 lives on LinkedIn and is linked, never restated
+// here as a synthetic catch-all row.
 experience: [
-{company:"Figma", role:"Designer Advocate", start:"", end:"present", verification:"review", note:"dates pending Michel"},
-{company:"Xero", role:"Lead Product Designer", start:"", end:"", city:"Sydney", verification:"review", note:"dates pending Michel"},
-{company:"Atlassian", role:"Senior Product Designer, Jira Platform", start:"2019", end:"~2024", city:"Sydney", verification:"primary"},
-{company:"Shopify", role:"Senior Product Designer", start:"2017", end:"2019", city:"Canada", verification:"primary"},
-{company:"Booking.com", role:"UX Designer", start:"2013", end:"2017", city:"Amsterdam", verification:"primary"},
-{company:"Album Agency", role:"Design Director", start:"2007", end:"2013", verification:"primary"},
-{company:"Design agencies — Brazil & California", role:"Designer", start:"1998", end:"2007", verification:"primary"}
+{company:"Figma", role:"Designer Advocate", start:"2025", end:"present", city:"Sydney", verification:"user"},
+{company:"Xero", role:"Lead Product Designer", start:"2025", end:"2025", city:"Sydney", verification:"user"},
+{company:"Atlassian", role:"Product Design & Design Management", roleDetail:"Senior Product Designer · Experience Design Manager", start:"2019", end:"2025", city:"Sydney", verification:"user"},
+{company:"Shopify", role:"Senior Product Designer", start:"2017", end:"2019", city:"Canada", verification:"user"},
+{company:"Booking.com", role:"Designer", start:"2013", end:"2017", city:"Amsterdam", verification:"user"},
+{company:"Album Agency", role:"Design Director", start:"2007", end:"2013", city:"California", verification:"user"}
 ],
 items: [
 {id:"work-atlassian", type:"Work", year:2024, title:"Jira Nav to Atlassian's System of Work", sub:"How a 2% satisfaction rate became the foundation for Atlassian's future", href:"work-atlassian.html", company:"Atlassian", verification:"primary"},
@@ -27,7 +29,7 @@ items: [
 {id:"w-fries", type:"Writing", year:2015, date:"Sep 21, 2015", title:"Would you like fries with that?", sub:"Discussing the hamburger icon.", url:"https://multimichel.medium.com/would-you-like-fries-with-that-4edf46849380", source:"Medium · Booking.com Design", verification:"primary"},
 {id:"w-rwd", type:"Writing", year:2014, date:"Oct 22, 2014", title:"RWD or Apps? YES!", sub:"Does responsive design negate the need for an app?", url:"https://multimichel.medium.com/803053bfcec3", source:"Medium", verification:"primary"},
 {id:"w-nba-bubble", type:"Writing", year:2020, date:"Oct 2, 2020", title:"11 Lessons from the NBA Bubble for Your Newly Remote Team", sub:"What the NBA's pandemic bubble can teach remote teams about collaboration and performance.", url:"https://www.atlassian.com/blog/teamwork/11-lessons-from-the-nba-bubble-for-your-newly-remote-team", source:"Atlassian Blog", verification:"primary"},
-{id:"t-design-matters", type:"Talk", year:2026, date:"Nov 2026", talkTitle:null, eventName:"Design Matters", location:"Tokyo", showLocation:true, status:"upcoming", format:"talk", role:"speaker", verification:"user"},
+{id:"t-design-matters", type:"Talk", year:2026, date:"Nov 2026", talkTitle:null, eventName:"Design Matters", location:"Tokyo", showLocation:true, status:"upcoming", format:"talk", role:"speaker", url:"https://dm26.spectrumtokyo.com/speakers/michel/", verification:"user"},
 {id:"t-maker-collective", type:"Talk", year:2026, date:"Aug 2026", talkTitle:null, eventName:"Maker Collective", location:"Sydney", showLocation:true, status:"past", featured:true, format:"talk", role:"speaker", verification:"user"},
 {id:"t-fof-perth", type:"Talk", year:2026, date:"Aug 2026", talkTitle:null, eventName:"Friends of Figma", location:"Perth", showLocation:true, status:"past", featured:true, format:"talk", role:"speaker", organization:"Figma", verification:"user"},
 {id:"t-config", type:"Talk", year:2026, date:"Aug 2026", talkTitle:null, eventName:"Config", location:"San Francisco", showLocation:true, status:"past", featured:true, format:"talk", role:"speaker", organization:"Figma", sub:"Figma's annual conference.", url:"https://config.figma.com/san-francisco/speakers/", verification:"primary"},
@@ -62,3 +64,27 @@ items: [
 {id:"x-mentor", type:"Artifact", year:2021, title:"Mentorship — Dribbble's Scaling Design Systems course & ADPList", url:"https://adplist.org/mentors/michel-ferreira", verification:"primary"},
 {id:"x-github-io", type:"Artifact", year:2022, title:"multimichel.github.io — a previous home on the internet", url:"https://multimichel.github.io/", verification:"primary"}
 ]};
+
+// ---------- link semantics ----------
+// One arrow language across the whole site:
+//   →  internal navigation (another page or section of this site)
+//   ↗  external destination (leaves the site)
+// Every list template routes through these so an arrow is decided once, in one
+// place, and never appended twice to a string that already carries one.
+window.MM.isExternal = function(href){
+  return /^(https?:)?\/\//i.test(href || "") || /^mailto:/i.test(href || "");
+};
+window.MM.arrow = function(href){
+  if (!href) return "";
+  return window.MM.isExternal(href) ? " ↗" : " →";
+};
+// Appends the right arrow unless the text already ends in one.
+window.MM.withArrow = function(text, href){
+  if (!href) return text;
+  if (/[→↗]\s*$/.test(text)) return text;
+  return text + window.MM.arrow(href);
+};
+// External links leave the site: new tab + full rel. Internal links stay put.
+window.MM.linkAttrs = function(href){
+  return window.MM.isExternal(href) ? ' target="_blank" rel="noopener noreferrer"' : '';
+};
