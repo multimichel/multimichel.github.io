@@ -7,9 +7,9 @@
 <meta name="description" content="Michel Ferreira — designer, speaker, podcaster, writer. Designer Advocate at Figma. Building things on the web since 1998.">
 <meta property="og:title" content="MultiMichel — Michel Ferreira">
 <meta property="og:description" content="Designer, speaker, podcaster, writer. Building things on the web since 1998.">
-<link rel="stylesheet" href="tokens.css?v=19">
-<link rel="stylesheet" href="multimichel.css?v=19">
-<link rel="stylesheet" href="grid-overlay.css?v=19">
+<link rel="stylesheet" href="tokens.css?v=21">
+<link rel="stylesheet" href="multimichel.css?v=21">
+<link rel="stylesheet" href="grid-overlay.css?v=21">
 </head>
 <body>
 
@@ -30,22 +30,19 @@
     <h1 class="display">Olá &amp; Welcome</h1>
     <div class="lede">
       <p>I&rsquo;m Michel. I&rsquo;ve been designing digital products for nearly 30 years, through agencies, <b>Booking.com</b>, <b>Shopify</b>, <b>Atlassian</b> and <b>Xero</b>, and today as a Designer Advocate at <b><a href="https://www.figma.com" target="_blank" rel="noopener">Figma</a></b>.</p>
-      <p>I wear a lot of hats — and I don&rsquo;t mean my extensive baseball cap collection. The one thing that&rsquo;s stayed the same is that I care about the whole product.</p>
-      <p>I care about whether we&rsquo;re asking the right question and solving something that matters to people. I care about how products connect, how teams make decisions, and whether the systems underneath them help or get in the way. And I care about what finally shows up on the screen — the interaction, the component, the type, the spacing, the pixels.</p>
-      <p>Because the person using the product might never see most of those decisions. They feel all of them.</p>
+      <p>I care about the whole product — whether we&rsquo;re asking the right question, how the pieces connect, how teams make decisions, and what eventually shows up on screen: the interaction, the type, the spacing, the pixels. The person using it may never see most of those decisions. They feel all of them.</p>
     </div>
   </section>
 
   <figure class="full">
-    <img src="img/hero-speaking.jpg" alt="Michel Ferreira speaking at Maker Collective Sydney, laptop with a Figma sticker visible on the podium">
-    <figcaption>On stage — Maker Collective, Sydney</figcaption>
+    <img src="img/about-portrait.jpg" alt="Michel Ferreira, smiling to camera in a green Maker cap and blue Figma hoodie">
+    <figcaption>Sydney, 2026</figcaption>
   </figure>
 
   <figure class="quote-block">
     <blockquote class="quote">&ldquo;Design is the labour of <span class="hl"><img class="hl-mark" src="img/highlight.svg" alt="" aria-hidden="true">understanding people</span>&rdquo;</blockquote>
     <figcaption class="quote-source">
-      From <cite>Fast &ne; Good</cite> — a talk about speed, quality, and why understanding people is still the work.
-      <a href="https://multimichel.medium.com/fast-good-80a9af2f0fb8" target="_blank" rel="noopener">Watch the talk →</a>
+      From <cite>Fast &ne; Good</cite> · <a href="https://conffab.com/presentation/fast-≠-good/?gl=5ulxY9lWmOlu" target="_blank" rel="noopener">Watch the talk →</a>
     </figcaption>
   </figure>
 
@@ -113,8 +110,8 @@
   </p>
 </footer>
 
-<script src="content.js?v=19"></script>
-<script src="grid-overlay.js?v=19" defer></script>
+<script src="content.js?v=21"></script>
+<script src="grid-overlay.js?v=21" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -132,17 +129,33 @@
     return row(i.url, esc(i.title), esc(i.source));
   }).join("");
 
-  // Speaking — editorial event rows, upcoming first then reverse chronological.
-  var talks = MM.items.filter(function(i){return i.type==="Talk"});
+  // Speaking on Home is an edited selection, not the full archive: every
+  // upcoming talk/keynote/panel/workshop/webinar, plus past ones Michel has
+  // flagged featured. Past webinars never surface here — once they're over
+  // they live in the archive only. See archive.html for the complete record.
+  var speakingFormats = {talk:1, keynote:1, panel:1, workshop:1, webinar:1};
+  var talks = MM.items.filter(function(i){
+    if (i.type !== "Talk" || !speakingFormats[i.format]) return false;
+    if (i.status === "upcoming") return true;
+    return i.status === "past" && i.featured === true && i.format !== "webinar";
+  });
   talks.sort(function(a,b){
-    if(!!a.upcoming !== !!b.upcoming) return a.upcoming ? -1 : 1;
+    if ((a.status==="upcoming") !== (b.status==="upcoming")) return a.status==="upcoming" ? -1 : 1;
     return b.year-a.year;
   });
-  // Every talk shows city · when. Falls back to the year so no row is left
-  // date-less next to rows that have one.
+  // eventName is editorial — rendered exactly as stored, never rebuilt from
+  // eventName + location. talkTitle (when present) is the row title and
+  // eventName drops into the meta line instead; showLocation controls
+  // whether location is also shown there (off when it's baked into eventName,
+  // e.g. "UXCamp Melbourne", "CreativeMornings Sydney").
   document.getElementById("speaking-list").innerHTML = talks.map(function(i){
-    var meta = [i.upcoming ? '<span class="up">UPCOMING</span>' : null, i.city, i.date || i.year].filter(Boolean).join(" · ");
-    return row(i.url, esc(i.title), meta);
+    var title = i.talkTitle || i.eventName;
+    var metaParts = [];
+    if (i.talkTitle) metaParts.push(i.eventName);
+    if (i.showLocation && i.location) metaParts.push(i.location);
+    metaParts.push(i.date || i.year);
+    var meta = [i.status==="upcoming" ? '<span class="up">UPCOMING</span>' : null].concat(metaParts).filter(Boolean).join(" · ");
+    return row(i.url, esc(title), meta);
   }).join("");
 
   // Around the internet — interviews and appearances elsewhere, newest first.

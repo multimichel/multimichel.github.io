@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Archive — MultiMichel</title>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..700&family=Archivo:wght@400..800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="multimichel.css">
+<link rel="stylesheet" href="multimichel.css?v=21">
 <style>
 .filters{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 8px}
 .filters button{font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
@@ -32,8 +32,8 @@
 <div id="list"></div>
 <p class="note" style="margin-bottom:80px">Earlier chapters — agency work in Brazil and California (1998–2007), Album Agency (2007–2013) — are being recovered from Michel's own archives. Provenance for every entry lives in the project's research register.</p>
 </div>
-<footer class="site"><p class="fineprint">MULTIMICHEL © 1998–2026 MICHEL FERREIRA · SYDNEY, AUSTRALIA</p></footer>
-<script src="content.js"></script>
+<footer class="site"><p class="fineprint">MULTIMICHEL © 1998–2026 MICHEL FERREIRA · SYDNEY, AUSTRALIA</p><p class="social"><a class="fineprint" href="contact.html">Contact</a></p></footer>
+<script src="content.js?v=21"></script>
 <script>
 (function(){
 var types=["All"].concat([...new Set(MM.items.map(i=>i.type))]);
@@ -48,9 +48,13 @@ var byYear={};items.forEach(i=>{(byYear[i.year]=byYear[i.year]||[]).push(i)});
 lEl.innerHTML=Object.keys(byYear).sort((a,b)=>b-a).map(function(y){
 var rows=byYear[y].map(function(i){
 var href=i.href||i.url;
-var t=href?'<a href="'+href+'"'+(i.url?' target="_blank" rel="noopener"':'')+'>'+esc(i.title)+(i.url?' ↗':'')+'</a>':esc(i.title);
-var meta=[i.type.toUpperCase(),i.source,i.city,i.date,i.lang==="pt-BR"?"PT":null].filter(Boolean).join(" · ");
-return '<div class="row"><span><span class="t"><span class="tag '+i.type+'">'+i.type+'</span>'+t+'</span>'+(i.sub?'<p class="sub">'+esc(i.sub)+'</p>':'')+(i.videoNote?'<p class="sub">▶ <a href="'+i.video+'" target="_blank" rel="noopener">'+esc(i.videoNote)+'</a></p>':'')+'</span><span class="m">'+(i.upcoming?'<span class="up">UPCOMING</span> · ':'')+esc(meta)+'</span></div>';
+var isTalk=i.type==="Talk";
+var displayTitle=isTalk?(i.talkTitle||i.eventName):i.title;
+var talkEvent=(isTalk&&i.talkTitle)?i.eventName:null;
+var talkLoc=isTalk?(i.showLocation?i.location:null):i.city;
+var t=href?'<a href="'+href+'"'+(i.url?' target="_blank" rel="noopener"':'')+'>'+esc(displayTitle)+(i.url?' ↗':'')+'</a>':esc(displayTitle);
+var meta=[i.type.toUpperCase(),i.source,talkEvent,talkLoc,i.date||i.year,i.lang==="pt-BR"?"PT":null].filter(Boolean).join(" · ");
+return '<div class="row"><span><span class="t"><span class="tag '+i.type+'">'+i.type+'</span>'+t+'</span>'+(i.sub?'<p class="sub">'+esc(i.sub)+'</p>':'')+(i.videoUrl?'<p class="sub">▶ <a href="'+i.videoUrl+'" target="_blank" rel="noopener">Watch the recording</a></p>':'')+'</span><span class="m">'+(i.status==="upcoming"?'<span class="up">UPCOMING</span> · ':'')+esc(meta)+'</span></div>';
 }).join("");
 return '<div class="yearhead">'+y+'<small>'+byYear[y].length+' ITEM'+(byYear[y].length>1?"S":"")+'</small></div>'+rows;
 }).join("");
