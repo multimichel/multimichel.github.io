@@ -21,23 +21,24 @@ b,strong{font-weight:700}
    to sit flush on the rail/paper seam and break the text alignment on purpose. */
 .wrap,header.site{max-width:var(--canvas-reference);padding-left:calc(var(--content-start) - var(--rail-width));padding-right:var(--space-16)}
 
-/* Masthead block sits in the white rail too, on the same 8px left edge. */
-.brand-menu{margin-left:calc(var(--block-inset) - var(--content-start))}
-
 /* ---------- masthead & nav ----------
    The brand square is a real <button> (mobile menu control) and the
    wordmark a separate link, so the square can own its own tap target
-   without nesting interactive elements. Desktop styling/behaviour is
-   unchanged from before this split. */
+   without nesting interactive elements. */
 header.site{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:var(--space-32)}
 .brand{display:flex;align-items:flex-end}
 .brand-link{font-family:var(--font-label);font-weight:900;font-size:var(--type-masthead-size);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase}
+/* The header square rides the SAME marker rail as every .sechead .tab:
+   both resolve to --block-inset from the page edge, so the square hangs
+   out of the content column exactly as the section markers do. Margin is
+   declared once here — an earlier `margin:0` in this block was silently
+   cancelling the rail offset and pulling the square inside the column. */
 .brand-menu{
   position:relative;
   width:var(--block-header-w);height:var(--block-header-h);background:var(--orange);
-  border:0;padding:0;margin:0;flex:none;cursor:default;
+  border:0;padding:0;flex:none;cursor:default;
   display:inline-flex;align-items:center;justify-content:center;
-  margin-right:var(--space-16);
+  margin:0 var(--space-16) 0 calc(var(--block-inset) - var(--content-start));
 }
 .brand-menu:disabled{opacity:1}
 .menu-icon{display:none}
@@ -166,7 +167,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
 .sechead .more:hover{color:var(--orange)}
 
 /* ---------- editorial rows — the whole row is the link, table-style ---------- */
-a.row,div.row{display:flex;justify-content:space-between;align-items:center;min-height:var(--row-height);gap:var(--space-32);padding:0 var(--space-16);margin:0 calc(-1 * var(--space-16));border-bottom:1px solid var(--rule-light);transition:background .15s}
+a.row,div.row{position:relative;display:flex;justify-content:space-between;align-items:center;min-height:var(--row-height);gap:var(--space-32);padding:0 var(--space-16);margin:0 calc(-1 * var(--space-16));border-bottom:1px solid var(--rule-light);transition:background .15s}
 a.row{cursor:pointer}
 a.row:hover{background:var(--rule-light)}
 .rowlist .row:first-child{border-top:1px solid var(--rule-light)}
@@ -180,6 +181,18 @@ a.row:hover .t{color:var(--orange)}
    while title and date/location stack on the left, so reading order is
    title → where/when, never interrupted. Driven by status:"upcoming" in the
    content graph — no per-event CSS. */
+/* ---------- external-destination mark ----------
+   In editorial rows the ↗ is an action marker, not part of the title, so it
+   lives in its own top-right slot and is taken out of flow — a long title
+   wraps on its own measure and never reflows around it. Compact inline links
+   (footer, prose) keep their inline ↗ and are untouched by this. */
+.row.has-ext{padding-right:var(--space-32)}
+.row .ext{
+  position:absolute;top:var(--space-16);right:var(--space-8);
+  font-size:.7em;line-height:1;color:var(--oak);
+}
+a.row:hover .ext{color:var(--orange)}
+
 /* .rowbody groups a title with anything that belongs to the SAME entry —
    a second role line, or the date/location under a badged event. */
 .row .rowbody{display:flex;flex-direction:column;min-width:0}

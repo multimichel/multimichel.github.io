@@ -7,9 +7,9 @@
 <meta name="description" content="Michel Ferreira — designer, speaker, podcaster, writer. Designer Advocate at Figma. Building things on the web since 1998.">
 <meta property="og:title" content="MultiMichel — Michel Ferreira">
 <meta property="og:description" content="Designer, speaker, podcaster, writer. Building things on the web since 1998.">
-<link rel="stylesheet" href="tokens.css?v=24">
-<link rel="stylesheet" href="multimichel.css?v=24">
-<link rel="stylesheet" href="grid-overlay.css?v=24">
+<link rel="stylesheet" href="tokens.css?v=25">
+<link rel="stylesheet" href="multimichel.css?v=25">
+<link rel="stylesheet" href="grid-overlay.css?v=25">
 </head>
 <body>
 
@@ -40,8 +40,8 @@
   <section class="hero">
     <h1 class="display">Olá &amp; Welcome</h1>
     <div class="lede">
-      <p>I&rsquo;m Michel. I&rsquo;ve been designing digital products for nearly 30 years, through agencies, <b>Booking.com</b>, <b>Shopify</b>, <b>Atlassian</b> and <b>Xero</b>, and today as a Designer Advocate at <b><a href="https://www.figma.com" target="_blank" rel="noopener noreferrer">Figma</a></b>.</p>
-      <p>I care about the whole product — whether we&rsquo;re asking the right question, how the pieces connect, how teams make decisions, and what eventually shows up on screen: the interaction, the type, the spacing, the pixels. The person using it may never see most of those decisions. They feel all of them.</p>
+      <p>I&rsquo;m Michel Ferreira. I&rsquo;ve been designing digital products for nearly 30 years, through design agencies, <b>Booking.com</b>, <b>Shopify</b>, <b>Atlassian</b> and <b>Xero</b>, and today as a Designer Advocate at <b><a href="https://www.figma.com" target="_blank" rel="noopener noreferrer">Figma</a></b>.</p>
+      <p>I care about the whole product &mdash; and how it gets made. Whether we&rsquo;re asking the right question, how the pieces connect, how teams make decisions, and what eventually shows up on screen: the interaction, the type, the spacing, the pixels. The person using it may never see most of those decisions. They feel all of them.</p>
     </div>
   </section>
 
@@ -121,9 +121,9 @@
   </p>
 </footer>
 
-<script src="content.js?v=24"></script>
-<script src="nav.js?v=24" defer></script>
-<script src="grid-overlay.js?v=24" defer></script>
+<script src="content.js?v=25"></script>
+<script src="nav.js?v=25" defer></script>
+<script src="grid-overlay.js?v=25" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -135,14 +135,23 @@
   function row(href, titleHtml, metaHtml, badgeHtml){
     var tag = href ? 'a' : 'div';
     var openAttrs = href ? ' href="'+href+'"'+MM.linkAttrs(href) : '';
-    var title = MM.withArrow(titleHtml, href);
+    // External rows carry ↗ as a separate top-right mark, not inside the
+    // title. Internal rows keep their inline → — it reads as part of the
+    // navigation phrase rather than as an action marker.
+    var external = href && MM.isExternal(href);
+    // A badged row already owns its top-right slot (UPCOMING), so there the
+    // arrow stays inline against the title: "Design Matters ↗   UPCOMING".
+    var markInline = !external || !!badgeHtml;
+    var title = markInline ? MM.withArrow(titleHtml, href) : titleHtml;
+    var ext = markInline ? '' : '<span class="ext" aria-hidden="true">↗</span>';
+    var cls = 'row' + (badgeHtml ? ' has-badge' : '') + (ext ? ' has-ext' : '');
     if (badgeHtml){
-      return '<'+tag+' class="row has-badge"'+openAttrs+'>'
+      return '<'+tag+' class="'+cls+'"'+openAttrs+'>'
         + '<span class="rowbody"><span class="t">'+title+'</span><span class="m">'+metaHtml+'</span></span>'
         + badgeHtml
         + '</'+tag+'>';
     }
-    return '<'+tag+' class="row"'+openAttrs+'><span class="t">'+title+'</span><span class="m">'+metaHtml+'</span></'+tag+'>';
+    return '<'+tag+' class="'+cls+'"'+openAttrs+'><span class="t">'+title+'</span><span class="m">'+metaHtml+'</span>'+ext+'</'+tag+'>';
   }
 
   // Writing — title + publication only.
