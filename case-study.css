@@ -2,7 +2,6 @@
    Outside node 1:1988's stated scope (masthead through WORK); tokens for this
    surface live in tokens.css's supplementary section. All other values here
    still reference tokens.css — nothing hardcoded. */
-@import url("tokens.css?v=7");
 
 body.dark{background:var(--dark-bg);color:var(--dark-ink)}
 body.dark .brand{color:var(--dark-ink)}
@@ -63,4 +62,5 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 
 @media(max-width:800px){
   .cs .imgrid.cols-2,.cs .imgrid.cols-3{grid-template-columns:1fr}
+  .cs figure.full.bleed{margin-right:calc(-1 * (var(--rail-width) + var(--space-16)))}
 }

@@ -2,7 +2,6 @@
    8px scale and that the rail, content column and blocks land where the
    tokens say. Every value here reads from tokens.css; nothing is redrawn by
    hand, so if the overlay and the design disagree, the design is wrong. */
-@import url("tokens.css?v=15");
 
 .gridtoggle{
   position:fixed;right:var(--space-16);bottom:var(--space-16);z-index:9999;

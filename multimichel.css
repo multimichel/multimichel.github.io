@@ -1,5 +1,4 @@
 /* MultiMichel — homepage styles. All visual values come from tokens.css. */
-@import url("tokens.css?v=15");
 
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;background:var(--rail)}
@@ -131,6 +130,55 @@ a.row:hover .t{color:var(--orange)}
 .aside-note{margin-top:var(--space-32);font-family:var(--font-grotesk);font-size:var(--type-aside-size);color:var(--dim)}
 .aside-note-link{border-bottom:1.5px solid var(--orange)}
 
+/* ---------- prose (about) ---------- */
+.prose{max-width:var(--measure);font-family:var(--font-grotesk);font-size:var(--type-body-size);line-height:var(--type-body-leading);color:var(--slate)}
+.prose p+p{margin-top:var(--space-16)}
+.prose a{border-bottom:1.5px solid var(--orange)}
+.prose a:hover{color:var(--orange)}
+
+/* ---------- form (contact) ----------
+   Rules, not boxes: an input is a line you write on, matching the editorial
+   rows rather than importing a SaaS form kit. */
+.form{max-width:var(--measure-form)}
+.field{margin-bottom:var(--space-32)}
+.field label{
+  display:block;margin-bottom:var(--space-8);
+  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  letter-spacing:var(--type-label-tracking);text-transform:uppercase;color:var(--muted);
+}
+.field input,.field textarea,.field select{
+  width:100%;display:block;
+  background:transparent;border:0;border-bottom:1.5px solid var(--rule-strong);
+  padding:var(--space-8) 0;
+  font-family:var(--font-grotesk);font-size:var(--type-field-size);color:var(--ink);
+  border-radius:0;-webkit-appearance:none;appearance:none;
+}
+.field textarea{resize:vertical;line-height:1.5}
+.field select{cursor:pointer;background-image:none}
+.field input:focus,.field textarea:focus,.field select:focus{outline:0;border-bottom-color:var(--orange)}
+.field input[aria-invalid="true"],.field textarea[aria-invalid="true"]{border-bottom-color:var(--orange)}
+.err{margin-top:var(--space-8);font-family:var(--font-grotesk);font-size:var(--type-row-meta-size);color:var(--orange)}
+
+.submit{
+  display:inline-block;border:0;cursor:pointer;
+  background:var(--orange);color:var(--rail);
+  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  letter-spacing:var(--type-label-tracking);text-transform:uppercase;
+  padding:var(--space-16) var(--space-32);border-radius:0;
+  transition:opacity .15s;
+}
+.submit:hover{opacity:.85}
+.submit:disabled{opacity:.4;cursor:default}
+.form-status{margin-top:var(--space-16);font-family:var(--font-grotesk);font-size:var(--type-row-meta-size);color:var(--dim);min-height:1.2em}
+.form-status.is-error{color:var(--orange)}
+.form-status.is-ok{color:var(--oak)}
+
+/* about / contact section rhythm */
+#route{padding-top:var(--space-72)}
+#besides{padding-top:var(--space-96);padding-bottom:var(--space-8)}
+#contact-form{padding-top:var(--space-72)}
+#elsewhere-contact{padding-top:var(--space-96);padding-bottom:var(--space-8)}
+
 /* ---------- per-section rhythm — every value from the 8pt scale.
    Deliberately uneven: WORK gets the biggest run-up, MEDIA the tightest,
    so the cadence modulates rather than repeating. ---------- */
@@ -138,7 +186,7 @@ a.row:hover .t{color:var(--orange)}
 #speaking{padding-top:var(--gap-writing-to-speaking)}
 #work{padding-top:var(--space-144)}
 #media{padding-top:var(--space-72)}
-#about{padding-top:var(--space-72);padding-bottom:var(--space-8)}
+#elsewhere{padding-top:var(--space-72);padding-bottom:var(--space-8)}
 
 /* ---------- fixed-frame image zoom hover ---------- */
 .zoomframe{overflow:hidden;display:block;background:var(--white)}
@@ -188,15 +236,52 @@ footer.site .social a:hover{color:var(--orange)}
   html{scroll-behavior:auto}
 }
 
+/* ---------- mobile — authored, not shrunk ----------
+   The desktop redlines are desktop-only. On a 390px screen a 72px rail plus a
+   96px text column eats 28% of the width before a word is set, so the whole
+   left-edge system is re-proportioned on the same 8pt grid:
+
+       0  → 8    white
+       8  → 40   orange block (32×32) — still straddles the seam
+       40 → 48   8px gap
+       48        text column
+       24        rail/paper seam
+
+   That returns ~326px of content on a 390px screen instead of 206px.
+   The hero stays deliberately enormous; only the frame gets tighter. */
 @media(max-width:900px){
-  :root{--gutter-page:var(--gutter-page-mobile);--rail-width:var(--space-16);--content-start:var(--space-32);--block-marker:var(--block-marker-mobile);--block-header-w:var(--block-marker-mobile);--block-header-h:var(--block-marker-mobile)}
-  header.site{flex-direction:column;align-items:flex-start;gap:14px;padding-bottom:20px}
+  :root{
+    --rail-width:var(--space-24-m);
+    --content-start:var(--space-48);
+    --block-inset:var(--space-8);
+    --block-marker:var(--space-32);
+    --block-header-w:var(--space-32);
+    --block-header-h:var(--space-24-m);
+    --nav-gap:var(--space-16);
+    --intro-max-width:100%;
+  }
+  header.site{flex-direction:column;align-items:flex-start;gap:var(--space-16);padding-bottom:var(--space-24-m)}
   .brand{font-size:19px}
-  nav.main{gap:16px;flex-wrap:wrap;padding-bottom:2px}
-  a.row,div.row{flex-direction:column;align-items:flex-start;gap:2px;min-height:0;padding:14px 12px;margin:0 -12px}
-  .row .m{text-align:left}
-  .work-grid{grid-template-columns:1fr;gap:40px}
-  .media-grid{grid-template-columns:1fr;gap:32px}
-  #work{padding-top:88px}
-  #speaking{padding-top:56px}
+  nav.main{gap:var(--space-16);flex-wrap:wrap;padding-bottom:0}
+
+  /* vertical rhythm compresses; the hero keeps its scale */
+  .hero{padding-top:var(--space-72)}
+  figure.full{margin-top:var(--space-48)}
+  .quote{margin:var(--space-72) auto;max-width:none}
+  #writing{padding-top:var(--space-48)}
+  #speaking{padding-top:var(--space-48)}
+  #work{padding-top:var(--space-72)}
+  #media{padding-top:var(--space-48)}
+  #elsewhere{padding-top:var(--space-48)}
+  #route,#contact-form{padding-top:var(--space-48)}
+  #besides,#elsewhere-contact{padding-top:var(--space-72)}
+  .form,.prose{max-width:100%}
+
+  /* metadata reflows under the title rather than fighting it for width */
+  a.row,div.row{flex-direction:column;align-items:flex-start;gap:var(--space-8);min-height:0;padding:var(--space-16) var(--space-8);margin:0 calc(-1 * var(--space-8))}
+  .row .m{text-align:left;white-space:normal}
+
+  .work-grid{grid-template-columns:1fr;gap:var(--space-48)}
+  .media-grid{grid-template-columns:1fr;gap:var(--space-32)}
+  footer.site{padding-left:calc(var(--content-start) - var(--rail-width));padding-bottom:var(--space-48)}
 }

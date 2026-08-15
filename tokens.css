@@ -119,6 +119,7 @@
      Every gap, pad and margin must come from this scale. Nothing else. */
   --space-8: 8px;
   --space-16: 16px;
+  --space-24-m: 24px;  /* mobile-only step; off the desktop 8/16/32/48/72 set */
   --space-32: 32px;
   --space-48: 48px;
   --space-72: 72px;
@@ -179,4 +180,9 @@
   /* Micro-copy not covered by the Figma type scale (e.g. the "Booking a
      conference?" aside under Speaking). */
   --type-aside-size: 16px;
+
+  /* About / contact surfaces — outside node 1:1988's scope. */
+  --measure: 720px;        /* running prose measure (~70ch at 24px) */
+  --measure-form: 560px;   /* form column — narrower than prose on purpose */
+  --type-field-size: 20px; /* input text: large enough to feel authored, not admin */
 }
