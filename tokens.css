@@ -111,7 +111,7 @@
 
   /* ---------- ORANGE BLOCKS ---------- */
   --block-header-w: 64px;
-  --block-header-h: 48px;
+  --block-header-h: 64px;      /* full square, matches the section markers */
   --block-marker: 64px;        /* section markers: 64 × 64 */
 
   /* ---------- SPACING SCALE ----------

@@ -22,19 +22,33 @@ b,strong{font-weight:700}
 .wrap,header.site{max-width:var(--canvas-reference);padding-left:calc(var(--content-start) - var(--rail-width));padding-right:var(--space-16)}
 
 /* Masthead block sits in the white rail too, on the same 8px left edge. */
-.brand i{margin-left:calc(var(--block-inset) - var(--content-start))}
+.brand-menu{margin-left:calc(var(--block-inset) - var(--content-start))}
 
-/* ---------- masthead & nav ---------- */
+/* ---------- masthead & nav ----------
+   The brand square is a real <button> (mobile menu control) and the
+   wordmark a separate link, so the square can own its own tap target
+   without nesting interactive elements. Desktop styling/behaviour is
+   unchanged from before this split. */
 header.site{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:var(--space-32)}
-.brand{font-family:var(--font-label);font-weight:900;font-size:var(--type-masthead-size);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase;display:flex;align-items:flex-end}
-.brand i{
-  width:var(--block-header-w);height:var(--block-header-h);background:var(--orange);display:inline-block;
+.brand{display:flex;align-items:flex-end}
+.brand-link{font-family:var(--font-label);font-weight:900;font-size:var(--type-masthead-size);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase}
+.brand-menu{
+  position:relative;
+  width:var(--block-header-w);height:var(--block-header-h);background:var(--orange);
+  border:0;padding:0;margin:0;flex:none;cursor:default;
+  display:inline-flex;align-items:center;justify-content:center;
   margin-right:var(--space-16);
-  flex:none;
 }
+.brand-menu:disabled{opacity:1}
+.menu-icon{display:none}
 nav.main{display:flex;gap:var(--nav-gap);padding-bottom:var(--space-8)}
 nav.main a{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--dim)}
 nav.main a:hover{color:var(--orange)}
+
+/* The mobile nav panel exists at every width but only ever paints inside
+   the ≤900px block below — this base rule just keeps it out of layout
+   above that breakpoint. */
+.mobile-nav{display:none}
 
 /* ---------- hero — large intentional opening whitespace ---------- */
 .hero{padding-top:var(--space-192)}
@@ -126,6 +140,27 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
   width:var(--block-marker);height:var(--block-marker);
   background:var(--orange);
 }
+/* Copy-permalink affordance, added by nav.js. Sits exactly inside the
+   marker's own box (inset:0) so the square's size/position never changes —
+   invisible until hover/focus, same square either way. */
+.tab-copy{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;border:0;padding:0;margin:0;cursor:pointer;
+  color:#fff;opacity:0;transition:opacity .15s ease;
+}
+.sechead .tab:hover .tab-copy,
+.tab-copy:focus-visible{opacity:1}
+.tab-copy:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.tab-copy-status{
+  position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);
+  white-space:nowrap;
+  font-family:var(--font-grotesk);font-size:11px;font-weight:600;
+  background:var(--ink);color:var(--paper);
+  padding:4px 8px;border-radius:3px;
+  opacity:0;pointer-events:none;transition:opacity .15s ease;
+}
+.sechead .tab.is-copied .tab-copy-status{opacity:1}
 .sechead h2{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--muted);text-transform:uppercase}
 .sechead .more{margin-left:auto;font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:1.1px;color:var(--dim);text-transform:uppercase}
 .sechead .more:hover{color:var(--orange)}
@@ -283,13 +318,54 @@ footer.site .social a:hover{color:var(--orange)}
     --block-inset:var(--space-8);
     --block-marker:var(--space-32);
     --block-header-w:var(--space-32);
-    --block-header-h:var(--space-24-m);
+    --block-header-h:var(--space-32);
     --nav-gap:var(--space-16);
     --intro-max-width:100%;
   }
-  header.site{flex-direction:column;align-items:flex-start;gap:var(--space-16);padding-bottom:var(--space-24-m)}
-  .brand{font-size:19px}
-  nav.main{gap:var(--space-16);flex-wrap:wrap;padding-bottom:0}
+  header.site{flex-direction:row;align-items:center;justify-content:flex-start;gap:var(--space-16);padding-bottom:var(--space-24-m);position:relative;z-index:50}
+  .brand{position:relative;z-index:41}
+  .brand-link{font-size:19px}
+
+  /* Nav row is replaced by the hamburger + full-panel menu below — this is
+     the actual fix for ABOUT wrapping onto its own line: there's no longer
+     a horizontal row of five labels fighting for a ~326px column. */
+  nav.main{display:none}
+  .brand-menu{cursor:pointer}
+  .menu-icon{position:relative;width:14px;height:10px;display:block}
+  .menu-icon span{position:absolute;left:0;right:0;height:2px;background:#fff;transition:transform .2s ease}
+  .menu-icon span:first-child{top:0}
+  .menu-icon span:last-child{bottom:0}
+  .brand-menu[aria-expanded="true"] .menu-icon span:first-child{transform:translateY(4px) rotate(45deg)}
+  .brand-menu[aria-expanded="true"] .menu-icon span:last-child{transform:translateY(-4px) rotate(-45deg)}
+  /* Touch target ≥44px without enlarging the visible square: an invisible
+     ::before extends the hit area, the square itself stays 32×32. */
+  .brand-menu::before{
+    content:"";position:absolute;top:50%;left:50%;
+    width:44px;height:44px;transform:translate(-50%,-50%);
+  }
+
+  /* Same technique for the section-marker copy-link control — visible
+     square stays whatever size --block-marker is at this breakpoint. */
+  .tab-copy::before{
+    content:"";position:absolute;top:50%;left:50%;
+    width:44px;height:44px;transform:translate(-50%,-50%);
+  }
+
+  .mobile-nav.is-open{
+    display:flex;flex-direction:column;
+    position:fixed;inset:0;z-index:40;
+    background:var(--paper);
+    padding:calc(var(--space-72) + var(--space-24-m)) var(--space-48) var(--space-48);
+    gap:var(--space-24-m);
+    overflow-y:auto;
+  }
+  .mobile-nav a{
+    font-family:var(--font-label);font-weight:900;
+    font-size:clamp(28px,9vw,40px);
+    letter-spacing:var(--type-label-tracking);
+    color:var(--dim);text-transform:uppercase;
+  }
+  .mobile-nav a:active{color:var(--orange)}
 
   /* vertical rhythm compresses; the hero keeps its scale */
   .hero{padding-top:var(--space-72)}

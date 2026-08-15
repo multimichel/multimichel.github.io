@@ -4,9 +4,11 @@
    still reference tokens.css — nothing hardcoded. */
 
 body.dark{background:var(--dark-bg);color:var(--dark-ink)}
-body.dark .brand{color:var(--dark-ink)}
+body.dark .brand-link{color:var(--dark-ink)}
 body.dark nav.main a{color:var(--dark-dim)}
 body.dark nav.main a:hover{color:var(--orange)}
+body.dark .mobile-nav a{color:var(--dark-dim)}
+body.dark .mobile-nav.is-open{background:var(--dark-bg)}
 body.dark footer.site{border-top-color:var(--dark-rule)}
 body.dark .fineprint{color:var(--dark-dim)}
 body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orange)}

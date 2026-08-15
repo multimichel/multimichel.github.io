@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Archive — MultiMichel</title>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..700&family=Archivo:wght@400..800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="multimichel.css?v=21">
+<link rel="stylesheet" href="multimichel.css?v=23">
 <style>
 .filters{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 8px}
 .filters button{font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
@@ -19,8 +19,9 @@
 </head>
 <body>
 <header class="site">
-<a class="brand" href="index.html"><i></i>MICHEL FERREIRA</a>
-<nav class="main"><a href="index.html#work">WORK</a><a href="index.html#speaking">SPEAKING</a><a href="index.html#writing">WRITING</a><a href="index.html#listen">LISTEN</a><a href="index.html#about">ABOUT</a></nav>
+<div class="brand"><button class="brand-menu" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="menu-icon"><span></span><span></span></span></button><a class="brand-link" href="index.html">MICHEL FERREIRA</a></div>
+<nav class="main"><a href="index.html#work">WORK</a><a href="index.html#speaking">SPEAKING</a><a href="index.html#writing">WRITING</a><a href="index.html#media">MEDIA</a><a href="about.html">ABOUT</a></nav>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Site"><a href="index.html#work">WORK</a><a href="index.html#speaking">SPEAKING</a><a href="index.html#writing">WRITING</a><a href="index.html#media">MEDIA</a><a href="about.html">ABOUT</a><a href="contact.html">CONTACT</a></nav>
 </header>
 <div class="wrap" data-screen-label="Archive">
 <section style="padding-bottom:16px">
@@ -33,7 +34,8 @@
 <p class="note" style="margin-bottom:80px">Earlier chapters — agency work in Brazil and California (1998–2007), Album Agency (2007–2013) — are being recovered from Michel's own archives. Provenance for every entry lives in the project's research register.</p>
 </div>
 <footer class="site"><p class="fineprint">MULTIMICHEL © 1998–2026 MICHEL FERREIRA · SYDNEY, AUSTRALIA</p><p class="social"><a class="fineprint" href="contact.html">Contact</a></p></footer>
-<script src="content.js?v=21"></script>
+<script src="content.js?v=23"></script>
+<script src="nav.js?v=23" defer></script>
 <script>
 (function(){
 var types=["All"].concat([...new Set(MM.items.map(i=>i.type))]);
