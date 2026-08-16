@@ -6,9 +6,9 @@
 <title>Archive — MultiMichel</title>
 <!-- tokens.css carries both the design tokens AND the @font-face rules — without
      it every var() below falls back to browser defaults. It must load first. -->
-<link rel="stylesheet" href="tokens.css?v=27">
-<link rel="stylesheet" href="multimichel.css?v=27">
-<link rel="stylesheet" href="grid-overlay.css?v=27">
+<link rel="stylesheet" href="tokens.css?v=28">
+<link rel="stylesheet" href="multimichel.css?v=28">
+<link rel="stylesheet" href="grid-overlay.css?v=28">
 <style>
 .filters{display:flex;flex-wrap:wrap;gap:var(--space-8);margin:var(--space-32) 0 var(--space-8)}
 .filters button{font-family:var(--font-label);font-size:11.5px;font-weight:900;letter-spacing:var(--type-label-tracking);text-transform:uppercase;padding:var(--space-8) 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
@@ -19,7 +19,6 @@
    classification chip shared with every other list. The old per-type colour
    badges (black/brown/green/purple fills, inline before the title) are gone:
    they read as the loudest thing in the row and competed with the title. */
-.note{font-family:var(--font-grotesk);font-size:15px;color:var(--dim);max-width:640px;margin-top:14px}
 </style>
 </head>
 <body>
@@ -32,15 +31,14 @@
 <section style="padding-bottom:16px">
 <p class="kicker" style="margin-left:44px">The Archive</p>
 <h1 class="display" style="font-size:clamp(44px,7vw,96px)">Everything, by year</h1>
-<p class="lede">Work, writing, talks, episodes, interviews and experiments since 1998 — gathered in one place. This archive is real and therefore incomplete: it holds what can be verified today, and it grows as older material resurfaces.</p>
+<p class="lede">Work, writing, talks, episodes, interviews and experiments since 1998 — gathered in one place.</p>
 <div class="filters" id="filters"></div>
 </section>
 <div id="list"></div>
-<p class="note" style="margin-bottom:80px">Earlier chapters — agency work in Brazil and California (1998–2007), Album Agency (2007–2013) — are being recovered from Michel's own archives. Provenance for every entry lives in the project's research register.</p>
 </div>
 <footer class="site"><p class="fineprint">MULTIMICHEL © 1998–2026 MICHEL FERREIRA · SYDNEY, AUSTRALIA</p><p class="social"><a class="fineprint" href="contact.html">Contact</a></p></footer>
-<script src="content.js?v=27"></script>
-<script src="nav.js?v=27" defer></script>
+<script src="content.js?v=28"></script>
+<script src="nav.js?v=28" defer></script>
 <script>
 (function(){
 var types=["All"].concat([...new Set(MM.items.map(i=>i.type))]);
@@ -59,21 +57,22 @@ var isTalk=i.type==="Talk";
 var displayTitle=isTalk?(i.talkTitle||i.eventName):i.title;
 var talkEvent=(isTalk&&i.talkTitle)?i.eventName:null;
 var talkLoc=isTalk?(i.showLocation?i.location:null):i.city;
-var t=href?'<a href="'+href+'"'+MM.linkAttrs(href)+'>'+MM.withArrow(esc(displayTitle),href)+'</a>':esc(displayTitle);
+var t=href?'<a href="'+href+'"'+MM.linkAttrs(href)+'>'+esc(displayTitle)+'</a>':esc(displayTitle);
 // The type has moved OUT of the metadata sentence and onto its own kicker line,
 // so it is not repeated here.
 // The archive prints full provenance: publication first, then the platform it
 // was hosted on. Home shows only the publication.
 var meta=[i.publication,i.platform,talkEvent,talkLoc,i.date||i.year,i.lang==="pt-BR"?"PT":null].filter(Boolean).join(" · ");
-// Same stack as every other list: kicker / title / metadata / description.
+// Kicker / title / metadata only. The archive is a scannable index — .sub
+// descriptions stay in content.js for the surfaces that use them (case-study
+// cards, homepage rows) but are deliberately not rendered here.
 // UPCOMING outranks the category label when both apply.
 var kicker=(i.status==="upcoming"?'<span class="up">UPCOMING</span> ':'')+'<span class="cat">'+i.type+'</span>';
 return '<div class="row">'
 +'<span class="kicker-line">'+kicker+'</span>'
 +'<span class="t">'+t+'</span>'
++MM.actionMark(href)
 +'<span class="m">'+esc(meta)+'</span>'
-+(i.sub?'<p class="sub">'+esc(i.sub)+'</p>':'')
-+(i.videoUrl?'<p class="sub">▶ <a href="'+i.videoUrl+'"'+MM.linkAttrs(i.videoUrl)+'>'+MM.withArrow("Watch the recording",i.videoUrl)+'</a></p>':'')
 +'</div>';
 }).join("");
 return '<div class="yearhead">'+y+'<small>'+byYear[y].length+' ITEM'+(byYear[y].length>1?"S":"")+'</small></div>'+rows;

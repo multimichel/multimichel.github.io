@@ -123,10 +123,15 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
    thicker. This is the MARKER gesture; links use the pen (.penline). */
 .hl-mark{
   position:absolute;
-  left:-11%;
-  width:122%;
-  height:.62em;
-  bottom:.04em;
+  left:-12%;
+  width:124%;
+  /* Tall enough to actually read as a highlighter over the words — a marker,
+     not an underline — while still overshooting well past both ends so it
+     reads as one continuous stroke that started early and kept going. Height
+     is explicit because at this width the asset's own 445:78 ratio would
+     scale into a slab. */
+  height:1.06em;
+  top:-.03em;
   object-fit:fill;
   z-index:-1;
   pointer-events:none;
@@ -182,10 +187,17 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
    There is no second arrow column and no side-by-side variant. Anything that
    belongs to the row belongs in this stack. */
 a.row,div.row{
-  display:flex;flex-direction:column;
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) auto;
+  column-gap:var(--space-16);
   padding:var(--space-16);margin:0 calc(-1 * var(--space-16));
   border-bottom:1px solid var(--rule-light);transition:background .15s;
 }
+/* Kicker, metadata and description run the full width; only the title shares
+   its line with the action arrow. */
+.row .kicker-line,.row .m,.row .sub{grid-column:1 / -1}
+.row .t{grid-column:1}
+.row .go{grid-column:2;align-self:start}
 a.row{cursor:pointer}
 a.row:hover{background:var(--rule-light)}
 .rowlist .row:first-child{border-top:1px solid var(--rule-light)}
@@ -195,11 +207,16 @@ a.row:hover .t{color:var(--orange)}
 .row .m{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
 .row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:15px;line-height:1.4;color:var(--muted);margin-top:var(--space-8);max-width:640px}
 
-/* The arrow rides the title because the title is what you click. It is set
-   small and joined to the last word with a non-breaking space in the markup,
-   so it can never be left stranded alone on a line of its own. */
-.row .t .arrow{font-size:.65em;line-height:1;color:var(--oak)}
-a.row:hover .t .arrow{color:var(--orange)}
+/* ---------- action arrow ----------
+   One quiet position: the right edge of the title line, in its own grid cell.
+   Because it is a sibling of the title rather than part of its text, a long
+   title wraps on its own measure and never reflows around the arrow — and the
+   arrow can never be stranded alone on a line. ↗ leaves the site, → stays.
+   Compact navigation labels (ALL WRITING →) keep their arrow inline; they are
+   labels, not editorial rows. */
+.arrow,.row .go{font-size:.65em;line-height:1;color:var(--oak)}
+.row .go{padding-top:.45em}
+a.row:hover .go{color:var(--orange)}
 
 /* ---------- kickers: status and category ----------
    Both sit on their own line above the title. They are deliberately NOT the
@@ -228,7 +245,7 @@ a.row:hover .t .arrow{color:var(--orange)}
     /* minmax(0,1fr) not 1fr: a bare 1fr floors at the title's min-content
        width, so a long unbroken title would refuse to wrap and shove the
        metadata column off the row. */
-    grid-template-columns:minmax(0, 1fr) auto;
+    grid-template-columns:minmax(0, 1fr) auto auto;
     column-gap:var(--space-32);
     align-items:baseline;
   }
@@ -237,6 +254,7 @@ a.row:hover .t .arrow{color:var(--orange)}
   /* Back into its own column: no stacking margin, right-aligned, and kept on
      one line so it reads as a column rather than a second sentence. */
   .row .m{grid-column:2;margin-top:0;text-align:right;white-space:nowrap}
+  .row .go{grid-column:3}
   .row .sub{grid-column:1 / -1}
 }
 

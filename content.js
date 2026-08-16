@@ -46,7 +46,7 @@ items: [
 {id:"t-outlook", type:"Talk", year:2026, talkTitle:"Product Deep-Dive: Figma", eventName:"The Outlook (TO26)", location:"Australia", showLocation:true, status:"past", format:"talk", role:"speaker", organization:"Figma", sub:"11:35am session block, Firebrand's TO26 conference.", url:"https://wearetheoutlook.com.au/program", verification:"secondary"},
 {id:"t-ila21", type:"Talk", year:2021, talkTitle:"Design Out Loud", eventName:"Interaction Latin America (ILA21)", location:null, showLocation:false, status:"past", format:"panel", role:"panelist", sub:"Panel with Mariana Salgado, Paco Bravo and Darinka Buendía, for IxDA's Interaction Latin America conference.", url:"https://ila21.ixda.org/en/speakers.html", verification:"secondary"},
 {id:"t-sogd-generate", type:"Talk", year:2016, date:"2016", talkTitle:"The Science of Good Design", eventName:"Generate Conference London", location:"London", showLocation:false, status:"past", featured:true, format:"talk", role:"speaker", url:"https://www.youtube.com/watch?v=4Nk0ray32i0", videoUrl:"https://www.youtube.com/watch?v=4Nk0ray32i0", sub:"The hypothesis that numbers, not creativity, hold the answer: A/B testing best practices, pitfalls, and validating design against business goals.", verification:"primary"},
-{id:"t-sogd-codetalks", type:"Talk", year:2016, talkTitle:"The Science of Good Design", eventName:"code.talks", location:"Hamburg", showLocation:true, status:"past", format:"talk", role:"speaker", related:["t-sogd-generate"], sub:"Same talk delivered at code.talks Hamburg. No public recording survives; the Generate London recording is linked from that entry.", verification:"secondary"},
+{id:"t-sogd-codetalks", type:"Talk", year:2016, talkTitle:"The Science of Good Design", eventName:"code.talks", location:"Hamburg", showLocation:true, status:"past", format:"talk", role:"speaker", related:["t-sogd-generate"], sub:"A/B testing best practices, pitfalls, and validating design against business goals.", note:"Same talk as t-sogd-generate. No public recording of the Hamburg delivery survives — the Generate London recording is linked from that entry instead. Internal: never render.", verification:"secondary"},
 {id:"t-data-design-tree", type:"Talk", year:2016, talkTitle:"Data & Design Sitting in a Tree", eventName:"Front-End Design Conference", location:"St. Petersburg, FL", showLocation:true, status:"past", format:"workshop", role:"workshop-leader", sub:"Workshop on running A/B tests to validate design ideas. Also delivered at Hack the Future refugee meetup, Amsterdam.", verification:"secondary"},
 {id:"t-data-decisions", type:"Talk", year:2015, talkTitle:"Data, Designers and Decisions", eventName:"ConvergeSE", location:"Columbia, SC", showLocation:true, status:"past", format:"talk", role:"speaker", sub:"How and why to use data-driven design, with real examples from Booking.com. Also delivered at the Atlanta Booking.com design meetup.", verification:"secondary"},
 {id:"p-lwd", type:"Podcast", year:2021, title:"Latinxs Who Design", sub:"Interview podcast of thriving Latinxs in the design industry — 29 episodes, 2021–2023. Guests include Jay Demetillo, Joanna Peña-Bickley, Aubrey Blanche, and Kevin Bethune.", url:"https://podcasts.apple.com/au/podcast/latinxs-who-design/id1554011225", spotify:"https://open.spotify.com/show/0J3JdhM454AvedlYlXqeRZ", verification:"primary"},
@@ -78,13 +78,14 @@ window.MM.arrow = function(href){
   if (!href) return "";
   return window.MM.isExternal(href) ? " ↗" : " →";
 };
-// Appends the right arrow unless the text already ends in one. The arrow is
-// wrapped so it can be set small, and joined with a non-breaking space so it
-// always stays with the final word instead of wrapping onto a line by itself.
-window.MM.withArrow = function(text, href){
-  if (!href) return text;
-  if (/[→↗]/.test(text)) return text;
-  return text + '&nbsp;<span class="arrow" aria-hidden="true">'
+// The action arrow for an editorial row. It is rendered as a SIBLING of the
+// title, not appended to the title text, so it holds one quiet position at the
+// row's right edge and a wrapping title never has to flow around it.
+// Compact navigation labels ("ALL WRITING →") keep their arrow inline in the
+// markup — they are labels, not rows.
+window.MM.actionMark = function(href){
+  if (!href) return "";
+  return '<span class="go" aria-hidden="true">'
        + (window.MM.isExternal(href) ? '↗' : '→') + '</span>';
 };
 // External links leave the site: new tab + full rel. Internal links stay put.

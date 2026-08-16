@@ -13,12 +13,16 @@ body.dark footer.site{border-top-color:var(--dark-rule)}
 body.dark .fineprint{color:var(--dark-dim)}
 body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orange)}
 
+/* Case-study back link — a compact navigation label, not an editorial row,
+   so its arrow stays inline (same exception as "ALL WRITING →"). */
+.cs-back{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);margin-bottom:var(--space-32)}
+.cs-back a{color:var(--dark-dim)}
+.cs-back a:hover{color:var(--orange)}
 .kicker{
   display:flex;align-items:center;
   font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);
   color:var(--orange);text-transform:uppercase;margin-bottom:20px;
 }
-.kicker i{width:20px;height:20px;background:var(--orange);display:inline-block;margin-right:16px;flex:none}
 
 /* Opening: the case study gets its own, shorter silence than the homepage —
    the kicker does the work the homepage gives to empty space. */
