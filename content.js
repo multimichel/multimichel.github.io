@@ -6,12 +6,12 @@ person: {name:"Michel Ferreira", aka:"MultiMichel", location:"Sydney, Australia"
 // everything before 1998–2007 lives on LinkedIn and is linked, never restated
 // here as a synthetic catch-all row.
 experience: [
-{company:"Figma", role:"Designer Advocate", start:"2025", end:"present", city:"Sydney", verification:"user"},
-{company:"Xero", role:"Lead Product Designer", start:"2025", end:"2025", city:"Sydney", verification:"user"},
-{company:"Atlassian", role:"Senior Product Designer — Design Manager", start:"2019", end:"2025", city:"Sydney", verification:"user"},
-{company:"Shopify", role:"Senior Product Designer", start:"2017", end:"2019", city:"Canada", verification:"user"},
-{company:"Booking.com", role:"Designer", start:"2013", end:"2017", city:"Amsterdam", verification:"user"},
-{company:"Album Agency", role:"Design Director", start:"2007", end:"2013", city:"California", verification:"user"}
+{company:"Figma", role:"Designer Advocate", start:"Sep 2025", end:"present", city:"Sydney", verification:"user"},
+{company:"Xero", role:"Lead Product Designer", start:"Mar 2025", end:"Sep 2025", city:"Sydney", verification:"user"},
+{company:"Atlassian", role:"Senior Product Designer — Design Manager", start:"Jun 2019", end:"Jan 2025", city:"Sydney", verification:"user"},
+{company:"Shopify", role:"Senior Product Designer", start:"May 2017", end:"Apr 2019", city:"Canada", verification:"user"},
+{company:"Booking.com", role:"Designer", start:"Jun 2013", end:"May 2017", city:"Amsterdam", verification:"user"},
+{company:"Album Agency", role:"Design Director", start:"Feb 2007", end:"May 2013", city:"California", verification:"user"}
 ],
 items: [
 {id:"work-atlassian", type:"Work", year:2024, title:"Jira Nav to Atlassian's System of Work", sub:"How a 2% satisfaction rate became the foundation for Atlassian's future", href:"work-atlassian.html", company:"Atlassian", verification:"primary"},

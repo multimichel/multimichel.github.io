@@ -143,12 +143,17 @@
   --space-48: 48px;
   --space-72: 72px;
   --space-96: 96px;
+  --space-128: 128px;
   --space-144: 144px;
+  --space-160: 160px;
   --space-192: 192px;
 
   /* ---------- SECTION RHYTHM ---------- */
   /* --row-height retired: rows are a stacked kicker/title/meta grammar now,
      so their height comes from content + padding, not a fixed minimum. */
+  /* Breathing room between two MAJOR narrative sections (About). One token,
+     applied to every such boundary — never a per-section margin. */
+  --gap-section-major: var(--space-160);
   --gap-label-to-rows: 32px;   /* WRITING label → first row */
   --gap-writing-to-speaking: 72px;
 

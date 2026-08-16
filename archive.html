@@ -6,9 +6,9 @@
 <title>Archive — MultiMichel</title>
 <!-- tokens.css carries both the design tokens AND the @font-face rules — without
      it every var() below falls back to browser defaults. It must load first. -->
-<link rel="stylesheet" href="tokens.css?v=28">
-<link rel="stylesheet" href="multimichel.css?v=28">
-<link rel="stylesheet" href="grid-overlay.css?v=28">
+<link rel="stylesheet" href="tokens.css?v=29">
+<link rel="stylesheet" href="multimichel.css?v=29">
+<link rel="stylesheet" href="grid-overlay.css?v=29">
 <style>
 .filters{display:flex;flex-wrap:wrap;gap:var(--space-8);margin:var(--space-32) 0 var(--space-8)}
 .filters button{font-family:var(--font-label);font-size:11.5px;font-weight:900;letter-spacing:var(--type-label-tracking);text-transform:uppercase;padding:var(--space-8) 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
@@ -29,16 +29,16 @@
 </header>
 <div class="wrap" data-screen-label="Archive">
 <section style="padding-bottom:16px">
-<p class="kicker" style="margin-left:44px">The Archive</p>
+<p class="eyebrow">Archive</p>
 <h1 class="display" style="font-size:clamp(44px,7vw,96px)">Everything, by year</h1>
-<p class="lede">Work, writing, talks, episodes, interviews and experiments since 1998 — gathered in one place.</p>
+<p class="lede">Work, writing, talks, interviews, videos and experiments — a chronological record of what I’ve made, shipped, shared or been part of since 1998.</p>
 <div class="filters" id="filters"></div>
 </section>
 <div id="list"></div>
 </div>
 <footer class="site"><p class="fineprint">MULTIMICHEL © 1998–2026 MICHEL FERREIRA · SYDNEY, AUSTRALIA</p><p class="social"><a class="fineprint" href="contact.html">Contact</a></p></footer>
-<script src="content.js?v=28"></script>
-<script src="nav.js?v=28" defer></script>
+<script src="content.js?v=29"></script>
+<script src="nav.js?v=29" defer></script>
 <script>
 (function(){
 var types=["All"].concat([...new Set(MM.items.map(i=>i.type))]);

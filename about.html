@@ -7,9 +7,9 @@
 <meta name="description" content="Michel Ferreira — Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
 <meta property="og:title" content="About — Michel Ferreira">
 <meta property="og:description" content="Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
-<link rel="stylesheet" href="tokens.css?v=28">
-<link rel="stylesheet" href="multimichel.css?v=28">
-<link rel="stylesheet" href="grid-overlay.css?v=28">
+<link rel="stylesheet" href="tokens.css?v=29">
+<link rel="stylesheet" href="multimichel.css?v=29">
+<link rel="stylesheet" href="grid-overlay.css?v=29">
 </head>
 <body>
 
@@ -59,7 +59,8 @@
   <section id="at-figma">
     <div class="sechead"><i class="tab"></i><h2>At Figma</h2></div>
     <div class="prose">
-      <p>Designer Advocate is a strange title until you&rsquo;ve actually done it. Day to day, I learn and stress-test new Figma capabilities before they ship, and help shape how we talk about what they&rsquo;re actually worth to a team. I sit with customers to understand their organisations, their existing systems, and how their teams really work &mdash; which is rarely how the org chart claims. From there it&rsquo;s workshops and presentations, but mostly listening: helping teams get their design systems and their AI-native workflows into better shape. Then I carry what I see across dozens of companies back into Figma itself &mdash; as signal, as pattern-spotting, and occasionally as a feature request that sticks. Same job I&rsquo;ve always had. The room just got bigger.</p>
+      <p>At Figma, I sit between the product and the people using it. I learn and stress-test new capabilities before they ship, work with customers to understand how their teams actually design, and bring what I learn back into the product.</p>
+      <p>That also means workshops, talks and practical guidance on design systems and AI-native workflows. The job title is different, but the work is familiar: understand the whole system, help people make better decisions, and make the product better because of it.</p>
     </div>
   </section>
 
@@ -96,9 +97,9 @@
   </p>
 </footer>
 
-<script src="content.js?v=28"></script>
-<script src="nav.js?v=28" defer></script>
-<script src="grid-overlay.js?v=28" defer></script>
+<script src="content.js?v=29"></script>
+<script src="nav.js?v=29" defer></script>
+<script src="grid-overlay.js?v=29" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -108,11 +109,15 @@
     // Dates are patchy in the graph on purpose — render what's known, never
     // a dangling en-dash or a bare "present". A single-year stint shows the
     // year once rather than as "2025–2025".
+    // Month-level throughout, so the 2025 sequence reads as a sequence rather
+    // than three entries flattened onto the same year. When a stint starts and
+    // ends in one year the year is printed once: "Mar–Sep 2025".
     var when;
-    if (e.end === "present")        when = e.start ? e.start + "–Now" : "Now";
-    else if (e.start === e.end)     when = e.start || "";
-    else if (e.start && e.end)      when = e.start + "–" + e.end;
-    else                            when = e.start || e.end || "";
+    var sy = (e.start || "").split(" ")[1], ey = (e.end || "").split(" ")[1];
+    if (e.end === "present")   when = e.start ? e.start + "–Now" : "Now";
+    else if (sy && sy === ey)  when = e.start.split(" ")[0] + "–" + e.end;
+    else if (e.start && e.end) when = e.start + "–" + e.end;
+    else                       when = e.start || e.end || "";
     var meta = [e.city, when].filter(Boolean).join(" · ");
     // Every entry is ONE typographic title — a role spanning two titles reads
     // as a single line ("Senior Product Designer — Design Manager") and may

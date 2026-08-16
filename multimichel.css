@@ -109,30 +109,34 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
 /* z-index:0 gives .hl its own stacking context, so the brush at z-index:-1
    sits behind the words but still in front of the paper fill on <body>.
    Without it the brush paints underneath the body background and vanishes. */
-.hl{position:relative;z-index:0;white-space:nowrap;display:inline-block}
-/* The brush is centred on the text, not hung off the baseline: its top edge
-   sits just above the x-height and the bottom clears the descenders. */
-/* Explicit width/height, not left+right / top+bottom: an <img> is a replaced
-   element, so an over-constrained inset box falls back to its intrinsic size
-   instead of stretching. */
-/* The marker reads as one continuous stroke that was already moving before the
-   first word and kept going after the last — so it overshoots generously on
-   both sides and stays THIN. Height is set explicitly rather than left to the
-   asset's own 445:78 ratio: at this overshoot the intrinsic height would scale
-   up with the width and turn the stroke into a slab. Wider + flatter, never
-   thicker. This is the MARKER gesture; links use the pen (.penline). */
-.hl-mark{
+/* ---------- yellow marker (highlighter) — system component ----------
+   Wrap a phrase in .marker-highlight and the stroke sizes itself from THAT
+   phrase. The asset is painted as a background on a ::before rather than an
+   inline <img>: an absolutely-positioned replaced element resolves its
+   percentage width against a box that is easy to get wrong, which is how the
+   stroke ended up covering only the first word. A pseudo-element inherits the
+   span's box unambiguously.
+
+   Overshoot is in px, not %, so it stays a constant ~14px past each end
+   regardless of how long the phrase is. Height covers the lower ~75% of the
+   glyphs so it reads as a marker over the words, never as an underline.
+   Individual uses must NOT set their own width/left — the component owns
+   geometry. This is the MARKER gesture; links use the pen (.penline). */
+.marker-highlight{
+  position:relative;
+  display:inline-block;
+  z-index:0;
+  white-space:nowrap;
+}
+.marker-highlight::before{
+  content:"";
   position:absolute;
-  left:-12%;
-  width:124%;
-  /* Tall enough to actually read as a highlighter over the words — a marker,
-     not an underline — while still overshooting well past both ends so it
-     reads as one continuous stroke that started early and kept going. Height
-     is explicit because at this width the asset's own 445:78 ratio would
-     scale into a slab. */
-  height:1.06em;
-  top:-.03em;
-  object-fit:fill;
+  left:-14px;
+  width:calc(100% + 28px);
+  bottom:.02em;
+  height:.74em;
+  background:url("img/highlight.svg") no-repeat center;
+  background-size:100% 100%;
   z-index:-1;
   pointer-events:none;
 }
@@ -171,6 +175,10 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
   opacity:0;pointer-events:none;transition:opacity .15s ease;
 }
 .sechead .tab.is-copied .tab-copy-status{opacity:1}
+/* Page-level eyebrow — the same label treatment as a section name
+   (.sechead h2), used above an H1 rather than above a list. Tied to the
+   heading it introduces, never a floating line of body text. */
+.eyebrow{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--muted);text-transform:uppercase;margin-bottom:var(--space-16)}
 .sechead h2{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--muted);text-transform:uppercase}
 .sechead .more{margin-left:auto;font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:1.1px;color:var(--dim);text-transform:uppercase}
 .sechead .more:hover{color:var(--orange)}
@@ -263,7 +271,7 @@ a.row:hover .go{color:var(--orange)}
    ONE stroke, reused by every underlined link on the site. This is the PEN
    gesture: thin, slightly unsteady, drawn once. It is deliberately not the
    highlighter — the yellow marker behind "understanding people" is a separate,
-   heavier gesture (.hl-mark).
+   heavier gesture (.marker-highlight).
    Painted as a background rather than a border so it never changes the line
    box, and so hover can thicken it without shifting a single glyph. */
 .penline,
@@ -344,8 +352,11 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 .form-status.is-ok{color:var(--oak)}
 
 /* about / contact section rhythm */
-#route{padding-top:var(--space-72)}
-#besides{padding-top:var(--space-96);padding-bottom:var(--space-8)}
+/* About's major narrative sections all sit on the same boundary gap. The
+   section-heading component itself is untouched — this is the space BETWEEN
+   sections, not inside them. */
+#how-i-think,#at-figma,#route,#besides,#about-links{padding-top:var(--gap-section-major)}
+#besides,#about-links{padding-bottom:var(--space-8)}
 #contact-form{padding-top:var(--space-72)}
 #elsewhere-contact{padding-top:var(--space-96);padding-bottom:var(--space-8)}
 
@@ -495,9 +506,11 @@ footer.site .social a:hover{color:var(--orange)}
   #work{padding-top:var(--space-72)}
   #media{padding-top:var(--space-48)}
   #elsewhere{padding-top:var(--space-48)}
-  #route,#contact-form{padding-top:var(--space-48)}
-  #besides,#elsewhere-contact{padding-top:var(--space-72)}
+  #contact-form{padding-top:var(--space-48)}
+  #elsewhere-contact{padding-top:var(--space-72)}
   .form,.prose{max-width:100%}
+  /* Same single token, stepped down for the phone. */
+  :root{--gap-section-major:var(--space-128)}
 
   /* Same stack as desktop — only the frame tightens. */
   a.row,div.row{padding:var(--space-16) var(--space-8);margin:0 calc(-1 * var(--space-8))}
