@@ -109,21 +109,18 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
 /* z-index:0 gives .hl its own stacking context, so the brush at z-index:-1
    sits behind the words but still in front of the paper fill on <body>.
    Without it the brush paints underneath the body background and vanishes. */
-/* ---------- yellow marker (highlighter) — system component ----------
-   The artwork is the span's own background, so its width is always exactly
-   the width of the complete highlighted phrase. This avoids Safari's sizing
-   and stacking inconsistencies with an absolutely positioned pseudo-element.
-   Small inline padding lets the stroke begin and end just beyond the letters.
-   This is the MARKER gesture; links use the pen (.penline). */
-.marker-highlight{
-  display:inline-block;
-  white-space:nowrap;
-  margin-inline:-8px;
-  padding-inline:8px;
-  background-image:url("img/highlight.svg");
-  background-repeat:no-repeat;
-  background-position:center 84%;
-  background-size:100% .74em;
+/* ---------- yellow marker (highlighter) ----------
+   Keep the original painted SVG behind the complete phrase. The image uses
+   its natural aspect ratio, with a modest overshoot beyond both text edges. */
+.hl{position:relative;z-index:0;white-space:nowrap;display:inline-block}
+.hl-mark{
+  position:absolute;
+  left:-5%;
+  top:-8%;
+  width:112%;
+  object-fit:fill;
+  z-index:-1;
+  pointer-events:none;
 }
 
 /* ---------- section markers ----------
@@ -256,7 +253,7 @@ a.row:hover .go{color:var(--orange)}
    ONE stroke, reused by every underlined link on the site. This is the PEN
    gesture: thin, slightly unsteady, drawn once. It is deliberately not the
    highlighter — the yellow marker behind "understanding people" is a separate,
-   heavier gesture (.marker-highlight).
+   heavier gesture (.hl-mark).
    Painted as a background rather than a border so it never changes the line
    box, and so hover can thicken it without shifting a single glyph. */
 .penline,
