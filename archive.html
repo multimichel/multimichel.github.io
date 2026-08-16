@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Archive — MultiMichel</title>
+<!-- tokens.css carries both the design tokens AND the @font-face rules — without
+     it every var() below falls back to browser defaults. It must load first. -->
+<link rel="stylesheet" href="tokens.css?v=36">
+<link rel="stylesheet" href="multimichel.css?v=36">
+<link rel="stylesheet" href="grid-overlay.css?v=36">
+<style>
+.filters{display:flex;flex-wrap:wrap;gap:var(--space-8);margin:var(--space-32) 0 var(--space-8)}
+.filters button{font-family:var(--font-label);font-size:11.5px;font-weight:900;letter-spacing:var(--type-label-tracking);text-transform:uppercase;padding:var(--space-8) 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.filters button.on{background:var(--ink);color:var(--paper)}
+.yearhead{font-family:var(--font-serif);font-size:clamp(40px,6vw,72px);font-weight:600;letter-spacing:-.02em;border-bottom:2px solid var(--ink);margin:56px 0 4px;display:flex;align-items:baseline;gap:var(--space-16)}
+.yearhead small{font-family:var(--font-label);font-size:11px;font-weight:900;letter-spacing:.14em;color:var(--dim)}
+/* Category labels live in multimichel.css as .cat — one lightweight
+   classification chip shared with every other list. The old per-type colour
+   badges (black/brown/green/purple fills, inline before the title) are gone:
+   they read as the loudest thing in the row and competed with the title. */
+</style>
+</head>
+<body>
+<header class="site">
+<div class="brand"><button class="brand-menu" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="menu-icon"><span></span><span></span></span></button><a class="brand-link" href="index.html">MICHEL FERREIRA</a></div>
+<nav class="main"><a href="index.html#work">WORK</a><a href="index.html#speaking">SPEAKING</a><a href="index.html#writing">WRITING</a><a href="index.html#media">MEDIA</a><a href="about.html">ABOUT</a></nav>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Site"><a href="index.html#work">WORK</a><a href="index.html#speaking">SPEAKING</a><a href="index.html#writing">WRITING</a><a href="index.html#media">MEDIA</a><a href="about.html">ABOUT</a><a href="contact.html">CONTACT</a></nav>
+</header>
+<div class="wrap" data-screen-label="Archive">
+<section style="padding-bottom:16px">
+<p class="eyebrow">Archive</p>
+<h1 class="display" style="font-size:clamp(44px,7vw,96px)">Everything, by year</h1>
+<p class="lede">Work, writing, talks, interviews, videos and experiments — a chronological record of what I’ve made, shipped, shared or been part of since 1998.</p>
+<div class="filters" id="filters"></div>
+</section>
+<div id="list"></div>
+</div>
+<footer class="site"><p class="fineprint">MULTIMICHEL © 1998–2026 MICHEL FERREIRA · SYDNEY, AUSTRALIA</p><p class="social"><a class="fineprint" href="contact.html">Contact</a></p></footer>
+<script src="content.js?v=36"></script>
+<script src="nav.js?v=36" defer></script>
+<script>
+(function(){
+var types=["All"].concat([...new Set(MM.items.map(i=>i.type))]);
+var cur=location.hash?decodeURIComponent(location.hash.slice(1)):"All";
+if(types.indexOf(cur)<0)cur="All";
+var fEl=document.getElementById("filters"),lEl=document.getElementById("list");
+function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function render(){
+fEl.innerHTML=types.map(t=>'<button class="'+(t===cur?"on":"")+'" data-t="'+t+'">'+t+(t==="All"?" ("+MM.items.length+")":"")+'</button>').join("");
+var items=MM.items.filter(i=>cur==="All"||i.type===cur).slice().sort((a,b)=>b.year-a.year);
+var byYear={};items.forEach(i=>{(byYear[i.year]=byYear[i.year]||[]).push(i)});
+lEl.innerHTML=Object.keys(byYear).sort((a,b)=>b-a).map(function(y){
+var rows=byYear[y].map(function(i){
+var href=i.href||i.url;
+var isTalk=i.type==="Talk";
+var displayTitle=isTalk?(i.talkTitle||i.eventName):i.title;
+var talkEvent=(isTalk&&i.talkTitle)?i.eventName:null;
+var talkLoc=isTalk?(i.showLocation?i.location:null):i.city;
+var t=href?'<a href="'+href+'"'+MM.linkAttrs(href)+'>'+esc(displayTitle)+'</a>':esc(displayTitle);
+// The type has moved OUT of the metadata sentence and onto its own kicker line,
+// so it is not repeated here.
+// The archive prints full provenance: publication first, then the platform it
+// was hosted on. Home shows only the publication.
+var meta=[i.publication,i.platform,talkEvent,talkLoc,i.date||i.year,i.lang==="pt-BR"?"PT":null].filter(Boolean).join(" · ");
+// Kicker / title / metadata only. The archive is a scannable index — .sub
+// descriptions stay in content.js for the surfaces that use them (case-study
+// cards, homepage rows) but are deliberately not rendered here.
+// UPCOMING outranks the category label when both apply.
+var kicker=(i.status==="upcoming"?'<span class="up">UPCOMING</span> ':'')+'<span class="cat">'+i.type+'</span>';
+return '<div class="row">'
++'<span class="kicker-line">'+kicker+'</span>'
++'<span class="t">'+t+'</span>'
++MM.actionMark(href)
++'<span class="m">'+esc(meta)+'</span>'
++'</div>';
+}).join("");
+return '<div class="yearhead">'+y+'<small>'+byYear[y].length+' ITEM'+(byYear[y].length>1?"S":"")+'</small></div>'+rows;
+}).join("");
+}
+fEl.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;cur=b.dataset.t;history.replaceState(null,"","#"+cur);render()});
+render();
+})();
+</script>
+</body>
+</html>
