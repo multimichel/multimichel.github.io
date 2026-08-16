@@ -118,7 +118,9 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
    span's box unambiguously.
 
    Overshoot is in px, not %, so it stays a constant ~14px past each end
-   regardless of how long the phrase is. Height covers the lower ~75% of the
+   regardless of how long the phrase is. The stroke is anchored to both edges
+   instead of using a percentage width calculation; this keeps mobile Safari
+   from sizing it to only the first word. Height covers the lower ~75% of the
    glyphs so it reads as a marker over the words, never as an underline.
    Individual uses must NOT set their own width/left — the component owns
    geometry. This is the MARKER gesture; links use the pen (.penline). */
@@ -132,7 +134,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
   content:"";
   position:absolute;
   left:-14px;
-  width:calc(100% + 28px);
+  right:-14px;
   bottom:.02em;
   height:.74em;
   background:url("img/highlight.svg") no-repeat center;
