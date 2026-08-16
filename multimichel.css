@@ -27,7 +27,7 @@ b,strong{font-weight:700}
    without nesting interactive elements. */
 header.site{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:var(--space-32)}
 .brand{display:flex;align-items:flex-end}
-.brand-link{font-family:var(--font-label);font-weight:900;font-size:var(--type-masthead-size);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase}
+.brand-link{font-family:var(--font-label);font-weight:900;font-size:var(--type-masthead-size);line-height:var(--type-masthead-leading);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase}
 /* The header square rides the SAME marker rail as every .sechead .tab:
    both resolve to --block-inset from the page edge, so the square hangs
    out of the content column exactly as the section markers do. Margin is
@@ -66,7 +66,6 @@ h1.display{
 .lede{max-width:var(--intro-max-width);margin-top:var(--space-32);font-family:var(--font-grotesk);font-weight:400;font-size:var(--type-body-fluid);line-height:var(--type-body-leading-ratio);color:var(--slate)}
 .lede p+p{margin-top:var(--space-16)}
 .lede b{font-weight:700}
-.lede a{border-bottom:1.5px solid var(--orange)}
 .lede a:hover{color:var(--orange)}
 
 /* ---------- photo — 1400×788 reference (16:9) ---------- */
@@ -105,7 +104,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
   letter-spacing:normal;
 }
 .quote-source cite{font-style:normal;font-weight:500;color:var(--oak)}
-.quote-source a{white-space:nowrap;color:var(--oak);border-bottom:1.5px solid var(--orange)}
+.quote-source a{white-space:nowrap;color:var(--oak)}
 .quote-source a:hover{color:var(--orange)}
 /* z-index:0 gives .hl its own stacking context, so the brush at z-index:-1
    sits behind the words but still in front of the paper fill on <body>.
@@ -116,13 +115,18 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
 /* Explicit width/height, not left+right / top+bottom: an <img> is a replaced
    element, so an over-constrained inset box falls back to its intrinsic size
    instead of stretching. */
-/* Values tuned by Michel in DevTools: height left intrinsic (the brush keeps
-   its own 445:78 proportion) and the box nudged up so the stroke sits on the
-   word rather than under it. */
+/* The marker reads as one continuous stroke that was already moving before the
+   first word and kept going after the last — so it overshoots generously on
+   both sides and stays THIN. Height is set explicitly rather than left to the
+   asset's own 445:78 ratio: at this overshoot the intrinsic height would scale
+   up with the width and turn the stroke into a slab. Wider + flatter, never
+   thicker. This is the MARKER gesture; links use the pen (.penline). */
 .hl-mark{
   position:absolute;
-  left:-3.5%;top:-8%;
-  width:108%;
+  left:-11%;
+  width:122%;
+  height:.62em;
+  bottom:.04em;
   object-fit:fill;
   z-index:-1;
   pointer-events:none;
@@ -166,49 +170,111 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
 .sechead .more{margin-left:auto;font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:1.1px;color:var(--dim);text-transform:uppercase}
 .sechead .more:hover{color:var(--orange)}
 
-/* ---------- editorial rows — the whole row is the link, table-style ---------- */
-a.row,div.row{position:relative;display:flex;justify-content:space-between;align-items:center;min-height:var(--row-height);gap:var(--space-32);padding:0 var(--space-16);margin:0 calc(-1 * var(--space-16));border-bottom:1px solid var(--rule-light);transition:background .15s}
+/* ---------- editorial rows — ONE grammar, everywhere ----------
+   Speaking, Writing, Archive, Around-the-internet and Media all render the
+   same four-part row, stacked at every width:
+
+       KICKER      optional — status (UPCOMING) or category (WRITING, TALK…)
+       Title ↗     the click target; the arrow belongs to it
+       metadata    where / when / source
+       description optional
+
+   There is no second arrow column and no side-by-side variant. Anything that
+   belongs to the row belongs in this stack. */
+a.row,div.row{
+  display:flex;flex-direction:column;
+  padding:var(--space-16);margin:0 calc(-1 * var(--space-16));
+  border-bottom:1px solid var(--rule-light);transition:background .15s;
+}
 a.row{cursor:pointer}
 a.row:hover{background:var(--rule-light)}
 .rowlist .row:first-child{border-top:1px solid var(--rule-light)}
+
 .row .t{font-family:var(--font-serif);font-weight:500;font-size:var(--type-row-title-size);line-height:var(--type-row-title-leading);color:var(--ink)}
 a.row:hover .t{color:var(--orange)}
-.row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:15px;line-height:1.4;color:var(--muted);margin-top:3px;max-width:640px}
-.row .m{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);white-space:nowrap;text-align:right}
+.row .m{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
+.row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:15px;line-height:1.4;color:var(--muted);margin-top:var(--space-8);max-width:640px}
 
-/* ---------- status badge (UPCOMING) ----------
-   Status is metadata, not part of the sentence: it sits top-right of the row
-   while title and date/location stack on the left, so reading order is
-   title → where/when, never interrupted. Driven by status:"upcoming" in the
-   content graph — no per-event CSS. */
-/* ---------- external-destination mark ----------
-   In editorial rows the ↗ is an action marker, not part of the title, so it
-   lives in its own top-right slot and is taken out of flow — a long title
-   wraps on its own measure and never reflows around it. Compact inline links
-   (footer, prose) keep their inline ↗ and are untouched by this. */
-.row.has-ext{padding-right:var(--space-32)}
-.row .ext{
-  position:absolute;top:var(--space-16);right:var(--space-8);
-  font-size:.7em;line-height:1;color:var(--oak);
-}
-a.row:hover .ext{color:var(--orange)}
+/* The arrow rides the title because the title is what you click. It is set
+   small and joined to the last word with a non-breaking space in the markup,
+   so it can never be left stranded alone on a line of its own. */
+.row .t .arrow{font-size:.65em;line-height:1;color:var(--oak)}
+a.row:hover .t .arrow{color:var(--orange)}
 
-/* .rowbody groups a title with anything that belongs to the SAME entry —
-   a second role line, or the date/location under a badged event. */
-.row .rowbody{display:flex;flex-direction:column;min-width:0}
-.row.has-badge{align-items:flex-start;padding-top:var(--space-16);padding-bottom:var(--space-16)}
-.row.has-badge .rowbody{gap:var(--gap-row-title-to-meta)}
-.row.has-badge .m{text-align:left;white-space:normal}
-/* UPCOMING is a solid block, not coloured text — it reads as a sibling of the
-   section markers rather than as a link. */
-.row .up{
-  display:inline-block;background:var(--orange);color:var(--rail);
+/* ---------- kickers: status and category ----------
+   Both sit on their own line above the title. They are deliberately NOT the
+   same weight: UPCOMING is live, actionable status; a category is a filing
+   label that exists to help scanning and must stay behind the title. */
+.row .kicker-line{display:block;margin-bottom:var(--space-8)}
+.row .up,.row .cat{
+  display:inline-block;
   font-family:var(--font-label);font-weight:900;font-size:11px;letter-spacing:1.1px;
-  padding:2px var(--space-8);vertical-align:1px;flex:none;
+  text-transform:uppercase;
 }
+.row .up{background:var(--orange);color:var(--rail);padding:2px var(--space-8)}
+.row .cat{background:var(--rule-light);color:var(--oak);padding:2px var(--space-8);border-radius:2px}
+
+/* ---------- desktop composition ----------
+   Same markup, same source order, different arrangement: above the mobile
+   breakpoint the row becomes an editorial two-column rhythm — title on the
+   left, source/date in the secondary right-hand column, sharing a baseline.
+   Kicker and description still span the full width, so the reading order is
+   unchanged; only the middle band splits.
+   This is one grammar composed two ways, NOT two markups — nothing here
+   reintroduces the old has-badge / has-ext / rowbody variants. */
+@media(min-width:901px){
+  a.row,div.row{
+    display:grid;
+    /* minmax(0,1fr) not 1fr: a bare 1fr floors at the title's min-content
+       width, so a long unbroken title would refuse to wrap and shove the
+       metadata column off the row. */
+    grid-template-columns:minmax(0, 1fr) auto;
+    column-gap:var(--space-32);
+    align-items:baseline;
+  }
+  .row .kicker-line{grid-column:1 / -1}
+  .row .t{grid-column:1}
+  /* Back into its own column: no stacking margin, right-aligned, and kept on
+     one line so it reads as a column rather than a second sentence. */
+  .row .m{grid-column:2;margin-top:0;text-align:right;white-space:nowrap}
+  .row .sub{grid-column:1 / -1}
+}
+
+
+/* ---------- hand-drawn link underline (pen) ----------
+   ONE stroke, reused by every underlined link on the site. This is the PEN
+   gesture: thin, slightly unsteady, drawn once. It is deliberately not the
+   highlighter — the yellow marker behind "understanding people" is a separate,
+   heavier gesture (.hl-mark).
+   Painted as a background rather than a border so it never changes the line
+   box, and so hover can thicken it without shifting a single glyph. */
+.penline,
+.lede a,
+.prose a,
+.aside-note-link,
+.quote-source a{
+  background-image:url("img/pen-underline.svg");
+  background-repeat:no-repeat;
+  background-position:0 100%;
+  background-size:100% .34em;
+  padding-bottom:.14em;
+  transition:background-size .15s ease;
+}
+/* On by default rather than hover-only: on touch there is no hover, and the
+   underline is the only thing marking these as links. Hover/focus thickens
+   the same stroke instead of introducing a different affordance. */
+.penline:hover,.penline:focus-visible,
+.lede a:hover,.lede a:focus-visible,
+.prose a:hover,.prose a:focus-visible,
+.aside-note-link:hover,.aside-note-link:focus-visible,
+.quote-source a:hover,.quote-source a:focus-visible{background-size:100% .42em}
+.penline:focus-visible,
+.lede a:focus-visible,
+.prose a:focus-visible,
+.aside-note-link:focus-visible,
+.quote-source a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 
 .aside-note{margin-top:var(--space-32);font-family:var(--font-grotesk);font-size:var(--type-aside-size);color:var(--dim)}
-.aside-note-link{border-bottom:1.5px solid var(--orange)}
 
 /* ---------- portrait figure ----------
    A vertical portrait must not be forced into the 16:9 landscape frame that
@@ -220,7 +286,6 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 /* ---------- prose (about) ---------- */
 .prose{max-width:var(--measure);font-family:var(--font-grotesk);font-size:var(--type-body-fluid);line-height:var(--type-body-leading-ratio);color:var(--slate)}
 .prose p+p{margin-top:var(--space-16)}
-.prose a{border-bottom:1.5px solid var(--orange)}
 .prose a:hover{color:var(--orange)}
 
 /* ---------- form (contact) ----------
@@ -345,11 +410,15 @@ footer.site .social a:hover{color:var(--orange)}
     --block-header-w:var(--space-32);
     --block-header-h:var(--space-32);
     --nav-gap:var(--space-16);
+    /* Masthead steps down, and its leading steps with it so the line box
+       stays on the 8pt grid: 24px, not 19 × 1.5 = 28.5px (off-grid AND
+       sub-pixel). */
+    --type-masthead-size:19px;
+    --type-masthead-leading:24px;
     --intro-max-width:100%;
   }
   header.site{flex-direction:row;align-items:center;justify-content:flex-start;gap:var(--space-16);padding-bottom:var(--space-24-m);position:relative;z-index:50}
   .brand{position:relative;z-index:41}
-  .brand-link{font-size:19px}
 
   /* Nav row is replaced by the hamburger + full-panel menu below — this is
      the actual fix for ABOUT wrapping onto its own line: there's no longer
@@ -412,18 +481,12 @@ footer.site .social a:hover{color:var(--orange)}
   #besides,#elsewhere-contact{padding-top:var(--space-72)}
   .form,.prose{max-width:100%}
 
-  /* metadata reflows under the title rather than fighting it for width */
-  a.row,div.row{flex-direction:column;align-items:flex-start;gap:var(--gap-row-title-to-meta);min-height:0;padding:var(--space-16) var(--space-8);margin:0 calc(-1 * var(--space-8))}
-  .row .m{text-align:left;white-space:normal;line-height:var(--type-row-meta-leading-mobile)}
+  /* Same stack as desktop — only the frame tightens. */
+  a.row,div.row{padding:var(--space-16) var(--space-8);margin:0 calc(-1 * var(--space-8))}
+  .row .m{line-height:var(--type-row-meta-leading-mobile)}
   /* A wrapped serif title must read as one unit, not two stacked lines.
      Size is unchanged — only the leading tightens. */
   .row .t{line-height:var(--type-row-title-leading-mobile)}
-
-  /* Badge rows keep the badge pinned to the upper right of the row instead of
-     letting it drop between the title and its date — so the reading order
-     stays title → where/when at every width. */
-  a.row.has-badge,div.row.has-badge{flex-direction:row;justify-content:space-between;align-items:flex-start;gap:var(--space-16)}
-  .row.has-badge .rowbody{flex:1 1 auto}
 
   .work-grid{grid-template-columns:1fr;gap:var(--space-48)}
   .media-grid{grid-template-columns:1fr;gap:var(--space-32)}

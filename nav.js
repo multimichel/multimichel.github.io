@@ -105,4 +105,55 @@
       });
     })(tabs[i]);
   }
+
+  // ---------- ambient product video ----------
+  // These are product demonstrations, not video content: they play themselves,
+  // silently, on loop, with no chrome. Autoplay is granted by JS rather than the
+  // markup attribute so that prefers-reduced-motion is honoured on first paint —
+  // an `autoplay` attribute would start playing before script could stop it.
+  // Reduced motion falls back to the poster frame plus real controls, so the
+  // demo is still watchable on demand rather than simply lost.
+  var ambient = document.querySelectorAll('video.ambient');
+  if (ambient.length) {
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function calm(v){
+      v.controls = true;
+      v.autoplay = false;
+      v.removeAttribute('autoplay');
+      try { v.pause(); v.currentTime = 0; } catch (e) {}
+    }
+    function animate(v){
+      v.controls = false;
+      v.muted = true;          // re-assert: browsers only allow muted autoplay
+      v.autoplay = true;
+      var p = v.play();
+      // A rejected play() is not an error worth surfacing — hand the viewer
+      // controls instead of leaving a frozen frame with no way in.
+      if (p && p.catch) p.catch(function(){ v.controls = true; });
+    }
+
+    function apply(){
+      for (var i = 0; i < ambient.length; i++) {
+        if (mq.matches) calm(ambient[i]); else animate(ambient[i]);
+      }
+    }
+    apply();
+    // React to the OS setting changing mid-session.
+    if (mq.addEventListener) mq.addEventListener('change', apply);
+    else if (mq.addListener) mq.addListener(apply);
+
+    // Only run what's on screen — offscreen loops burn battery for nothing.
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries){
+        if (mq.matches) return;
+        entries.forEach(function(en){
+          var v = en.target;
+          if (en.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+          else v.pause();
+        });
+      }, {threshold: 0.25});
+      for (var j = 0; j < ambient.length; j++) io.observe(ambient[j]);
+    }
+  }
 })();

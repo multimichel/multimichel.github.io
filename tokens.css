@@ -49,8 +49,15 @@
   --highlight: #F5C518;    /* hand-drawn quote highlight (verify against Figma) */
 
   /* ---------- TYPE ---------- */
-  /* Masthead — label face, 900, uppercase */
+  /* Masthead — label face, 900, uppercase.
+     Leading is declared in px, not inherited: body's 1.5 ratio is a body-copy
+     value and on 24px produced a 36px line box — off the 8pt grid (36 = 4×8+4).
+     32px puts the masthead's line box back on the grid. This governs the BOX
+     only; Agrandir's caps fill its ascent almost exactly (cap 720 / asc 750)
+     so the visible glyphs still sit high inside it. That is a font metric and
+     is deliberately left alone. */
   --type-masthead-size: 24px;
+  --type-masthead-leading: 32px;
   --type-masthead-tracking: -0.096px;
 
   /* Nav + section labels — label face, 900, uppercase */
@@ -140,7 +147,8 @@
   --space-192: 192px;
 
   /* ---------- SECTION RHYTHM ---------- */
-  --row-height: 48px;          /* was 59 — off-grid; snapped to the scale */
+  /* --row-height retired: rows are a stacked kicker/title/meta grammar now,
+     so their height comes from content + padding, not a fixed minimum. */
   --gap-label-to-rows: 32px;   /* WRITING label → first row */
   --gap-writing-to-speaking: 72px;
 

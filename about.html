@@ -7,9 +7,9 @@
 <meta name="description" content="Michel Ferreira — Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
 <meta property="og:title" content="About — Michel Ferreira">
 <meta property="og:description" content="Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
-<link rel="stylesheet" href="tokens.css?v=26">
-<link rel="stylesheet" href="multimichel.css?v=26">
-<link rel="stylesheet" href="grid-overlay.css?v=26">
+<link rel="stylesheet" href="tokens.css?v=27">
+<link rel="stylesheet" href="multimichel.css?v=27">
+<link rel="stylesheet" href="grid-overlay.css?v=27">
 </head>
 <body>
 
@@ -80,8 +80,8 @@
   <section id="about-links">
     <div class="sechead"><i class="tab"></i><h2>Elsewhere</h2></div>
     <div class="rowlist">
-      <a class="row has-ext" href="https://www.linkedin.com/in/michelpferreira/" target="_blank" rel="noopener noreferrer"><span class="t">LinkedIn</span><span class="m">Profile</span><span class="ext" aria-hidden="true">↗</span></a>
-      <a class="row" href="contact.html"><span class="t">Get in touch →</span><span class="m">Contact</span></a>
+      <a class="row" href="https://www.linkedin.com/in/michelpferreira/" target="_blank" rel="noopener noreferrer"><span class="t">LinkedIn&nbsp;<span class="arrow" aria-hidden="true">↗</span></span><span class="m">Profile</span></a>
+      <a class="row" href="contact.html"><span class="t">Get in touch&nbsp;<span class="arrow" aria-hidden="true">→</span></span><span class="m">Contact</span></a>
     </div>
   </section>
 
@@ -96,9 +96,9 @@
   </p>
 </footer>
 
-<script src="content.js?v=26"></script>
-<script src="nav.js?v=26" defer></script>
-<script src="grid-overlay.js?v=26" defer></script>
+<script src="content.js?v=27"></script>
+<script src="nav.js?v=27" defer></script>
+<script src="grid-overlay.js?v=27" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -122,7 +122,7 @@
   // Everything before Album Agency lives on LinkedIn — linked, never restated
   // here as a synthetic "early web & design" catch-all row.
   var earlier = "https://www.linkedin.com/in/michelpferreira/";
-  list += '<a class="row has-ext" href="'+earlier+'"'+MM.linkAttrs(earlier)+'><span class="t">Earlier roles since 1998</span><span class="m">LinkedIn</span><span class="ext" aria-hidden="true">↗</span></a>';
+  list += '<a class="row" href="'+earlier+'"'+MM.linkAttrs(earlier)+'><span class="t">'+MM.withArrow("Earlier roles since 1998", earlier)+'</span><span class="m">LinkedIn</span></a>';
   document.getElementById("route-list").innerHTML = list;
 })();
 </script>

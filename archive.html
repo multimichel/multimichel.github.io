@@ -6,17 +6,19 @@
 <title>Archive — MultiMichel</title>
 <!-- tokens.css carries both the design tokens AND the @font-face rules — without
      it every var() below falls back to browser defaults. It must load first. -->
-<link rel="stylesheet" href="tokens.css?v=26">
-<link rel="stylesheet" href="multimichel.css?v=26">
-<link rel="stylesheet" href="grid-overlay.css?v=26">
+<link rel="stylesheet" href="tokens.css?v=27">
+<link rel="stylesheet" href="multimichel.css?v=27">
+<link rel="stylesheet" href="grid-overlay.css?v=27">
 <style>
 .filters{display:flex;flex-wrap:wrap;gap:var(--space-8);margin:var(--space-32) 0 var(--space-8)}
 .filters button{font-family:var(--font-label);font-size:11.5px;font-weight:900;letter-spacing:var(--type-label-tracking);text-transform:uppercase;padding:var(--space-8) 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
 .filters button.on{background:var(--ink);color:var(--paper)}
 .yearhead{font-family:var(--font-serif);font-size:clamp(40px,6vw,72px);font-weight:600;letter-spacing:-.02em;border-bottom:2px solid var(--ink);margin:56px 0 4px;display:flex;align-items:baseline;gap:var(--space-16)}
 .yearhead small{font-family:var(--font-label);font-size:11px;font-weight:900;letter-spacing:.14em;color:var(--dim)}
-.tag{font-family:var(--font-label);font-size:10px;font-weight:900;letter-spacing:.12em;color:var(--paper);background:var(--ink);padding:2px 7px;margin-right:var(--space-8);vertical-align:2px}
-.tag.Work{background:var(--orange)}.tag.Talk{background:#8A5A2B}.tag.Podcast{background:#3F6212}.tag.Interview{background:#5B4B8A}.tag.Video{background:#9F1239}.tag.Experiment,.tag.Artifact{background:#555}
+/* Category labels live in multimichel.css as .cat — one lightweight
+   classification chip shared with every other list. The old per-type colour
+   badges (black/brown/green/purple fills, inline before the title) are gone:
+   they read as the loudest thing in the row and competed with the title. */
 .note{font-family:var(--font-grotesk);font-size:15px;color:var(--dim);max-width:640px;margin-top:14px}
 </style>
 </head>
@@ -37,8 +39,8 @@
 <p class="note" style="margin-bottom:80px">Earlier chapters — agency work in Brazil and California (1998–2007), Album Agency (2007–2013) — are being recovered from Michel's own archives. Provenance for every entry lives in the project's research register.</p>
 </div>
 <footer class="site"><p class="fineprint">MULTIMICHEL © 1998–2026 MICHEL FERREIRA · SYDNEY, AUSTRALIA</p><p class="social"><a class="fineprint" href="contact.html">Contact</a></p></footer>
-<script src="content.js?v=26"></script>
-<script src="nav.js?v=26" defer></script>
+<script src="content.js?v=27"></script>
+<script src="nav.js?v=27" defer></script>
 <script>
 (function(){
 var types=["All"].concat([...new Set(MM.items.map(i=>i.type))]);
@@ -58,9 +60,21 @@ var displayTitle=isTalk?(i.talkTitle||i.eventName):i.title;
 var talkEvent=(isTalk&&i.talkTitle)?i.eventName:null;
 var talkLoc=isTalk?(i.showLocation?i.location:null):i.city;
 var t=href?'<a href="'+href+'"'+MM.linkAttrs(href)+'>'+MM.withArrow(esc(displayTitle),href)+'</a>':esc(displayTitle);
-var meta=[i.type.toUpperCase(),i.source,talkEvent,talkLoc,i.date||i.year,i.lang==="pt-BR"?"PT":null].filter(Boolean).join(" · ");
-var badge=i.status==="upcoming"?'<span class="up">UPCOMING</span>':'';
-return '<div class="row'+(badge?' has-badge':'')+'"><span class="rowbody"><span class="t"><span class="tag '+i.type+'">'+i.type+'</span>'+t+'</span>'+(i.sub?'<p class="sub">'+esc(i.sub)+'</p>':'')+(i.videoUrl?'<p class="sub">▶ <a href="'+i.videoUrl+'"'+MM.linkAttrs(i.videoUrl)+'>'+MM.withArrow("Watch the recording",i.videoUrl)+'</a></p>':'')+'<span class="m">'+esc(meta)+'</span></span>'+badge+'</div>';
+// The type has moved OUT of the metadata sentence and onto its own kicker line,
+// so it is not repeated here.
+// The archive prints full provenance: publication first, then the platform it
+// was hosted on. Home shows only the publication.
+var meta=[i.publication,i.platform,talkEvent,talkLoc,i.date||i.year,i.lang==="pt-BR"?"PT":null].filter(Boolean).join(" · ");
+// Same stack as every other list: kicker / title / metadata / description.
+// UPCOMING outranks the category label when both apply.
+var kicker=(i.status==="upcoming"?'<span class="up">UPCOMING</span> ':'')+'<span class="cat">'+i.type+'</span>';
+return '<div class="row">'
++'<span class="kicker-line">'+kicker+'</span>'
++'<span class="t">'+t+'</span>'
++'<span class="m">'+esc(meta)+'</span>'
++(i.sub?'<p class="sub">'+esc(i.sub)+'</p>':'')
++(i.videoUrl?'<p class="sub">▶ <a href="'+i.videoUrl+'"'+MM.linkAttrs(i.videoUrl)+'>'+MM.withArrow("Watch the recording",i.videoUrl)+'</a></p>':'')
++'</div>';
 }).join("");
 return '<div class="yearhead">'+y+'<small>'+byYear[y].length+' ITEM'+(byYear[y].length>1?"S":"")+'</small></div>'+rows;
 }).join("");
