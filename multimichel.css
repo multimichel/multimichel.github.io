@@ -117,7 +117,8 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
   position:absolute;
   left:-5%;
   top:-8%;
-  width:120%;
+  width:110%;
+  max-width:none;
   object-fit:fill;
   z-index:-1;
   pointer-events:none;
