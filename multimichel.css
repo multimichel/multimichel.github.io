@@ -125,6 +125,9 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
    its natural aspect ratio, with a modest overshoot beyond both text edges. */
 .hl{position:relative;z-index:0;white-space:nowrap;display:inline-block}
 .quote-mark{position:relative;z-index:1}
+/* The closing ” belongs to the highlighted phrase — on a wide viewport it was
+   breaking onto a line of its own. Marker styling is untouched. */
+.quote-tail{white-space:nowrap}
 .hl-mark{
   position:absolute;
   left:-5%;
@@ -141,11 +144,19 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
    every piece of text — section labels and the row titles beneath them — on
    one column at --content-start, while the square sits out in the white rail
    (8 → 72), flush against the rail/paper seam. */
-.sechead{position:relative;display:flex;align-items:center;margin-bottom:var(--gap-label-to-rows)}
+/* The row is as tall as the marker, so the square and the label are centred
+   against the SAME box rather than the label's much shorter line box. The
+   square centres by the box model (top/bottom 0 + auto margins), not by a
+   transform, and neither element carries a positional nudge. */
+.sechead{
+  position:relative;display:flex;align-items:center;
+  min-height:var(--block-marker);
+  margin-bottom:var(--gap-label-to-rows);
+}
 .sechead .tab{
   position:absolute;
   left:calc(var(--block-inset) - var(--content-start));
-  top:50%;transform:translateY(-50%);
+  top:0;bottom:0;margin-block:auto;
   width:var(--block-marker);height:var(--block-marker);
   background:var(--orange);
 }
@@ -230,7 +241,7 @@ a.row:hover .cat,a.row:focus-visible .cat{background:transparent;color:var(--pap
    arrow can never be stranded alone on a line. ↗ leaves the site, → stays.
    Compact navigation labels (ALL WRITING →) keep their arrow inline; they are
    labels, not editorial rows. */
-.arrow,.row .go{font-size:.65em;line-height:1;color:var(--oak)}
+.arrow,.go{font-size:.65em;line-height:1;color:var(--oak)}
 a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
 
 /* ---------- kickers: status and category ----------
@@ -411,7 +422,15 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 .media-card .zoomframe{aspect-ratio:1/1}
 .media-card .zoomframe img{width:100%;height:100%;object-fit:cover}
 .media-label{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);color:var(--orange);text-transform:uppercase;margin-top:var(--space-16)}
-.media-card-title{font-family:var(--font-serif);font-weight:500;font-size:var(--type-row-title-size);line-height:1.25;color:var(--ink);margin-top:var(--space-8)}
+/* Same anatomy as an editorial row: title left, action mark at the far right,
+   in its own element so a wrapping title never reflows around it. */
+.media-card-title{
+  display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-16);
+  font-family:var(--font-serif);font-weight:500;font-size:var(--type-row-title-size);
+  line-height:1.25;color:var(--ink);margin-top:var(--space-8);
+}
+.media-card-title .go{flex:none}
+.media-card:hover .go{color:var(--orange)}
 .media-card:hover .media-card-title{color:var(--orange)}
 
 /* ---------- footer (outside Figma-node scope) ---------- */
