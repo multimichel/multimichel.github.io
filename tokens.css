@@ -82,6 +82,15 @@
   --type-row-title-size: 18px;
   --type-row-title-leading: 28.8px;
 
+  /* Chips and micro-labels — the tier BELOW section labels: taxonomy chips,
+     UPCOMING, archive filters, year counts. Was typed as 11px in four places
+     and 11.5px in a fifth. */
+  --type-chip-size: 11px;
+  --type-chip-tracking: 1.1px;
+
+  /* Secondary description under a row title / inside a case-study grid. */
+  --type-sub-size: 15px;
+
   /* Editorial row metadata — grotesk Medium */
   --type-row-meta-size: 14px;
   --type-row-meta-leading: 18px;
@@ -122,6 +131,9 @@
      To revert permanently: content-start 96, block-inset 16. */
   --content-start: 120px;      /* primary content inset — one column, everything */
   --block-inset: 40px;         /* orange block's left edge from the page edge */
+  /* The paper's inset from the rail, used on BOTH sides so the left and right
+     edges can never drift apart again. Derived, never typed twice. */
+  --content-inset: calc(var(--content-start) - var(--rail-width));
   --nav-gap: 48px;
 
   /* ---------- RAIL ----------

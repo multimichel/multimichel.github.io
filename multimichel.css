@@ -19,7 +19,17 @@ b,strong{font-weight:700}
    Inside the paper column, text is inset a further 16px so it lands at
    --content-start (72 rail + 16 = 88). The orange blocks pull back that 16px
    to sit flush on the rail/paper seam and break the text alignment on purpose. */
-.wrap,header.site{max-width:var(--canvas-reference);padding-left:calc(var(--content-start) - var(--rail-width));padding-right:var(--space-16)}
+.wrap,header.site{max-width:var(--canvas-reference);padding-left:var(--content-inset);padding-right:var(--content-inset)}
+
+/* Skip link — first focusable element on every page. Off-screen until focused,
+   then lands on the marker rail like everything else. */
+.skiplink{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  letter-spacing:var(--type-label-tracking);text-transform:uppercase;
+  background:var(--slate);color:var(--paper);padding:var(--space-16);
+}
+.skiplink:focus{left:0}
 
 /* ---------- masthead & nav ----------
    The brand square is a real <button> (mobile menu control) and the
@@ -44,7 +54,8 @@ header.site{display:flex;align-items:flex-end;justify-content:space-between;padd
 .menu-icon{display:none}
 nav.main{display:flex;gap:var(--nav-gap);padding-bottom:var(--space-8)}
 nav.main a{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--dim)}
-nav.main a:hover{color:var(--orange)}
+nav.main a:hover,nav.main a:focus-visible{color:var(--orange)}
+nav.main a[aria-current="page"]{color:var(--ink)}
 
 /* The mobile nav panel exists at every width but only ever paints inside
    the ≤900px block below — this base rule just keeps it out of layout
@@ -182,6 +193,10 @@ a.row,div.row{
   display:grid;
   grid-template-columns:minmax(0, 1fr) auto;
   column-gap:var(--space-16);
+  /* Title, metadata and arrow share ONE baseline at every width. Without this
+     the arrow floated to the top of the row while the publication sat on the
+     baseline beside it — the two never lined up. */
+  align-items:baseline;
   padding:var(--space-16);margin:0 calc(-1 * var(--space-16));
   border-bottom:1px solid var(--rule-light);transition:background .15s;
 }
@@ -189,15 +204,24 @@ a.row,div.row{
    its line with the action arrow. */
 .row .kicker-line,.row .m,.row .sub{grid-column:1 / -1}
 .row .t{grid-column:1}
-.row .go{grid-column:2;align-self:start}
+.row .go{grid-column:2}
 a.row{cursor:pointer}
-a.row:hover{background:var(--rule-light)}
+/* Hover + keyboard focus share ONE treatment: the row inverts to the slate
+   ground so #FF6C00 has a dark backdrop to sit on. Orange on paper is 2.6:1;
+   orange on slate clears AA comfortably, so the brand colour is untouched and
+   the contrast is solved by what sits behind it. */
+a.row:hover,a.row:focus-visible{background:var(--slate);outline:none}
+a.row:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
 .rowlist .row:first-child{border-top:1px solid var(--rule-light)}
 
 .row .t{font-family:var(--font-serif);font-weight:500;font-size:var(--type-row-title-size);line-height:var(--type-row-title-leading);color:var(--ink)}
-a.row:hover .t{color:var(--orange)}
+a.row:hover .t,a.row:focus-visible .t{color:var(--orange)}
 .row .m{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
-.row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:15px;line-height:1.4;color:var(--muted);margin-top:var(--space-8);max-width:640px}
+.row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:var(--type-sub-size);line-height:1.4;color:var(--muted);margin-top:var(--space-8);max-width:640px}
+/* Metadata and description flip to paper so they stay readable on the slate. */
+a.row:hover .m,a.row:focus-visible .m,
+a.row:hover .sub,a.row:focus-visible .sub{color:var(--paper)}
+a.row:hover .cat,a.row:focus-visible .cat{background:transparent;color:var(--paper);box-shadow:inset 0 0 0 1px currentColor}
 
 /* ---------- action arrow ----------
    One quiet position: the right edge of the title line, in its own grid cell.
@@ -207,8 +231,7 @@ a.row:hover .t{color:var(--orange)}
    Compact navigation labels (ALL WRITING →) keep their arrow inline; they are
    labels, not editorial rows. */
 .arrow,.row .go{font-size:.65em;line-height:1;color:var(--oak)}
-.row .go{padding-top:.45em}
-a.row:hover .go{color:var(--orange)}
+a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
 
 /* ---------- kickers: status and category ----------
    Both sit on their own line above the title. They are deliberately NOT the
@@ -217,10 +240,11 @@ a.row:hover .go{color:var(--orange)}
 .row .kicker-line{display:block;margin-bottom:var(--space-8)}
 .row .up,.row .cat{
   display:inline-block;
-  font-family:var(--font-label);font-weight:900;font-size:11px;letter-spacing:1.1px;
+  font-family:var(--font-label);font-weight:900;font-size:var(--type-chip-size);letter-spacing:var(--type-chip-tracking);
   text-transform:uppercase;
 }
-.row .up{background:var(--orange);color:var(--rail);padding:2px var(--space-8)}
+/* Slate on orange, not white on orange — white was 2.84:1. */
+.row .up{background:var(--orange);color:var(--slate);padding:2px var(--space-8)}
 .row .cat{background:var(--rule-light);color:var(--oak);padding:2px var(--space-8);border-radius:2px}
 
 /* ---------- desktop composition ----------
@@ -393,7 +417,7 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 /* ---------- footer (outside Figma-node scope) ---------- */
 footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);padding:var(--space-32) var(--space-16) var(--space-48) calc(var(--content-start) - var(--rail-width));display:flex;flex-wrap:wrap;gap:var(--space-16);justify-content:space-between;align-items:center}
 .fineprint{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-label-size);color:var(--muted)}
-footer.site .social a{margin-left:18px}
+footer.site .social a{margin-left:var(--space-16)}
 footer.site .social a:hover{color:var(--orange)}
 
 @media(prefers-reduced-motion:reduce){
@@ -430,6 +454,9 @@ footer.site .social a:hover{color:var(--orange)}
     --type-masthead-leading:24px;
     --intro-max-width:100%;
   }
+  /* Mobile keeps its original right inset: at this scale the 8px difference
+     reads as even, and this is the version already signed off. */
+  .wrap,header.site{padding-right:var(--space-16)}
   header.site{flex-direction:row;align-items:center;justify-content:flex-start;gap:var(--space-16);padding-bottom:var(--space-24-m);position:relative;z-index:50}
   .brand{position:relative;z-index:41}
 

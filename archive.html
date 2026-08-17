@@ -3,42 +3,61 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Work, writing, talks, interviews, videos and experiments — a chronological record of what Michel Ferreira has made, shipped, shared or been part of since 1998.">
 <title>Archive — MultiMichel</title>
 <!-- tokens.css carries both the design tokens AND the @font-face rules — without
      it every var() below falls back to browser defaults. It must load first. -->
-<link rel="stylesheet" href="tokens.css?v=37">
-<link rel="stylesheet" href="multimichel.css?v=37">
-<link rel="stylesheet" href="grid-overlay.css?v=37">
+<meta property="og:title" content="Archive — Michel Ferreira">
+<meta property="og:description" content="Work, writing, talks, interviews, videos and experiments — a chronological record of what Michel Ferreira has made, shipped, shared or been part of since 1998.">
+<link rel="stylesheet" href="tokens.css?v=38">
+<link rel="stylesheet" href="multimichel.css?v=38">
 <style>
+.archive-head{padding-bottom:var(--space-16)}
+/* The archive H1 runs a step smaller than a page hero — it sits above an
+   index, not a statement. */
+.archive-head h1.display{font-size:clamp(44px,7vw,96px)}
 .filters{display:flex;flex-wrap:wrap;gap:var(--space-8);margin:var(--space-32) 0 var(--space-8)}
-.filters button{font-family:var(--font-label);font-size:11.5px;font-weight:900;letter-spacing:var(--type-label-tracking);text-transform:uppercase;padding:var(--space-8) 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.filters button{font-family:var(--font-label);font-size:var(--type-chip-size);font-weight:900;letter-spacing:var(--type-label-tracking);text-transform:uppercase;padding:var(--space-8) 14px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
 .filters button.on{background:var(--ink);color:var(--paper)}
 .yearhead{font-family:var(--font-serif);font-size:clamp(40px,6vw,72px);font-weight:600;letter-spacing:-.02em;border-bottom:2px solid var(--ink);margin:56px 0 4px;display:flex;align-items:baseline;gap:var(--space-16)}
-.yearhead small{font-family:var(--font-label);font-size:11px;font-weight:900;letter-spacing:.14em;color:var(--dim)}
+.yearhead small{font-family:var(--font-label);font-size:var(--type-chip-size);font-weight:900;letter-spacing:.14em;color:var(--dim)}
 /* Category labels live in multimichel.css as .cat — one lightweight
    classification chip shared with every other list. The old per-type colour
    badges (black/brown/green/purple fills, inline before the title) are gone:
    they read as the loudest thing in the row and competed with the title. */
 </style>
+<link rel="canonical" href="https://multimichel.com/archive">
+<meta property="og:image" content="https://multimichel.com/img/og-default.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://multimichel.com/archive">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#F8F5F2">
 </head>
 <body>
+<a class="skiplink" href="#main">Skip to content</a>
 <header class="site">
 <div class="brand"><button class="brand-menu" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="menu-icon"><span></span><span></span></span></button><a class="brand-link" href="index.html">MICHEL FERREIRA</a></div>
 <nav class="main"><a href="index.html#work">WORK</a><a href="index.html#speaking">SPEAKING</a><a href="index.html#writing">WRITING</a><a href="index.html#media">MEDIA</a><a href="about.html">ABOUT</a></nav>
 <nav class="mobile-nav" id="mobile-nav" aria-label="Site"><a href="index.html#work">WORK</a><a href="index.html#speaking">SPEAKING</a><a href="index.html#writing">WRITING</a><a href="index.html#media">MEDIA</a><a href="about.html">ABOUT</a><a href="contact.html">CONTACT</a></nav>
 </header>
+<main id="main">
 <div class="wrap" data-screen-label="Archive">
-<section style="padding-bottom:16px">
+<section class="archive-head">
 <p class="eyebrow">Archive</p>
-<h1 class="display" style="font-size:clamp(44px,7vw,96px)">Everything, by year</h1>
+<h1 class="display">Everything, by year</h1>
 <p class="lede">Work, writing, talks, interviews, videos and experiments — a chronological record of what I’ve made, shipped, shared or been part of since 1998.</p>
 <div class="filters" id="filters"></div>
 </section>
 <div id="list"></div>
 </div>
+</main>
 <footer class="site"><p class="fineprint">MULTIMICHEL © 1998–2026 MICHEL FERREIRA · SYDNEY, AUSTRALIA</p><p class="social"><a class="fineprint" href="contact.html">Contact</a></p></footer>
-<script src="content.js?v=37"></script>
-<script src="nav.js?v=37" defer></script>
+<script src="content.js?v=38"></script>
+<script src="nav.js?v=38" defer></script>
 <script>
 (function(){
 var types=["All"].concat([...new Set(MM.items.map(i=>i.type))]);
