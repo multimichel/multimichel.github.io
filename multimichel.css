@@ -361,17 +361,8 @@ a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
    the orange arrives as the pen stroke underneath — the accent moves from the
    glyphs to the rule. Links that already show the stroke simply thicken it
    (see .penline); these three reveal it from zero. */
-nav.main a,.sechead .more,footer.site .social a{
-  background-image:url("img/pen-underline.svg");
-  background-repeat:no-repeat;
-  background-position:0 100%;
-  background-size:100% 0;
-  padding-bottom:.14em;
-  transition:background-size .15s ease;
-}
-nav.main a:hover,nav.main a:focus-visible,
+nav.main a,.sechead .more,nav.main a:hover,nav.main a:focus-visible,
 .sechead .more:hover,.sechead .more:focus-visible,
-footer.site .social a:hover,footer.site .social a:focus-visible{background-size:100% .34em}
 nav.main a:focus-visible,.sechead .more:focus-visible,footer.site .social a:focus-visible{
   outline:2px solid var(--ink);outline-offset:3px;
 }
@@ -499,9 +490,26 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 .media-card:hover .media-card-title{color:var(--orange)}
 
 /* ---------- footer (outside Figma-node scope) ---------- */
-footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);padding:var(--space-32) var(--space-16) var(--space-48) calc(var(--content-start) - var(--rail-width));display:flex;flex-wrap:wrap;gap:var(--space-16);justify-content:space-between;align-items:center}
+/* ---------- footer social row ----------
+   Icon-only to keep the row compact. Bootstrap Icons (MIT) — one system, so
+   every mark shares the same 16px grid and solid weight; no brand colours, the
+   icons take the footer's own tan via currentColor. Each is a real link with
+   an aria-label, and the 44px tap target is padding, not visible size, so the
+   optical rhythm stays tight. */
+footer.site .social{display:flex;align-items:center;gap:var(--space-8);flex-wrap:wrap}
+.social-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:var(--space-32);height:var(--space-32);
+  color:var(--muted);
+  border-radius:2px;
+  transition:color .15s ease,background-color .15s ease;
+}
+.social-icon svg{display:block}
+.social-icon:hover,.social-icon:focus-visible{color:var(--orange);background:var(--rule-light)}
+.social-icon:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);padding:var(--space-32) var(--content-inset) var(--space-48) var(--content-inset);display:flex;flex-wrap:wrap;gap:var(--space-16);justify-content:space-between;align-items:center}
 .fineprint{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-label-size);color:var(--muted)}
-footer.site .social a{margin-left:var(--space-16)}
 
 
 @media(prefers-reduced-motion:reduce){
@@ -538,9 +546,6 @@ footer.site .social a{margin-left:var(--space-16)}
     --type-masthead-leading:24px;
     --intro-max-width:100%;
   }
-  /* Mobile keeps its original right inset: at this scale the 8px difference
-     reads as even, and this is the version already signed off. */
-  .wrap,header.site{padding-right:var(--space-16)}
   header.site{flex-direction:row;align-items:center;justify-content:flex-start;gap:var(--space-16);padding-bottom:var(--space-24-m);position:relative;z-index:50}
   .brand{position:relative;z-index:41}
 
@@ -615,5 +620,4 @@ footer.site .social a{margin-left:var(--space-16)}
   .row .t{line-height:var(--type-row-title-leading-mobile)}
 
   .media-grid{gap:var(--space-32)}
-  footer.site{padding-left:calc(var(--content-start) - var(--rail-width));padding-bottom:var(--space-48)}
 }
