@@ -453,7 +453,10 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 
 /* ---------- work — two compact visual case studies, side by side.
    680×425 reference ratio (8:5), work-gap is a Figma value (24px). ---------- */
+/* Two across wherever two fit — same content-width logic as .media-grid.
+   Below 560px a single case-study cover would otherwise run full-bleed huge. */
 .work-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--work-gap);margin-top:0}
+@media(max-width:560px){.work-grid{grid-template-columns:1fr;gap:var(--space-48)}}
 .work-card{display:block}
 .work-card .zoomframe{aspect-ratio:680/425}
 .work-card .zoomframe img{width:100%;height:100%;object-fit:cover}
@@ -611,7 +614,6 @@ footer.site .social a{margin-left:var(--space-16)}
      Size is unchanged — only the leading tightens. */
   .row .t{line-height:var(--type-row-title-leading-mobile)}
 
-  .work-grid{grid-template-columns:1fr;gap:var(--space-48)}
   .media-grid{gap:var(--space-32)}
   footer.site{padding-left:calc(var(--content-start) - var(--rail-width));padding-bottom:var(--space-48)}
 }
