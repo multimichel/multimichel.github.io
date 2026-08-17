@@ -361,11 +361,18 @@ a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
    the orange arrives as the pen stroke underneath — the accent moves from the
    glyphs to the rule. Links that already show the stroke simply thicken it
    (see .penline); these three reveal it from zero. */
-nav.main a,.sechead .more,nav.main a:hover,nav.main a:focus-visible,
-.sechead .more:hover,.sechead .more:focus-visible,
-nav.main a:focus-visible,.sechead .more:focus-visible,footer.site .social a:focus-visible{
-  outline:2px solid var(--ink);outline-offset:3px;
+nav.main a,.sechead .more{
+  background-image:url("img/pen-underline.svg");
+  background-repeat:no-repeat;
+  background-position:0 100%;
+  background-size:100% 0;
+  padding-bottom:.14em;
+  transition:background-size .15s ease;
 }
+nav.main a:hover,nav.main a:focus-visible,
+.sechead .more:hover,.sechead .more:focus-visible{background-size:100% .34em}
+/* Outline is :focus-visible ONLY — never on hover, never at rest. */
+nav.main a:focus-visible,.sechead .more:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 
 .aside-note{margin-top:var(--space-32);font-family:var(--font-grotesk);font-size:var(--type-aside-size);color:var(--dim)}
 
