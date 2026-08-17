@@ -42,7 +42,7 @@ b,strong{font-weight:700}
    without nesting interactive elements. */
 header.site{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:var(--space-32)}
 .brand{display:flex;align-items:center}
-.brand-link{padding-top:var(--cap-optical-shift);font-family:var(--font-label);font-weight:900;font-size:var(--type-masthead-size);line-height:var(--type-masthead-leading);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase}
+.brand-link{text-box:trim-both cap alphabetic;font-family:var(--font-label);font-weight:900;font-size:var(--type-masthead-size);line-height:var(--type-masthead-leading);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase}
 /* The header square rides the SAME marker rail as every .sechead .tab:
    both resolve to --block-inset from the page edge, so the square hangs
    out of the content column exactly as the section markers do. Margin is
@@ -195,8 +195,26 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
    centring alone leaves the label reading high against the square. The padding
    is exactly twice that, because centring halves whatever is added. Metric
    compensation applied once in the shared component, not a per-section nudge. */
-.sechead h2{padding-top:var(--cap-optical-shift);font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--muted);text-transform:uppercase}
-.sechead .more{margin-left:auto;font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:1.1px;color:var(--dim);text-transform:uppercase}
+/* Label and action share ONE type definition — same face, size, leading,
+   tracking and colour — so the pair sits on a single optical line. Only the
+   action's placement differs.
+
+   text-box trims the line box down to cap-height/baseline, so the box the
+   browser centres IS the visible word. That removes the need for any
+   cap-height offset: align-items:center now centres what you actually see.
+   Browsers without text-box fall back to the untrimmed box, which is the
+   behaviour this had before — never worse. */
+.sechead h2,.sechead .more{
+  font-family:var(--font-label);
+  font-weight:900;
+  font-size:var(--type-label-size);
+  line-height:1;
+  text-box:trim-both cap alphabetic;
+  letter-spacing:var(--type-label-tracking);
+  color:var(--muted);
+  text-transform:uppercase;
+}
+.sechead .more{margin-left:auto}
 
 
 /* ---------- editorial rows — ONE grammar, everywhere ----------
@@ -457,7 +475,11 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 .work-card:hover .work-card-title .brush{opacity:1}
 
 /* ---------- media — visual, real imagery, no embeds (outside Figma-node scope) ---------- */
+/* Three across wherever three fit. Below ~560px the content column can no
+   longer give each card a usable thumbnail, so it drops to one. Keyed to the
+   width the cards actually need, not to a device class. */
 .media-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-32)}
+@media(max-width:560px){.media-grid{grid-template-columns:1fr}}
 .media-card{display:block}
 .media-card .zoomframe{aspect-ratio:1/1}
 .media-card .zoomframe img{width:100%;height:100%;object-fit:cover}
@@ -590,6 +612,6 @@ footer.site .social a{margin-left:var(--space-16)}
   .row .t{line-height:var(--type-row-title-leading-mobile)}
 
   .work-grid{grid-template-columns:1fr;gap:var(--space-48)}
-  .media-grid{grid-template-columns:1fr;gap:var(--space-32)}
+  .media-grid{gap:var(--space-32)}
   footer.site{padding-left:calc(var(--content-start) - var(--rail-width));padding-bottom:var(--space-48)}
 }
