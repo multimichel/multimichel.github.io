@@ -64,6 +64,11 @@
   --type-label-size: 13px;
   --type-label-leading: 1.5;
   --type-label-tracking: 1.3px;
+  /* Optical compensation for Agrandir: capHeight 720 of ascent 750 means the
+     caps sit 0.11em high inside their line box. Doubled, because vertical
+     centring halves it. Scales with font-size, so one value serves the 13px
+     section label and the 24px masthead alike. */
+  --cap-optical-shift: 0.22em;
 
   /* Hero — serif Heavy/Black */
   --type-hero-size: 148px;

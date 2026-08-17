@@ -43,7 +43,10 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 .cs li b{color:var(--dark-ink)}
 .cs figure.full{background:var(--white);border-radius:4px;overflow:hidden;margin:40px 0 0}
 .cs figure.full img{aspect-ratio:auto;height:auto;object-fit:contain;width:100%}
-.cs figcaption{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-label-size);letter-spacing:.4px;color:var(--dark-dim);text-transform:uppercase;margin-top:12px}
+/* --dark-dim is tuned for the dark page ground (6.97:1) but these captions
+   sit inside a white figure box, where it collapses to 2.68:1. --muted is the
+   muted tone that still passes on white (5.05:1). */
+.cs figcaption{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-label-size);letter-spacing:.4px;color:var(--muted);text-transform:uppercase;margin-top:12px}
 
 .stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--dark-rule);border:1px solid var(--dark-rule);margin:40px 0}
 .stat div{background:var(--dark-bg);padding:24px}
@@ -60,7 +63,7 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 .cs .imgrid.cols-2{grid-template-columns:1fr 1fr}
 .cs .imgrid.cols-3{grid-template-columns:repeat(3,1fr)}
 .cs .imgrid figure{margin:0}
-.cs .imgrid img{width:100%;display:block;background:var(--white);border-radius:4px}
+.cs .imgrid img{width:100%;height:auto;display:block;background:var(--white);border-radius:4px}
 .cs .imgrid h3{font-family:var(--font-serif);font-weight:500;font-size:19px;color:var(--dark-ink);margin-top:var(--space-16)}
 .cs .imgrid p{font-family:var(--font-grotesk);font-size:var(--type-sub-size);line-height:1.5;margin-top:var(--space-8);color:var(--dark-dim);max-width:none}
 
