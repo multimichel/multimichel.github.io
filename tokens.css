@@ -111,8 +111,17 @@
      all the way down. 16 · 64 · 16 · 96 — all on the 8pt grid. */
   --canvas-reference: 1496px;  /* desktop viewport the Figma frame targets */
   --gutter-page: 72px;         /* document gutter */
-  --content-start: 96px;       /* primary content inset — one column, everything */
-  --block-inset: 16px;         /* orange block's left edge from the page edge */
+  /* TRIAL — desktop square geometry (option B).
+     The square must straddle the rail/paper seam the way it already does on
+     mobile: 50/50. With the old 16/96 pair it sat 88% in the white rail and
+     clipped the paper by only 8px, because the desktop square (64) is SMALLER
+     than the rail (72) while the mobile square (32) is BIGGER than its rail
+     (24). Moving the block to 40 centres it on the 72px seam (40→104) and the
+     text column follows at 120, keeping the 16px gap and the 72px white rail.
+     Press G then click SQUARE (or press S) to compare against the old values.
+     To revert permanently: content-start 96, block-inset 16. */
+  --content-start: 120px;      /* primary content inset — one column, everything */
+  --block-inset: 40px;         /* orange block's left edge from the page edge */
   --nav-gap: 48px;
 
   /* ---------- RAIL ----------
