@@ -64,6 +64,11 @@
   --type-label-size: 13px;
   --type-label-leading: 1.5;
   --type-label-tracking: 1.3px;
+  /* Pen underline: rem, never em. As an em the same declaration produced a
+     4.4px stroke on a 13px label and 8.2px on 24px prose — one treatment,
+     three thicknesses. */
+  --pen-thickness: 0.34rem;
+  --pen-thickness-hover: 0.42rem;
 
   /* Hero — serif Heavy/Black */
   --type-hero-size: 148px;
@@ -81,6 +86,15 @@
   /* Editorial row title — serif Medium */
   --type-row-title-size: 18px;
   --type-row-title-leading: 28.8px;
+
+  /* Chips and micro-labels — the tier BELOW section labels: taxonomy chips,
+     UPCOMING, archive filters, year counts. Was typed as 11px in four places
+     and 11.5px in a fifth. */
+  --type-chip-size: 11px;
+  --type-chip-tracking: 1.1px;
+
+  /* Secondary description under a row title / inside a case-study grid. */
+  --type-sub-size: 15px;
 
   /* Editorial row metadata — grotesk Medium */
   --type-row-meta-size: 14px;
@@ -111,8 +125,20 @@
      all the way down. 16 · 64 · 16 · 96 — all on the 8pt grid. */
   --canvas-reference: 1496px;  /* desktop viewport the Figma frame targets */
   --gutter-page: 72px;         /* document gutter */
-  --content-start: 96px;       /* primary content inset — one column, everything */
-  --block-inset: 16px;         /* orange block's left edge from the page edge */
+  /* TRIAL — desktop square geometry (option B).
+     The square must straddle the rail/paper seam the way it already does on
+     mobile: 50/50. With the old 16/96 pair it sat 88% in the white rail and
+     clipped the paper by only 8px, because the desktop square (64) is SMALLER
+     than the rail (72) while the mobile square (32) is BIGGER than its rail
+     (24). Moving the block to 40 centres it on the 72px seam (40→104) and the
+     text column follows at 120, keeping the 16px gap and the 72px white rail.
+     Press G then click SQUARE (or press S) to compare against the old values.
+     To revert permanently: content-start 96, block-inset 16. */
+  --content-start: 120px;      /* primary content inset — one column, everything */
+  --block-inset: 40px;         /* orange block's left edge from the page edge */
+  /* The paper's inset from the rail, used on BOTH sides so the left and right
+     edges can never drift apart again. Derived, never typed twice. */
+  --content-inset: calc(var(--content-start) - var(--rail-width));
   --nav-gap: 48px;
 
   /* ---------- RAIL ----------
