@@ -370,9 +370,14 @@ nav.main a,.sechead .more{
   background-repeat:no-repeat;
   background-position:0 100%;
   background-size:100% 0;
-  padding-bottom:.14em;
   transition:background-size .15s ease;
 }
+/* Clearance is per-context and must NOT be set here: .sechead .more already
+   gets symmetric padding from the label rule above, and re-declaring
+   padding-bottom in this later rule silently overrode it — which is what put
+   the stroke back through the word. nav links are untrimmed, so they get their
+   own. */
+nav.main a{padding-bottom:.5rem}
 nav.main a:hover,nav.main a:focus-visible,
 .sechead .more:hover,.sechead .more:focus-visible{background-size:100% var(--pen-thickness)}
 /* Outline is :focus-visible ONLY — never on hover, never at rest. */
