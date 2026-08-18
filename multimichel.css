@@ -210,6 +210,10 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
   font-size:var(--type-label-size);
   line-height:1;
   text-box:trim-both cap alphabetic;
+  /* Symmetric: the underline needs room below the baseline (text-box trims the
+     box bottom TO the baseline), and equal padding top and bottom keeps the
+     caps dead-centre against the marker. */
+  padding:0.5rem 0;
   letter-spacing:var(--type-label-tracking);
   color:var(--muted);
   text-transform:uppercase;
@@ -337,7 +341,7 @@ a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
   background-image:url("img/pen-underline.svg");
   background-repeat:no-repeat;
   background-position:0 100%;
-  background-size:100% .34em;
+  background-size:100% var(--pen-thickness);
   padding-bottom:.14em;
   transition:background-size .15s ease;
 }
@@ -348,7 +352,7 @@ a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
 .lede a:hover,.lede a:focus-visible,
 .prose a:hover,.prose a:focus-visible,
 .aside-note-link:hover,.aside-note-link:focus-visible,
-.quote-source a:hover,.quote-source a:focus-visible{background-size:100% .42em}
+.quote-source a:hover,.quote-source a:focus-visible{background-size:100% var(--pen-thickness-hover)}
 .penline:focus-visible,
 .lede a:focus-visible,
 .prose a:focus-visible,
@@ -370,7 +374,7 @@ nav.main a,.sechead .more{
   transition:background-size .15s ease;
 }
 nav.main a:hover,nav.main a:focus-visible,
-.sechead .more:hover,.sechead .more:focus-visible{background-size:100% .34em}
+.sechead .more:hover,.sechead .more:focus-visible{background-size:100% var(--pen-thickness)}
 /* Outline is :focus-visible ONLY — never on hover, never at rest. */
 nav.main a:focus-visible,.sechead .more:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 

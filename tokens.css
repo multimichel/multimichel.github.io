@@ -64,6 +64,11 @@
   --type-label-size: 13px;
   --type-label-leading: 1.5;
   --type-label-tracking: 1.3px;
+  /* Pen underline: rem, never em. As an em the same declaration produced a
+     4.4px stroke on a 13px label and 8.2px on 24px prose — one treatment,
+     three thicknesses. */
+  --pen-thickness: 0.34rem;
+  --pen-thickness-hover: 0.42rem;
 
   /* Hero — serif Heavy/Black */
   --type-hero-size: 148px;
