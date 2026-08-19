@@ -1,0 +1,36 @@
+html.fonts-free {
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-grotesk: "Hanken Grotesk", system-ui, sans-serif;
+  --font-label: "Bricolage Grotesque", system-ui, sans-serif;
+}
+
+html.fonts-free .brand-link,
+html.fonts-free nav.main a,
+html.fonts-free .sechead h2,
+html.fonts-free .sechead .more,
+html.fonts-free .work-label,
+html.fonts-free .media-label,
+html.fonts-free .field label,
+html.fonts-free .submit,
+html.fonts-free .row .m .up { font-weight: 800; }
+
+.fonts-toggle-control {
+  position: fixed;
+  left: var(--space-16);
+  bottom: calc(var(--space-16) + env(safe-area-inset-bottom));
+  z-index: 9999;
+  min-height: 44px;
+  border: 2px solid var(--rail);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--rail);
+  padding: 0 var(--space-16);
+  font-family: var(--font-grotesk);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgb(0 0 0 / .2);
+}
+
+.fonts-toggle-control:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
