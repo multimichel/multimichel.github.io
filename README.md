@@ -37,6 +37,12 @@ different bodies, so each was re-tuned until the composition matched on screen.
 `tokens.css` explains every value under "REPLACEMENT TUNING", and
 `DESIGN_SYSTEM.md` §7.1 records the mapping.
 
+Arrows are drawn by **Agrandir**, not by a symbol font and not by the platform:
+it is the only face on the site carrying `↗` and `→`, which makes the mark one
+designed glyph everywhere and structurally incapable of resolving to a colour
+emoji. Its size comes from the rendered glyph height (`--type-arrow-size`), not
+from the type around it.
+
 Fraunces is set **three ways, not one** — `--serif-hero`, `--serif-statement`
 and `--serif-editorial` — because the original design does not use its serif the
 same way at 148px and at 18px. Each pins `opsz`, `SOFT` and `WONK` together with

@@ -282,7 +282,7 @@ a.row:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
 
 .row .t{font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);font-size:var(--type-row-title-size);line-height:var(--type-row-title-leading);color:var(--ink)}
 a.row:hover .t,a.row:focus-visible .t{color:var(--orange)}
-.row .m{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
+.row .m{font-family:var(--font-grotesk);font-weight:var(--type-row-meta-weight);font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
 .row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:var(--type-sub-size);line-height:1.4;color:var(--muted);margin-top:var(--space-8);max-width:640px}
 /* Metadata and description flip to paper so they stay readable on the slate. */
 a.row:hover .m,a.row:focus-visible .m,
@@ -301,29 +301,44 @@ a.row:hover .cat,a.row:focus-visible .cat{background:transparent;color:var(--pap
    rule, the same size, the same text presentation, differing only in taking the
    label's own colour, because they sit inside the words.
 
-   TEXT PRESENTATION IS NOT OPTIONAL. ↗ and → each have a Unicode emoji
-   presentation, and neither webfont here carries either glyph, so the mark is
-   always resolved by fallback — which on any platform with a colour emoji font
-   meant ↗ arrived as an emoji tile beside a serif title (the Media cards, The
-   Copy Paste Club among them). It is pinned down three ways and all three are
-   load-bearing: --font-arrow names symbol fonts that HAVE the glyphs, so the
-   cascade never has to reach an emoji font; font-variant-emoji states the
-   preference for engines that support it; and the markup writes the mark with a
-   trailing U+FE0E variation selector for the engines that do not. */
-/* rem, not em: the action mark must be the SAME size in every context. As an
-   em it inherited its parent — 10.4px beside a row title, 11.7px inside the
-   larger .media-card-title — so the same mark rendered two sizes. */
+   ONE DESIGNED MARK, AT ONE SIZE, EVERYWHERE. Agrandir draws it — see
+   --font-arrow in tokens.css. That is what keeps ↗ off the emoji font: the
+   first family in the stack owns the glyph, so nothing ever falls through to
+   the platform. font-variant-emoji and the U+FE0E in the markup stay as belt
+   and braces for the case where Agrandir has not loaded yet.
+
+   Sizing this mark by its font-size is a trap: Agrandir draws a small arrow on
+   a large em, so the SAME font-size that suits a label produces a mark half the
+   size of the one the original design showed. --type-arrow-size is set from the
+   rendered glyph height instead, and no context may override it — an inline
+   label arrow and a row's action mark are the same mark. */
+/* Agrandir draws it, at --type-arrow-size, in both variants — see tokens.css.
+   The two variants differ only in how they meet the line they sit on:
+     .go    a grid/flex item with its own cell, baseline-aligned by the parent.
+            Keeps line-height 1; at 18.8px it is shorter than the title's line
+            box, so it cannot change a row's height.
+     .arrow inline INSIDE a label, where an 18.8px inline box would grow a 13px
+            label's line box and push the section marker out of alignment.
+            line-height 0 takes it out of the line-box calculation entirely, so
+            the mark paints at full size and the label's rhythm is untouched. */
 .arrow,.go{
   font-family:var(--font-arrow);
-  font-size:.65rem;line-height:1;
+  font-weight:900;
+  font-size:var(--type-arrow-size);
   font-variant-emoji:text;
   /* The mark belongs to the word it follows: never break between them, and
      never let the mark start a line on its own. */
   white-space:nowrap;
 }
-.go{color:var(--oak)}
+/* The .065em in both variants is ONE number for ONE reason: Agrandir draws ↗
+   sitting 0.065em clear of the baseline, where the original design's arrow sat
+   on it. Without this the mark floats a pixel high against the metadata beside
+   it. .go is a grid/flex item so vertical-align does not reach it and it takes
+   the offset positionally; .arrow is inline and takes it as vertical-align.
+   Same compensation, expressed the only way each context allows. */
+.go{color:var(--oak);line-height:1;position:relative;top:.065em}
 /* Inline inside a label, so it takes that label's colour and its hover with it. */
-.arrow{color:inherit;margin-left:.35em}
+.arrow{color:inherit;line-height:0;vertical-align:-.065em;margin-left:.3em}
 a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
 
 /* ---------- kickers: status and category ----------

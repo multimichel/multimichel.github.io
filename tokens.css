@@ -48,16 +48,32 @@
   --font-grotesk: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-label: "Agrandir", system-ui, sans-serif;
 
-  /* The action mark's own stack. ↗ (U+2197) and → (U+2192) are outside every
-     webfont this site loads, so the mark ALWAYS comes from a fallback — and
-     left to the system fallback, a platform with a colour emoji font resolves
-     ↗ to the emoji arrow. Naming the text symbol fonts that do carry these
-     two glyphs means the cascade finds a typographic arrow before it can ever
-     reach an emoji font. The grotesk leads so that anything else inside the
-     mark's span still sets as body text; the tail is the part that does the
-     work, and it must never be trimmed. */
-  --font-arrow: "Hanken Grotesk", "Apple Symbols", "Segoe UI Symbol",
+  /* ---------- the action mark ----------
+     AGRANDIR DRAWS THE ARROW. Not a symbol font, and not whatever the system
+     happens to hand back.
+
+     Neither Fraunces nor Hanken Grotesk carries U+2197 or U+2192, so the mark
+     is never drawn by the text faces. The original site got away with that in
+     one place only: on the Media cards the arrow inherited the SERIF stack and
+     Family — which does carry both glyphs — drew it, a real designed arrow.
+     Everywhere else it fell through to whatever the platform supplied, which
+     is how ↗ reached a colour emoji font on macOS.
+
+     Agrandir carries both glyphs, is licensed, is already loaded, and is the
+     identity face. So it draws every arrow on the site: one designed mark,
+     identical on every platform, and structurally incapable of resolving to an
+     emoji because the first font in the stack has the glyph. The symbol fonts
+     stay on the tail purely as a net for the case where Agrandir fails to
+     load — never trim them, but they should never be reached either. */
+  --font-arrow: "Agrandir", "Apple Symbols", "Segoe UI Symbol",
                 "Noto Sans Symbols 2", "DejaVu Sans", system-ui, sans-serif;
+  /* Agrandir draws a small arrow on its em — 0.39em against Family's 0.71em —
+     so the mark needs a much larger font-size to arrive at the same OPTICAL
+     size. 1.18rem puts the ↗ at 7.4px tall, which is the size Family drew it
+     on the Media cards: the one arrow in the original design that a real
+     typeface drew, and the size this site is matching. rem, never em: the mark
+     is the same size in every context by design. */
+  --type-arrow-size: 1.18rem;
 
   /* ---------- Fraunces recipes, one per role ----------
 
@@ -212,9 +228,15 @@
   --type-sub-size: 13.5px;
 
   /* Editorial row metadata — grotesk Medium. 14 → 12.5 on the sans scale;
-     18px leading is the original and is deliberately not rescaled. */
+     18px leading is the original and is deliberately not rescaled.
+     The WEIGHT is the same problem as body emphasis, one tier down: Founders
+     Medium sat firmly under a row title, and Hanken at the nominal 500 went
+     thin and floated away from it — which reads as the gap having grown even
+     though --gap-row-title-to-meta never moved. 650 puts the same mass back
+     under the title. Sizes match on x-height already; this is weight alone. */
   --type-row-meta-size: 12.5px;
   --type-row-meta-leading: 18px;
+  --type-row-meta-weight: 650;
 
   /* Wrapped row titles must read as ONE title, not two lines of prose.
      Desktop keeps the roomier 28.8px; mobile tightens to a ratio so a

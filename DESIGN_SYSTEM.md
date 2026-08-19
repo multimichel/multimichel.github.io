@@ -297,10 +297,34 @@ why row titles, card titles and case-study headings sit at the ORIGINAL sizes
 with no scaling at all — and reproduce the original's line breaks across all 57
 archive rows. Only the two display tiers are scaled, on cap-height.
 
-`--weight-emphasis` (800) covers `<strong>` in running copy: Hanken's 700 sits
-much closer to its own regular than Founders Grotesk Bold sat to Founders
-Regular, so emphasis was reading as a semibold. Heading and label weights are
-untouched.
+`--weight-emphasis` (800) covers `<strong>` in running copy, and
+`--type-row-meta-weight` (650) the metadata line under a row title: Hanken's
+nominal weights sit much closer to its own regular than Founders' did, so both
+were reading thin. The metadata one also reads as a spacing problem rather than
+a weight one — the line floats away from the title it belongs to — but
+`--gap-row-title-to-meta` is unchanged and the box geometry is identical to the
+original's; it is weight alone. Heading and label weights are untouched.
+
+### The arrow is drawn by Agrandir
+
+Neither replacement text face carries U+2197 or U+2192, so the action mark is
+never drawn by the type it sits next to. The original design only got a real
+arrow in one place — the Media cards, where the mark inherited the serif stack
+and Family drew it — and fell through to a platform font everywhere else, which
+is how ↗ reached a colour emoji font on macOS.
+
+Agrandir carries both glyphs, is licensed, is already loaded, and is the
+identity face, so it now draws every arrow on the site. That is also what keeps
+the mark off the emoji font: the first family in the stack owns the glyph, so
+nothing falls through. The symbol fonts on the tail of `--font-arrow`, the
+`font-variant-emoji` declaration and the U+FE0E in the markup are all still
+there, but only as a net for the moment before Agrandir loads.
+
+`--type-arrow-size` (1.18rem) is set from the RENDERED GLYPH HEIGHT, not from
+the surrounding type. Agrandir draws a small arrow on a large em — 0.39em where
+Family drew 0.71em — so matching font-sizes would produce a mark half the size
+the original showed. 1.18rem puts ↗ at 7.4px tall, which is what Family drew on
+the Media cards. One size, every context; no surface may override it.
 
 The re-tuned sizes and the reasoning behind each live in `tokens.css` under
 "REPLACEMENT TUNING".
