@@ -49,7 +49,15 @@
   });
 
   var params = new URLSearchParams(window.location.search);
-  if (params.get('fontcheck') === '1') {
+  var checkMode = params.get('fontcheck') === '1';
+  try {
+    if (checkMode) sessionStorage.setItem('mm-fontcheck', '1');
+    else checkMode = sessionStorage.getItem('mm-fontcheck') === '1';
+  } catch (e) {}
+
+  // Keep the tester visible while navigating this preview tab. Internal links
+  // do not carry the query string, so sessionStorage bridges those page loads.
+  if (checkMode) {
     document.addEventListener('DOMContentLoaded', function () {
       control = document.createElement('button');
       control.className = 'fonts-toggle-control';
