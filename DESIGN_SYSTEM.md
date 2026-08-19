@@ -182,6 +182,13 @@ Do NOT use: Inter, Arial, Helvetica, Archivo, Newsreader as replacements for the
 
 Michel has the font assets. Use them when available and licensed for web use.
 
+> **What actually ships.** Agrandir is licensed and ships as-is. Family and
+> Founders Grotesk are not, so the site sets them in Fraunces and Hanken
+> Grotesk — see §7.1. Everything in §5 below stays written as the ORIGINAL
+> design, because it is the target: the replacement sizes were tuned until the
+> composition matched these values on screen, not until the CSS matched them on
+> paper. Read a size here as "what this must look like", not "what to type".
+
 ## 5.1 Masthead
 Font: **Agrandir — Tight Black**, weight 900, size 24px, tracking approx `-0.096px`, colour `#2E2C29`, uppercase.
 
@@ -243,3 +250,31 @@ Verified by reading each file's embedded name table:
 | Founders Grotesk — Bold | `foundersgrotesk-700.ttf` | Founders Grotesk Bold / Regular |
 
 `family-regular.ttf` embeds a Klim Type Foundry "Not Licensed for Desktop Use" notice — excluded from web use pending licensing confirmation. Not required by the current spec (only Heavy and Medium weights of Family are used).
+
+## 7.1 What the site actually loads
+
+The same "Not Licensed for Desktop Use" notice turned out to sit in
+`family-heavy.ttf`, `family-medium.ttf` and `FoundersGrotesk-Medium.ttf` too, so
+the Klim files were removed from the repo and both text faces now ship as
+open-licence replacements. Agrandir is untouched — it is the identity, not a
+substitute, and it is not up for replacement.
+
+| Design system name | Ships as | File | Licence |
+|---|---|---|---|
+| Agrandir — Tight Black | Agrandir — Tight Black | `Agrandir-TightBlack.ttf` | licensed for this site |
+| Family — Heavy / Medium | **Fraunces** (variable: opsz · wght · SOFT · WONK) | `Fraunces-latin.woff2`, `Fraunces-latin-ext.woff2` | OFL — `Fraunces-OFL.txt` |
+| Founders Grotesk — Regular / Medium / Bold | **Hanken Grotesk** (variable: wght) | `HankenGrotesk-latin.woff2`, `HankenGrotesk-latin-ext.woff2` | OFL — `HankenGrotesk-OFL.txt` |
+
+Two things about Fraunces are not defaults and must not be "tidied away":
+
+- **WONK is off.** Fraunces ships its wonky alternates on, which is where the
+  ornamental, circled ampersand in *Olá & Welcome* came from. `WONK 0` is
+  Fraunces' own conventional set — the fix is family-native; no second font is
+  borrowed for one glyph.
+- **opsz is pinned, not `auto`.** Family is a single non-optical face and holds
+  one proportion from 14px to 148px. Automatic optical sizing made Fraunces do
+  the opposite and run 10–20% wide at text sizes. Two pinned cuts — text (60)
+  and display (110) — reproduce Family's proportions at both ends.
+
+The re-tuned sizes and the reasoning behind each live in `tokens.css` under
+"REPLACEMENT TUNING".

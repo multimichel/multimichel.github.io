@@ -93,22 +93,34 @@ items: [
 //   ↗  external destination (leaves the site)
 // Every list template routes through these so an arrow is decided once, in one
 // place, and never appended twice to a string that already carries one.
+//
+// Each mark carries U+FE0E, the VARIATION SELECTOR-15. Both characters have a
+// Unicode emoji presentation as well as a text one, and left to themselves the
+// emoji form is what a system emoji font supplies — which is how ↗ ended up
+// rendering as a coloured tile. FE0E asks for the typographic glyph explicitly.
+// It is invisible and zero-width: it must never be stripped as "whitespace",
+// and it never appears in a string a screen reader announces, because every
+// mark is aria-hidden. See .arrow/.go in multimichel.css for the other half.
+window.MM.MARK_EXTERNAL = "\u2197\uFE0E";
+window.MM.MARK_INTERNAL = "\u2192\uFE0E";
 window.MM.isExternal = function(href){
   return /^(https?:)?\/\//i.test(href || "") || /^mailto:/i.test(href || "");
 };
 window.MM.arrow = function(href){
   if (!href) return "";
-  return window.MM.isExternal(href) ? " ↗" : " →";
+  return " " + (window.MM.isExternal(href) ? window.MM.MARK_EXTERNAL : window.MM.MARK_INTERNAL);
 };
 // The action arrow for an editorial row. It is rendered as a SIBLING of the
 // title, not appended to the title text, so it holds one quiet position at the
 // row's right edge and a wrapping title never has to flow around it.
 // Compact navigation labels ("ALL WRITING →") keep their arrow inline in the
-// markup — they are labels, not rows.
+// markup — but as the same <span>, with the same class family, so there is one
+// arrow treatment on the site and not two.
 window.MM.actionMark = function(href){
   if (!href) return "";
   return '<span class="go" aria-hidden="true">'
-       + (window.MM.isExternal(href) ? '↗' : '→') + '</span>';
+       + (window.MM.isExternal(href) ? window.MM.MARK_EXTERNAL : window.MM.MARK_INTERNAL)
+       + '</span>';
 };
 // External links leave the site: new tab + full rel. Internal links stay put.
 window.MM.linkAttrs = function(href){

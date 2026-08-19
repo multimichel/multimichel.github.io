@@ -5,33 +5,93 @@
    No hardcoded colors, sizes, fonts, or spacing anywhere else.
    ============================================================ */
 
-/* Licensed originals, registered under the single family names the
-   --font-* tokens below point to. Each weight is a separate static
-   file, so weight is what selects between them — never rename a
-   family per-weight (that's what broke the "Agrandir Tight Black" /
-   "Family Heavy" / "Family Medium" split before this token file). */
+/* ---------- FONT FILES ----------
+   Agrandir is the IDENTITY face and is licensed for this site — it stays,
+   untouched, on the wordmark and the labels.
+
+   Family and Founders Grotesk (Klim) are not licensed here; their name tables
+   say so out loud ("Not Licensed for Desktop Use"). They are replaced by the
+   two open-licence faces that stand closest to them:
+
+     Family           → Fraunces        (OFL, variable: opsz · wght · SOFT · WONK)
+     Founders Grotesk → Hanken Grotesk  (OFL, variable: wght)
+
+   Both replacements are VARIABLE, so one file per subset covers every weight
+   the site asks for and the old per-weight file split disappears. Licences
+   ship beside them (fonts/*-OFL.txt).
+
+   The metrics are NOT the same as the originals, so the --type-* values below
+   were re-tuned against them rather than carried over. See "REPLACEMENT
+   TUNING" under ---------- TYPE ----------. */
 @font-face{font-family:"Agrandir";src:url("fonts/Agrandir-TightBlack.ttf") format("truetype");font-weight:900;font-display:swap}
-@font-face{font-family:"Family";src:url("fonts/family-heavy.ttf") format("truetype");font-weight:800;font-display:swap}
-@font-face{font-family:"Family";src:url("fonts/family-medium.ttf") format("truetype");font-weight:500;font-display:swap}
-@font-face{font-family:"Founders Grotesk";src:url("fonts/FoundersGrotesk-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
-@font-face{font-family:"Founders Grotesk";src:url("fonts/FoundersGrotesk-Medium.ttf") format("truetype");font-weight:500;font-display:swap}
-@font-face{font-family:"Founders Grotesk";src:url("fonts/FoundersGrotesk-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Fraunces";src:url("fonts/Fraunces-latin.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Fraunces";src:url("fonts/Fraunces-latin-ext.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Hanken Grotesk";src:url("fonts/HankenGrotesk-latin.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Hanken Grotesk";src:url("fonts/HankenGrotesk-latin-ext.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
 
 :root {
 
   /* ---------- FONTS ----------
-     DECISION PENDING: licensed originals vs free stack.
-     Swap by changing these three lines only. Nothing else
-     in the codebase may name a font family directly.
+     DECISION MADE: free stack for the two text faces, Agrandir kept.
+     Nothing else in the codebase may name a font family directly.
 
-     Licensed originals:      Free replacements (Google Fonts):
-     --font-serif:  "Family"            → "Fraunces"
-     --font-grotesk: "Founders Grotesk" → "Hanken Grotesk"
-     --font-label:  "Agrandir"          → "Bricolage Grotesque"
-  */
-  --font-serif: "Family", "Fraunces", Georgia, serif;
-  --font-grotesk: "Founders Grotesk", "Hanken Grotesk", system-ui, sans-serif;
-  --font-label: "Agrandir", "Bricolage Grotesque", system-ui, sans-serif;
+       --font-serif    display + editorial serif   Fraunces        (was Family)
+       --font-grotesk  running body + metadata     Hanken Grotesk  (was Founders)
+       --font-label    IDENTITY — wordmark, nav,
+                       section labels, chips       Agrandir        (unchanged)
+
+     --font-label has no free substitute listed on purpose: Agrandir IS the
+     identity here. If it ever fails to load the generic sans is a fallback,
+     not a replacement. */
+  --font-serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-grotesk: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-label: "Agrandir", system-ui, sans-serif;
+
+  /* The action mark's own stack. ↗ (U+2197) and → (U+2192) are outside every
+     webfont this site loads, so the mark ALWAYS comes from a fallback — and
+     left to the system fallback, a platform with a colour emoji font resolves
+     ↗ to the emoji arrow. Naming the text symbol fonts that do carry these
+     two glyphs means the cascade finds a typographic arrow before it can ever
+     reach an emoji font. The grotesk leads so that anything else inside the
+     mark's span still sets as body text; the tail is the part that does the
+     work, and it must never be trimmed. */
+  --font-arrow: "Hanken Grotesk", "Apple Symbols", "Segoe UI Symbol",
+                "Noto Sans Symbols 2", "DejaVu Sans", system-ui, sans-serif;
+
+  /* ---------- Fraunces' two variable axes that matter here ----------
+
+     WONK. Fraunces ships its "wonky" alternates ON by default (WONK 1): the
+     circled, ornamental ampersand plus flicked h / m / n / s. That & is wrong
+     for "Olá & Welcome" — it reads as a logo, not a conjunction. WONK 0 is the
+     family's OWN conventional set, so the fix stays inside Fraunces rather than
+     borrowing an & from an unrelated face. Both settings below carry it.
+
+     opsz. This is the axis that made a naive swap look wrong. Family is a
+     single, non-optical face: it holds ONE proportion from 14px to 148px. Left
+     on `font-optical-sizing: auto` Fraunces does the opposite — it drives opsz
+     off the font-size, so a 17px row title got the 17pt TEXT cut, which is 10
+     to 20% wider and much heavier than Family, and eleven archive titles
+     wrapped an extra line on a phone that had never wrapped before. So opsz is
+     PINNED, and the design's own two tiers each get the cut that matches
+     Family at that tier:
+
+       --serif-text     opsz 60   row titles, card titles, case-study headings.
+                                  Reproduces Family's set width and colour at
+                                  17px almost exactly. Inherited from <body>,
+                                  so it is what the serif does unless told
+                                  otherwise.
+       --serif-display  opsz 110  heroes, the pull quote, year headings. Where
+                                  Fraunces' set width lands within a couple of
+                                  percent of Family's at the same cap-height,
+                                  which is what brings the original line breaks
+                                  back — "It only looks like a / straight line
+                                  in / hindsight." at every width.
+
+     Do not push --serif-text toward the display value: at 17px opsz 110 goes
+     spindly, and legibility is the thing the text tier exists to protect. */
+  --serif-text: "opsz" 60, "WONK" 0;
+  --serif-display: "opsz" 110, "WONK" 0;
 
   /* ---------- COLOR ---------- */
   --paper: #F8F5F2;        /* page background — never pure white */
@@ -48,7 +108,37 @@
                               CASE STUDY label, hovers. Use sparingly. */
   --highlight: #F5C518;    /* hand-drawn quote highlight (verify against Figma) */
 
-  /* ---------- TYPE ---------- */
+  /* ---------- TYPE ----------
+     REPLACEMENT TUNING — read this before "correcting" any number below.
+
+     The px values here are NOT the original design's numbers. Fraunces and
+     Hanken Grotesk are set on different bodies than Family and Founders, so
+     carrying the old numbers across would have changed the design:
+
+                       cap/em      x-height/em
+       Family   →  Fraunces      .660 → .700    .468 → .482
+       Founders →  Hanken        .630 → .697    .437 → .493
+
+     Hanken paints ~13% larger and ~11% wider at the same px: dropped in at
+     24px it pushed the About prose from 7 lines to 8 and the intro from 6 to
+     7. So each face is scaled back to the ORIGINAL optical size — matching
+     x-height (text) and cap-height (display) — which also restores the
+     original line lengths:
+
+       serif  ×0.945   (660 / 700 cap)
+       sans   ×0.885   (24px Founders ≡ 21.25px Hanken, by x-height and by measure)
+
+     The serif's set width is a separate problem, solved separately by pinning
+     opsz — see --serif-text / --serif-display above. These two scales assume
+     that pinning; without it no size below is right.
+
+     LEADING IS THEN HELD IN ABSOLUTE TERMS. Body copy still sets on a 35.5px
+     line at desktop; the RATIO rises (1.48 → 1.67) purely because the em it is
+     a ratio OF got smaller. Same apparent type size, same line length, same
+     rhythm — that is the whole point. Scaling the ratio back down to "look
+     normal" would tighten the page by ~17% and undo the match.
+
+     Anything the label face (Agrandir) sets is untouched: it did not change. */
   /* Masthead — label face, 900, uppercase.
      Leading is declared in px, not inherited: body's 1.5 ratio is a body-copy
      value and on 24px produced a 36px line box — off the 8pt grid (36 = 4×8+4).
@@ -70,22 +160,30 @@
   --pen-thickness: 0.34rem;
   --pen-thickness-hover: 0.42rem;
 
-  /* Hero — serif Heavy/Black */
-  --type-hero-size: 148px;
-  --type-hero-tracking: -2.664px;
+  /* Hero — serif Heavy/Black. 148 → 140: Fraunces' caps are 6% deeper than
+     Family's, so 140px Fraunces stands exactly as tall as 148px Family did.
+     Tracking moves from px to em because it now has to hold across the whole
+     clamp — the fixed -2.664px WAS -0.018em, but only at the 148px end. */
+  --type-hero-size: 140px;
+  --type-hero-tracking: -0.018em;
 
-  /* Intro body — grotesk Regular (+ Bold for emphasis) */
-  --type-body-size: 24px;
+  /* Intro body — grotesk Regular (+ Bold for emphasis).
+     24 → 21.25 is the sans scale; the 35.5px line is the ORIGINAL leading, kept. */
+  --type-body-size: 21.25px;
   --type-body-leading: 35.5px;
   /* Running body text is fluid, and every body surface must use the SAME
      ramp — a fixed 24px next to a clamped one reads as two different type
      sizes on a phone even though they match on desktop. */
-  --type-body-fluid: clamp(17px, 2vw, 24px);
-  --type-body-leading-ratio: 1.48;
+  --type-body-fluid: clamp(15.5px, 1.8vw, 21.25px);
+  /* 21.25 × 1.67 = 35.5px — the ORIGINAL desktop line, to the decimal; and
+     15.5 × 1.67 = 25.9px against the old 17 × 1.48 = 25.2px on a phone. See
+     REPLACEMENT TUNING above for why the ratio rises rather than the leading. */
+  --type-body-leading-ratio: 1.67;
 
-  /* Editorial row title — serif Medium */
-  --type-row-title-size: 18px;
-  --type-row-title-leading: 28.8px;
+  /* Editorial row title — serif Medium. 18 → 17 on the serif scale; the line
+     box stays where it was (28.8 → 28) so row heights do not move. */
+  --type-row-title-size: 17px;
+  --type-row-title-leading: 28px;
 
   /* Chips and micro-labels — the tier BELOW section labels: taxonomy chips,
      UPCOMING, archive filters, year counts. Was typed as 11px in four places
@@ -94,26 +192,28 @@
   --type-chip-tracking: 1.1px;
 
   /* Secondary description under a row title / inside a case-study grid. */
-  --type-sub-size: 15px;
+  --type-sub-size: 13.5px;
 
-  /* Editorial row metadata — grotesk Medium */
-  --type-row-meta-size: 14px;
+  /* Editorial row metadata — grotesk Medium. 14 → 12.5 on the sans scale;
+     18px leading is the original and is deliberately not rescaled. */
+  --type-row-meta-size: 12.5px;
   --type-row-meta-leading: 18px;
 
   /* Wrapped row titles must read as ONE title, not two lines of prose.
-     Desktop keeps the roomier 28.8px; mobile tightens to a ratio so a
+     Desktop keeps the roomier 28px; mobile tightens to a ratio so a
      two-line serif title stays a single typographic unit. */
-  --type-row-title-leading-mobile: 1.12;
-  --type-row-meta-leading-mobile: 1.25;
+  --type-row-title-leading-mobile: 1.19;   /* 17 × 1.19 = the old 18 × 1.12 */
+  --type-row-meta-leading-mobile: 1.40;   /* 12.5 × 1.40 = the old 14 × 1.25 */
   --gap-row-title-to-meta: 12px;
 
-  /* Quote — serif Medium, centered */
-  --type-quote-size: 48px;
-  --type-quote-leading: 50px;
-  --type-quote-tracking: -0.5px;
+  /* Quote — serif Medium, centered. Serif scale, and the tracking follows the
+     hero's move to em so it survives the clamp. */
+  --type-quote-size: 45px;
+  --type-quote-leading: 48.5px;
+  --type-quote-tracking: -0.0104em;
 
   /* Case-study title — serif Medium */
-  --type-case-title-size: 28px;
+  --type-case-title-size: 26.5px;
 
   /* ---------- LAYOUT ---------- */
   /* Measured off the Figma redlines (Frame 5):
@@ -228,13 +328,24 @@
   --gutter-page-mobile: 24px;
   --block-marker-mobile: 20px;
 
+  /* Uppercase grotesk micro-labels — figure captions, the footer fineprint,
+     case-study captions and stat labels. These used to borrow
+     --type-label-size (13px), which is the AGRANDIR label size. That worked
+     while the grotesk was Founders, whose caps are 10% shallower than
+     Agrandir's; Hanken's caps are within 3% of Agrandir's, so at a shared 13px
+     a caption would now set as loud as a section label. Its own token, at the
+     size that reproduces the original caption. */
+  --type-caption-size: 11.5px;
+
   /* Micro-copy not covered by the Figma type scale (e.g. the "Booking a
      conference?" aside under Speaking). */
-  --type-aside-size: 16px;
+  --type-aside-size: 14px;
 
   /* About / contact surfaces — outside node 1:1988's scope. */
   --portrait-w: 480px;     /* constrained width for a vertical portrait figure */
-  --measure: 720px;        /* running prose measure (~70ch at 24px) */
+  --measure: 720px;        /* running prose measure. Unchanged on purpose: the
+                              measure is the design; the type was scaled to fit
+                              it, not the other way round. */
   --measure-form: 560px;   /* form column — narrower than prose on purpose */
-  --type-field-size: 20px; /* input text: large enough to feel authored, not admin */
+  --type-field-size: 17.5px; /* input text: large enough to feel authored, not admin */
 }

@@ -11,7 +11,7 @@ python3 -m http.server 8080
 
 | File | What it is |
 |---|---|
-| `tokens.css` | **The only place visual values live.** Colour, type, spacing, grid. Loaded first, once. |
+| `tokens.css` | **The only place visual values live.** Colour, type, spacing, grid, and the `@font-face` block. Loaded first, once. |
 | `multimichel.css` | Page styles. References tokens, defines nothing itself. |
 | `case-study.css` | Dark theme for the two case-study pages. |
 | `grid-overlay.css/.js` | Spec overlay — **press `G`**. Dev tool: hidden until summoned, and nothing renders for a visitor who never presses the key. |
@@ -19,6 +19,26 @@ python3 -m http.server 8080
 
 Pages: `index.html`, `about.html`, `contact.html`, `work-atlassian.html`,
 `work-booking.html`, `archive.html`.
+
+## Fonts
+
+Three faces, self-hosted from `fonts/`, no external requests:
+
+| Role | Face | Note |
+|---|---|---|
+| Identity — wordmark, nav, section labels | **Agrandir Tight Black** | licensed for this site |
+| Display + editorial serif | **Fraunces** (variable) | OFL, standing in for Klim's *Family* |
+| Body + metadata | **Hanken Grotesk** (variable) | OFL, standing in for Klim's *Founders Grotesk* |
+
+The Klim files were removed: their name tables carry a "Not Licensed for
+Desktop Use" notice, so they could not ship. The replacement sizes in
+`tokens.css` are **not** the original design's numbers — the faces set on
+different bodies, so each was re-tuned until the composition matched on screen.
+`tokens.css` explains every value under "REPLACEMENT TUNING", and
+`DESIGN_SYSTEM.md` §7.1 records the mapping. Two Fraunces settings there are
+deliberate and load-bearing: `WONK 0` (its conventional ampersand, not the
+ornamental one) and a pinned `opsz` (Family is non-optical; automatic optical
+sizing ran the serif 10–20% wide at text sizes).
 
 ## Design rules
 
