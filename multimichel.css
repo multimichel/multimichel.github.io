@@ -12,10 +12,11 @@ body{
   color:var(--slate);font-family:var(--font-grotesk);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;
   /* Declared ONCE, here, because font-variation-settings inherits: it reaches
      every serif surface on every page without a per-component repeat, and the
-     faces that have no such axes (Agrandir, Hanken Grotesk) ignore it. The text
-     tier is the default; only display surfaces override it. See tokens.css for
-     why opsz is pinned rather than left on `auto`. */
-  font-variation-settings:var(--serif-text);
+     faces that have no such axes (Agrandir, Hanken Grotesk) ignore it. The
+     EDITORIAL recipe is the default — most of the serif on this site is row
+     titles — and the two display surfaces override it. See tokens.css for the
+     three recipes and why opsz is pinned per role rather than left on `auto`. */
+  font-variation-settings:var(--serif-editorial);
 }
 /* height:auto is not optional once images carry intrinsic width/height
    attributes: without it the HTML height attribute dictates layout height and
@@ -24,7 +25,11 @@ body{
    while CSS keeps control of the rendered size. */
 img{max-width:100%;height:auto;display:block}
 a{color:inherit;text-decoration:none}
-b,strong{font-weight:700}
+/* Emphasis inside running copy. --weight-emphasis, not a bare 700: see
+   tokens.css for why Hanken needs more than 700 to match what Founders Bold
+   did against its regular. Headings and labels set their own weight and are
+   deliberately not routed through this. */
+b,strong{font-weight:var(--weight-emphasis)}
 
 /* Left-biased canvas: anchored to the page edge, not centered with auto margins.
    Inside the paper column, text is inset a further 16px so it lands at
@@ -77,8 +82,8 @@ nav.main a[aria-current="page"]{color:var(--ink)}
 .hero{padding-top:var(--space-192)}
 h1.display{
   font-family:var(--font-serif);
-  font-weight:800;
-  font-variation-settings:var(--serif-display);
+  font-weight:var(--serif-hero-weight);
+  font-variation-settings:var(--serif-hero);
   /* Clamp floor and slope move with --type-hero-size on the same serif scale,
      so the headline holds its optical size at EVERY width — not only at the
      1496px reference. 52/10.2vw/148 → 49/9.6vw/140. */
@@ -109,11 +114,13 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
 .quote{
   text-align:center;
   font-family:var(--font-serif);
-  font-weight:500;
-  font-variation-settings:var(--serif-display);
-  /* The clamp keeps the ORIGINAL 4.6vw slope and the original 28px floor —
-     with the display optical size pinned, only the ceiling had to move. */
-  font-size:clamp(28px,4.6vw,var(--type-quote-size));
+  font-weight:var(--serif-statement-weight);
+  font-variation-settings:var(--serif-statement);
+  /* Ceiling holds cap-height parity with the original 48px Family setting, so
+     the desktop quote keeps its presence. Only the floor moved: the statement
+     recipe sets wider than the old one, and at 28px the phone lost the two-line
+     composition — "of" orphaned onto its own line and the highlight came apart. */
+  font-size:clamp(24px,4.3vw,var(--type-quote-size));
   line-height:1.104;
   letter-spacing:var(--type-quote-tracking);
   color:var(--ink-quote);
@@ -273,7 +280,7 @@ a.row:hover,a.row:focus-visible{background:var(--slate);outline:none}
 a.row:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
 .rowlist .row:first-child{border-top:1px solid var(--rule-light)}
 
-.row .t{font-family:var(--font-serif);font-weight:500;font-size:var(--type-row-title-size);line-height:var(--type-row-title-leading);color:var(--ink)}
+.row .t{font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);font-size:var(--type-row-title-size);line-height:var(--type-row-title-leading);color:var(--ink)}
 a.row:hover .t,a.row:focus-visible .t{color:var(--orange)}
 .row .m{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
 .row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:var(--type-sub-size);line-height:1.4;color:var(--muted);margin-top:var(--space-8);max-width:640px}
@@ -509,7 +516,7 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 .work-card .zoomframe img{width:100%;height:100%;object-fit:cover}
 /* CASE STUDY label uses the label face, all-caps — matching node 13:688. */
 .work-label{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);color:var(--orange);text-transform:uppercase;margin-top:var(--space-16)}
-.work-card-title{position:relative;display:inline-block;font-family:var(--font-serif);font-weight:500;font-size:clamp(18px,1.6vw,22.5px);line-height:1.27;color:var(--ink);margin-top:var(--space-8)}
+.work-card-title{position:relative;display:inline-block;font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);font-size:clamp(19px,1.7vw,24px);line-height:1.2;color:var(--ink);margin-top:var(--space-8)}
 /* Hover: the same hand-drawn brush as the quote, in white, swiped behind the
    title. The title colour does not change — the brush is the whole gesture. */
 .work-card-title .brush{
@@ -538,8 +545,8 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
    in its own element so a wrapping title never reflows around it. */
 .media-card-title{
   display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-16);
-  font-family:var(--font-serif);font-weight:500;font-size:var(--type-row-title-size);
-  line-height:1.33;color:var(--ink);margin-top:var(--space-8);
+  font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);font-size:var(--type-row-title-size);
+  line-height:1.25;color:var(--ink);margin-top:var(--space-8);
 }
 .media-card-title .go{flex:none}
 .media-card:hover .go{color:var(--orange)}

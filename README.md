@@ -35,10 +35,15 @@ Desktop Use" notice, so they could not ship. The replacement sizes in
 `tokens.css` are **not** the original design's numbers — the faces set on
 different bodies, so each was re-tuned until the composition matched on screen.
 `tokens.css` explains every value under "REPLACEMENT TUNING", and
-`DESIGN_SYSTEM.md` §7.1 records the mapping. Two Fraunces settings there are
-deliberate and load-bearing: `WONK 0` (its conventional ampersand, not the
-ornamental one) and a pinned `opsz` (Family is non-optical; automatic optical
-sizing ran the serif 10–20% wide at text sizes).
+`DESIGN_SYSTEM.md` §7.1 records the mapping.
+
+Fraunces is set **three ways, not one** — `--serif-hero`, `--serif-statement`
+and `--serif-editorial` — because the original design does not use its serif the
+same way at 148px and at 18px. Each pins `opsz`, `SOFT` and `WONK` together with
+a weight. None of those are defaults: `WONK 0` is what keeps the conventional
+ampersand in *Olá & Welcome*, `SOFT` carries the small serif's warmth, and
+`opsz` is pinned per role because Family is non-optical and automatic optical
+sizing ran the serif 10–20% wide at text sizes.
 
 ## Design rules
 

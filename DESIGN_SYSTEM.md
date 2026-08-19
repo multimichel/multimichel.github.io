@@ -265,16 +265,42 @@ substitute, and it is not up for replacement.
 | Family — Heavy / Medium | **Fraunces** (variable: opsz · wght · SOFT · WONK) | `Fraunces-latin.woff2`, `Fraunces-latin-ext.woff2` | OFL — `Fraunces-OFL.txt` |
 | Founders Grotesk — Regular / Medium / Bold | **Hanken Grotesk** (variable: wght) | `HankenGrotesk-latin.woff2`, `HankenGrotesk-latin-ext.woff2` | OFL — `HankenGrotesk-OFL.txt` |
 
-Two things about Fraunces are not defaults and must not be "tidied away":
+### Fraunces is set three ways, not one
 
-- **WONK is off.** Fraunces ships its wonky alternates on, which is where the
-  ornamental, circled ampersand in *Olá & Welcome* came from. `WONK 0` is
-  Fraunces' own conventional set — the fix is family-native; no second font is
-  borrowed for one glyph.
-- **opsz is pinned, not `auto`.** Family is a single non-optical face and holds
-  one proportion from 14px to 148px. Automatic optical sizing made Fraunces do
-  the opposite and run 10–20% wide at text sizes. Two pinned cuts — text (60)
-  and display (110) — reproduce Family's proportions at both ends.
+The original design does not use its serif the same way at 148px and at 18px,
+so neither does the replacement. Three recipes, defined in `tokens.css`:
+
+| Recipe | Axes | Weight | Used by |
+|---|---|---|---|
+| `--serif-hero` | `opsz 48, SOFT 18, WONK 0` | 700 | `h1.display` on every page, case-study stat figures |
+| `--serif-statement` | `opsz 56, SOFT 6, WONK 0` | 625 | the homepage quote, `.yearhead`, case-study pull quotes |
+| `--serif-editorial` | `opsz 80, SOFT 40, WONK 0` | 500 | row titles, card titles, case-study headings — inherited from `<body>`, so it is the default |
+
+What each axis is doing, and why none of it is a default to be tidied away:
+
+- **WONK 0 in all three.** Fraunces ships its wonky alternates on, which is
+  where the ornamental, circled ampersand in *Olá & Welcome* came from. `WONK 0`
+  is Fraunces' own conventional set — the fix is family-native; no second font
+  is borrowed for one glyph. SOFT above 0 does *not* bring the ornamental form
+  back at these optical sizes; that was checked on the rendered hero.
+- **opsz is pinned per role, not `auto`.** Family is a single non-optical face
+  holding one proportion from 14px to 148px, and automatic optical sizing made
+  Fraunces do the opposite. Note the hero takes the LOW opsz and the row titles
+  the high one — the inverse of automatic optical sizing, because here opsz is
+  being used for character, not size compensation.
+- **SOFT carries the warmth** of the small editorial serif without adding
+  weight. Deliberately near zero on the quote: SOFT and a large size together
+  go blobby.
+
+The editorial recipe lands within 0.2% of Family Medium's set width, which is
+why row titles, card titles and case-study headings sit at the ORIGINAL sizes
+with no scaling at all — and reproduce the original's line breaks across all 57
+archive rows. Only the two display tiers are scaled, on cap-height.
+
+`--weight-emphasis` (800) covers `<strong>` in running copy: Hanken's 700 sits
+much closer to its own regular than Founders Grotesk Bold sat to Founders
+Regular, so emphasis was reading as a semibold. Heading and label weights are
+untouched.
 
 The re-tuned sizes and the reasoning behind each live in `tokens.css` under
 "REPLACEMENT TUNING".

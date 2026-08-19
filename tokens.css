@@ -59,39 +59,52 @@
   --font-arrow: "Hanken Grotesk", "Apple Symbols", "Segoe UI Symbol",
                 "Noto Sans Symbols 2", "DejaVu Sans", system-ui, sans-serif;
 
-  /* ---------- Fraunces' two variable axes that matter here ----------
+  /* ---------- Fraunces recipes, one per role ----------
 
-     WONK. Fraunces ships its "wonky" alternates ON by default (WONK 1): the
-     circled, ornamental ampersand plus flicked h / m / n / s. That & is wrong
-     for "Olá & Welcome" — it reads as a logo, not a conjunction. WONK 0 is the
-     family's OWN conventional set, so the fix stays inside Fraunces rather than
-     borrowing an & from an unrelated face. Both settings below carry it.
+     Fraunces is not set the same way everywhere, because the original design
+     did not use its serif the same way everywhere. Family Heavy at 148px and
+     Family Medium at 18px are different typographic jobs, and Fraunces has the
+     axes to say so. One configuration everywhere is what made the serif read
+     as a single flat texture; three recipes restore the ORIGINAL RELATIONSHIP:
 
-     opsz. This is the axis that made a naive swap look wrong. Family is a
-     single, non-optical face: it holds ONE proportion from 14px to 148px. Left
-     on `font-optical-sizing: auto` Fraunces does the opposite — it drives opsz
-     off the font-size, so a 17px row title got the 17pt TEXT cut, which is 10
-     to 20% wider and much heavier than Family, and eleven archive titles
-     wrapped an extra line on a phone that had never wrapped before. So opsz is
-     PINNED, and the design's own two tiers each get the cut that matches
-     Family at that tier:
+       big serif      substantial and confident
+       smaller serif  warm, editorial
+       body sans      quiet
+       Agrandir       identity
 
-       --serif-text     opsz 60   row titles, card titles, case-study headings.
-                                  Reproduces Family's set width and colour at
-                                  17px almost exactly. Inherited from <body>,
-                                  so it is what the serif does unless told
-                                  otherwise.
-       --serif-display  opsz 110  heroes, the pull quote, year headings. Where
-                                  Fraunces' set width lands within a couple of
-                                  percent of Family's at the same cap-height,
-                                  which is what brings the original line breaks
-                                  back — "It only looks like a / straight line
-                                  in / hindsight." at every width.
+     WONK 0 in all three. Fraunces ships its wonky alternates on, which is
+     where the ornamental circled ampersand in "Olá & Welcome" came from; WONK
+     0 is the family's own conventional set. Never drop it from a recipe — and
+     note SOFT above 0 does NOT bring the ornamental & back at these optical
+     sizes, which was checked on the rendered hero, not assumed.
 
-     Do not push --serif-text toward the display value: at 17px opsz 110 goes
-     spindly, and legibility is the thing the text tier exists to protect. */
-  --serif-text: "opsz" 60, "WONK" 0;
-  --serif-display: "opsz" 110, "WONK" 0;
+     opsz is the axis doing the real work, and it is PINNED per role rather
+     than left on `font-optical-sizing: auto`. Family is a single non-optical
+     face; auto made Fraunces widen and flatten as the type got smaller, which
+     is backwards from what this design wants. Low opsz = sturdy, low contrast.
+     High opsz = finer, more contrast. So the hero takes the LOW number and the
+     row titles the high one — deliberately the inverse of automatic optical
+     sizing, because here it is character, not size compensation.
+
+     SOFT rounds the terminals. It is what makes the small serif warm without
+     making it heavier. Kept low on the quote on purpose: SOFT and a big size
+     together go blobby. */
+  --serif-hero: "opsz" 48, "SOFT" 18, "WONK" 0;
+  --serif-hero-weight: 700;
+
+  --serif-statement: "opsz" 56, "SOFT" 6, "WONK" 0;
+  --serif-statement-weight: 625;
+
+  --serif-editorial: "opsz" 80, "SOFT" 40, "WONK" 0;
+  --serif-editorial-weight: 500;
+
+  /* Emphasis inside running body copy. Hanken's 700 sits far closer to its own
+     regular than Founders Grotesk Bold sat to Founders Regular, so <strong>
+     was reading as a semibold and the company names stopped landing. 800
+     restores the original's stem contrast against the body while still
+     belonging inside the sentence; 850 starts to read as a separate weight.
+     This is BODY emphasis only — heading and label weights are untouched. */
+  --weight-emphasis: 800;
 
   /* ---------- COLOR ---------- */
   --paper: #F8F5F2;        /* page background — never pure white */
@@ -125,12 +138,13 @@
      x-height (text) and cap-height (display) — which also restores the
      original line lengths:
 
-       serif  ×0.945   (660 / 700 cap)
+       serif  ×0.945   (660 / 700 cap) — display tiers only; see the row title
        sans   ×0.885   (24px Founders ≡ 21.25px Hanken, by x-height and by measure)
 
      The serif's set width is a separate problem, solved separately by pinning
-     opsz — see --serif-text / --serif-display above. These two scales assume
-     that pinning; without it no size below is right.
+     opsz — see the three recipes above. The scales assume that pinning; without
+     it no size below is right. Note the EDITORIAL tier ends up needing no
+     scaling at all, because its recipe already matches Family Medium's width.
 
      LEADING IS THEN HELD IN ABSOLUTE TERMS. Body copy still sets on a 35.5px
      line at desktop; the RATIO rises (1.48 → 1.67) purely because the em it is
@@ -180,10 +194,13 @@
      REPLACEMENT TUNING above for why the ratio rises rather than the leading. */
   --type-body-leading-ratio: 1.67;
 
-  /* Editorial row title — serif Medium. 18 → 17 on the serif scale; the line
-     box stays where it was (28.8 → 28) so row heights do not move. */
-  --type-row-title-size: 17px;
-  --type-row-title-leading: 28px;
+  /* Editorial row title — serif Medium. Back at the ORIGINAL 18px/28.8px: the
+     editorial recipe sets an n within 0.2% of Family Medium's, so Fraunces at
+     Family's own size reproduces its line breaks — 57/57 archive rows, at 360,
+     390 and 1496. This is the one place the replacement needed no scaling at
+     all, and it is why the row titles are not on the serif scale below. */
+  --type-row-title-size: 18px;
+  --type-row-title-leading: 28.8px;
 
   /* Chips and micro-labels — the tier BELOW section labels: taxonomy chips,
      UPCOMING, archive filters, year counts. Was typed as 11px in four places
@@ -200,9 +217,9 @@
   --type-row-meta-leading: 18px;
 
   /* Wrapped row titles must read as ONE title, not two lines of prose.
-     Desktop keeps the roomier 28px; mobile tightens to a ratio so a
+     Desktop keeps the roomier 28.8px; mobile tightens to a ratio so a
      two-line serif title stays a single typographic unit. */
-  --type-row-title-leading-mobile: 1.19;   /* 17 × 1.19 = the old 18 × 1.12 */
+  --type-row-title-leading-mobile: 1.12;
   --type-row-meta-leading-mobile: 1.40;   /* 12.5 × 1.40 = the old 14 × 1.25 */
   --gap-row-title-to-meta: 12px;
 
@@ -212,8 +229,9 @@
   --type-quote-leading: 48.5px;
   --type-quote-tracking: -0.0104em;
 
-  /* Case-study title — serif Medium */
-  --type-case-title-size: 26.5px;
+  /* Case-study title — serif Medium. Original size, same reason as the row
+     title: the editorial recipe needs no scaling against Family Medium. */
+  --type-case-title-size: 28px;
 
   /* ---------- LAYOUT ---------- */
   /* Measured off the Figma redlines (Frame 5):
