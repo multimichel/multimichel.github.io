@@ -480,6 +480,11 @@ nav.main a:focus-visible,.sechead .more:focus-visible{outline:2px solid var(--in
    A vertical portrait must not be forced into the 16:9 landscape frame that
    figure.full uses. Constrained width, left-aligned with the text column —
    the canvas is left-oriented, so a centred portrait would fight it. */
+/* A vertical portrait must not be forced into the 16:9 landscape frame that
+   figure.full uses — on the 1066×1600 About photograph that crop showed 37% of
+   the image. Constrained width, left-aligned with the text column, whole frame.
+   This rule was written for that photograph and sat unused while the figure
+   carried .full; the class is the fix, not a new crop. */
 figure.portrait{margin:var(--space-72) 0 0;max-width:var(--portrait-w)}
 figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 
