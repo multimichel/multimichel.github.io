@@ -265,6 +265,46 @@ substitute, and it is not up for replacement.
 | Family — Heavy / Medium | **Fraunces** (variable: opsz · wght · SOFT · WONK) | `Fraunces-latin.woff2`, `Fraunces-latin-ext.woff2` | OFL — `Fraunces-OFL.txt` |
 | Founders Grotesk — Regular / Medium / Bold | **Hanken Grotesk** (variable: wght) | `HankenGrotesk-latin.woff2`, `HankenGrotesk-latin-ext.woff2` | OFL — `HankenGrotesk-OFL.txt` |
 
+### Final visual system — semantic roles
+
+The type system is expressed as ROLES, not as per-section styles. Two things
+that do the same job take the same token; a section never gets typography
+because it is that section.
+
+| Role | Token | Face | Value |
+|---|---|---|---|
+| Lede | `--type-lede-size` · `-leading` · `-tracking` | Hanken | 24px (clamped down on phones) / 1.4 / −0.033em, 400, emphasis 800 |
+| Body | `--type-body-fluid` · `--type-body-leading-ratio` | Hanken | clamp(15.5, 1.8vw, 21.25) / 1.5 |
+| Row title | `--type-row-title-size` · `-leading` | Fraunces | 21px / 28.8px, editorial recipe |
+| Row metadata | `--type-row-meta-size` · `-leading` · `-weight` · `-tracking` | Hanken | 14px / 18px / 650 / −0.4px |
+| Card title, primary | `--type-card-primary-size` | Fraunces | 24px — Work case-study covers |
+| Card title, secondary | `--type-card-secondary-size` | Fraunces | 21px — Media cards |
+| Card title leading | `--type-card-leading` | — | 1.2, shared by both cards |
+| Action mark | `--type-arrow-size` | Agrandir | 1.18rem, 900 |
+
+**Writing, Speaking, Around the internet and the entire Archive are one
+component.** They render through the same `.row` and take the same two row
+tokens. There is no `--writing-title`, and there must never be one: a list of
+titled links anywhere on this site uses the row role.
+
+**Work and Media are the one place two card sizes are correct**, because they
+carry genuinely different hierarchy — a case-study cover outranks a media card.
+Everything else about them is shared: one label rule, one title rule, one
+leading, one spacing stack.
+
+### Spacing roles
+
+| Relationship | Token | Value | Used by |
+|---|---|---|---|
+| Label → title | `--gap-label-to-title` | 8px | row kicker → title, Work label → title, Media label → title |
+| Card cover → label | `--gap-cover-to-label` | 16px | both card types |
+| Row title → metadata | `--gap-row-title-to-meta` | 12px | every row |
+| Between lede paragraphs | `--gap-lede-paragraph` | 24px | every lede |
+
+Repeated relationships are declared ONCE, for every component that performs
+them. No component owns a private copy of a shared value, and none of them is
+achieved with a positional offset.
+
 ### Fraunces is set three ways, not one
 
 The original design does not use its serif the same way at 148px and at 18px,

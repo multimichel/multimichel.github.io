@@ -197,25 +197,47 @@
   --type-hero-size: 140px;
   --type-hero-tracking: -0.018em;
 
-  /* Intro body — grotesk Regular (+ Bold for emphasis).
-     24 → 21.25 is the sans scale; the 35.5px line is the ORIGINAL leading, kept. */
-  --type-body-size: 21.25px;
-  --type-body-leading: 35.5px;
+  /* LEDE — the opening paragraph under a hero. One style, every page that has
+     one: home, About, Contact, Archive and both case studies. Deliberately
+     larger than body copy; it is a different role, not a bigger body. */
+  --type-lede-size: clamp(19px, 2.2vw, 24px);
+  --type-lede-leading: 1.4;
+  /* -0.033em IS the specified -0.8px, at the 24px the spec is written against.
+     As an em it stays proportional when the clamp steps down, where a fixed
+     -0.8px would go disproportionately tight on a phone. */
+  --type-lede-tracking: -0.033em;
+  /* The clamp is the ONE place this pass departs from the stated numbers, and
+     only at the small end: the ceiling is exactly 24px, so every width from
+     ~1090px up is the specified size. Flat 24px in a 294px phone column sets a
+     24-CHARACTER line — "design agencies," alone on a line, the company names
+     breaking mid-list. That is the lede becoming conspicuous, which is the one
+     thing this system is not allowed to do. 19px restores a ~32-character
+     measure and keeps the lede clearly above body copy. */
+  --gap-lede-paragraph: 24px;   /* between the two opening paragraphs */
+
+  /* Running body — About prose, and the ramp everything non-lede sits on.
+     The fixed --type-body-size / --type-body-leading pair that used to sit here
+     is gone: once the lede became its own role nothing referenced them, and a
+     dead token that still states a size is a trap. The fluid pair below is the
+     body role. */
   /* Running body text is fluid, and every body surface must use the SAME
      ramp — a fixed 24px next to a clamped one reads as two different type
      sizes on a phone even though they match on desktop. */
   --type-body-fluid: clamp(15.5px, 1.8vw, 21.25px);
-  /* 21.25 × 1.67 = 35.5px — the ORIGINAL desktop line, to the decimal; and
-     15.5 × 1.67 = 25.9px against the old 17 × 1.48 = 25.2px on a phone. See
-     REPLACEMENT TUNING above for why the ratio rises rather than the leading. */
-  --type-body-leading-ratio: 1.67;
+  /* 1.5, not the 1.67 this used to carry. That number was calibrated when body
+     copy was standing in for the original design's 24px intro; now that the
+     24px role IS the lede, 1.67 left the About prose setting on a 35.5px line
+     under a lede on a 33.6px one — smaller type, airier lines, hierarchy
+     inverted. 1.5 is the original design's own body ratio and puts body back
+     under the lede where it belongs. */
+  --type-body-leading-ratio: 1.5;
 
-  /* Editorial row title — serif Medium. Back at the ORIGINAL 18px/28.8px: the
-     editorial recipe sets an n within 0.2% of Family Medium's, so Fraunces at
-     Family's own size reproduces its line breaks — 57/57 archive rows, at 360,
-     390 and 1496. This is the one place the replacement needed no scaling at
-     all, and it is why the row titles are not on the serif scale below. */
-  --type-row-title-size: 18px;
+  /* CONTENT ROW — Writing, Speaking, Around the internet and the whole Archive
+     are ONE component. There is no per-section row typography and there must
+     never be: if a list of titled links appears anywhere else, it uses these.
+     The 18px/12.5px pairing this replaced was an accidental second tier, not a
+     hierarchy level. */
+  --type-row-title-size: 21px;
   --type-row-title-leading: 28.8px;
 
   /* Chips and micro-labels — the tier BELOW section labels: taxonomy chips,
@@ -224,25 +246,26 @@
   --type-chip-size: 11px;
   --type-chip-tracking: 1.1px;
 
-  /* Secondary description under a row title / inside a case-study grid. */
-  --type-sub-size: 13.5px;
+  /* Secondary description under a row title / inside a case-study grid. Sits
+     ABOVE the metadata in the hierarchy, so it may not be smaller than it. */
+  --type-sub-size: 15px;
 
-  /* Editorial row metadata — grotesk Medium. 14 → 12.5 on the sans scale;
-     18px leading is the original and is deliberately not rescaled.
-     The WEIGHT is the same problem as body emphasis, one tier down: Founders
-     Medium sat firmly under a row title, and Hanken at the nominal 500 went
-     thin and floated away from it — which reads as the gap having grown even
-     though --gap-row-title-to-meta never moved. 650 puts the same mass back
-     under the title. Sizes match on x-height already; this is weight alone. */
-  --type-row-meta-size: 12.5px;
+  /* Row metadata — the line under a row title. 650 rather than a nominal 500:
+     Hanken runs thin where Founders Medium sat firm, and a light metadata line
+     floats away from the title it belongs to, which reads as a spacing fault
+     rather than a weight one. */
+  --type-row-meta-size: 14px;
   --type-row-meta-leading: 18px;
   --type-row-meta-weight: 650;
+  --type-row-meta-tracking: -0.4px;
 
   /* Wrapped row titles must read as ONE title, not two lines of prose.
      Desktop keeps the roomier 28.8px; mobile tightens to a ratio so a
      two-line serif title stays a single typographic unit. */
   --type-row-title-leading-mobile: 1.12;
-  --type-row-meta-leading-mobile: 1.40;   /* 12.5 × 1.40 = the old 14 × 1.25 */
+  /* --type-row-meta-leading-mobile retired: it resolved to 17.5px against a
+     desktop 18px, which is drift, not a breakpoint decision. Metadata sets on
+     one leading at every width. */
   --gap-row-title-to-meta: 12px;
 
   /* Quote — serif Medium, centered. Serif scale, and the tracking follows the
@@ -251,8 +274,16 @@
   --type-quote-leading: 48.5px;
   --type-quote-tracking: -0.0104em;
 
-  /* Case-study title — serif Medium. Original size, same reason as the row
-     title: the editorial recipe needs no scaling against Family Medium. */
+  /* CARDS — Work and Media are genuinely different roles, so this is the one
+     place two title sizes are correct. Primary is the case-study cover and
+     outranks everything else in the grid; secondary is a Media card, which sits
+     at the content-row tier. They share a leading because they share a job: a
+     title that wraps inside a narrow column. */
+  --type-card-primary-size: 24px;
+  --type-card-secondary-size: 21px;
+  --type-card-leading: 1.2;
+
+  /* Case-study page title — serif Medium */
   --type-case-title-size: 28px;
 
   /* ---------- LAYOUT ---------- */
@@ -321,6 +352,13 @@
      applied to every such boundary — never a per-section margin. */
   --gap-section-major: var(--space-160);
   --gap-label-to-rows: 32px;   /* WRITING label → first row */
+  /* ONE canonical label→title relationship. Three components perform this same
+     job — a row's kicker above its title, a Work card's CASE STUDY above its
+     title, a Media card's label above its title — and all three take this
+     token. It is not a general 8px: it is this relationship. */
+  --gap-label-to-title: var(--space-8);
+  /* Card cover → its label. Shared by both card types, same reasoning. */
+  --gap-cover-to-label: var(--space-16);
   --gap-writing-to-speaking: 72px;
 
   /* ---------- MEDIA ---------- */

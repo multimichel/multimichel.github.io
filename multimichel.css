@@ -97,9 +97,24 @@ h1.display{
 }
 @media(max-width:700px){h1.display{letter-spacing:-.03em}}
 
-.lede{max-width:var(--intro-max-width);margin-top:var(--space-32);font-family:var(--font-grotesk);font-weight:400;font-size:var(--type-body-fluid);line-height:var(--type-body-leading-ratio);color:var(--slate)}
-.lede p+p{margin-top:var(--space-16)}
-.lede b{font-weight:700}
+/* ---------- lede ----------
+   The opening paragraph under a hero, wherever there is one: home, About,
+   Contact, Archive and both case studies. ONE style — a page does not get its
+   own lede. Larger than body copy because it is a different role, not because
+   it is an important paragraph. */
+.lede{
+  max-width:var(--intro-max-width);
+  margin-top:var(--space-32);
+  font-family:var(--font-grotesk);
+  font-weight:400;
+  font-size:var(--type-lede-size);
+  line-height:var(--type-lede-leading);
+  letter-spacing:var(--type-lede-tracking);
+  color:var(--slate);
+}
+.lede p+p{margin-top:var(--gap-lede-paragraph)}
+/* Emphasis is the SHARED body emphasis. The 700 that used to sit here was a
+   local override that quietly undercut --weight-emphasis. */
 
 
 /* ---------- photo — 1400×788 reference (16:9) ---------- */
@@ -282,7 +297,7 @@ a.row:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
 
 .row .t{font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);font-size:var(--type-row-title-size);line-height:var(--type-row-title-leading);color:var(--ink)}
 a.row:hover .t,a.row:focus-visible .t{color:var(--orange)}
-.row .m{font-family:var(--font-grotesk);font-weight:var(--type-row-meta-weight);font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
+.row .m{font-family:var(--font-grotesk);font-weight:var(--type-row-meta-weight);font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);letter-spacing:var(--type-row-meta-tracking);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
 .row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:var(--type-sub-size);line-height:1.4;color:var(--muted);margin-top:var(--space-8);max-width:640px}
 /* Metadata and description flip to paper so they stay readable on the slate. */
 a.row:hover .m,a.row:focus-visible .m,
@@ -349,7 +364,7 @@ a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
    Both sit on their own line above the title. They are deliberately NOT the
    same weight: UPCOMING is live, actionable status; a category is a filing
    label that exists to help scanning and must stay behind the title. */
-.row .kicker-line{display:block;margin-bottom:var(--space-8)}
+.row .kicker-line{display:block;margin-bottom:var(--gap-label-to-title)}
 .row .up,.row .cat{
   display:inline-block;
   font-family:var(--font-label);font-weight:900;font-size:var(--type-chip-size);letter-spacing:var(--type-chip-tracking);
@@ -534,14 +549,37 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 .work-card .zoomframe{aspect-ratio:680/425}
 .work-card .zoomframe img{width:100%;height:100%;object-fit:cover}
 /* CASE STUDY label uses the label face, all-caps — matching node 13:688. */
-.work-label{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);color:var(--orange);text-transform:uppercase;margin-top:var(--space-16)}
-.work-card-title{position:relative;display:inline-block;font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);font-size:clamp(19px,1.7vw,24px);line-height:1.2;color:var(--ink);margin-top:var(--space-8)}
+/* Work and Media are ONE anatomy — cover, label, title — so both of the stack's
+   relationships are declared here once, for both cards, and neither card owns a
+   spacing value of its own. Only the title SIZE differs, because Work and Media
+   are genuinely different hierarchy. */
+.work-label,.media-label{
+  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  letter-spacing:var(--type-label-tracking);color:var(--orange);text-transform:uppercase;
+  margin-top:var(--gap-cover-to-label);
+}
+.work-card-title,.media-card-title{
+  font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);
+  line-height:var(--type-card-leading);color:var(--ink);
+  margin-top:var(--gap-label-to-title);
+}
+/* block + fit-content, never inline-block: an inline-block sits on the parent's
+   text baseline, so its line box inherits the parent's strut and leaves a few
+   stray pixels under the title that Media — a flex title — never had. That
+   asymmetry is the whole reason the same 8px measured differently on the two
+   cards. width:fit-content keeps the shrink-to-fit box the brush needs. */
+.work-card-title{position:relative;display:block;width:fit-content;font-size:var(--type-card-primary-size)}
 /* Hover: the same hand-drawn brush as the quote, in white, swiped behind the
    title. The title colour does not change — the brush is the whole gesture. */
 .work-card-title .brush{
   position:absolute;
   left:-3%;top:40%;
   width:106%;height:85%;
+  /* Same escape hatch .hl-mark already carries, for the same reason: the global
+     img{max-width:100%} was capping this at the title's width, so the declared
+     106%/-3% overhang only ever painted on the left and the stroke stopped 3%
+     short on the right. Two brush marks, one treatment — they have to repeat. */
+  max-width:none;
   object-fit:fill;
   z-index:-1;
   pointer-events:none;
@@ -559,13 +597,12 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 .media-card{display:block}
 .media-card .zoomframe{aspect-ratio:1/1}
 .media-card .zoomframe img{width:100%;height:100%;object-fit:cover}
-.media-label{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);color:var(--orange);text-transform:uppercase;margin-top:var(--space-16)}
+
 /* Same anatomy as an editorial row: title left, action mark at the far right,
    in its own element so a wrapping title never reflows around it. */
 .media-card-title{
   display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-16);
-  font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);font-size:var(--type-row-title-size);
-  line-height:1.25;color:var(--ink);margin-top:var(--space-8);
+  font-size:var(--type-card-secondary-size);
 }
 .media-card-title .go{flex:none}
 .media-card:hover .go{color:var(--orange)}
@@ -696,7 +733,6 @@ footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);p
 
   /* Same stack as desktop — only the frame tightens. */
   a.row,div.row{padding:var(--space-16) var(--space-8);margin:0 calc(-1 * var(--space-8))}
-  .row .m{line-height:var(--type-row-meta-leading-mobile)}
   /* A wrapped serif title must read as one unit, not two stacked lines.
      Size is unchanged — only the leading tightens. */
   .row .t{line-height:var(--type-row-title-leading-mobile)}
