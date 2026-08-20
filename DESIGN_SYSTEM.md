@@ -289,8 +289,7 @@ returns the ornamental circled ampersand to *Olá & Welcome*.
 |---|---|---|---|
 | Hero | `--type-hero-size` · `-tracking` | Fraunces | 137px / −0.0131em (the tuned −1.8px at 137) |
 | Quote | `--type-quote-size` · `-tracking` | Fraunces | 45px / 1.104 / −0.0104em |
-| Lede | `--type-lede-size` · `-leading` · `-tracking` | Hanken | 24px / 1.4 / −0.8px · 400, emphasis 800 |
-| Body | `--type-body-fluid` · `--type-body-leading-ratio` | Hanken | clamp(15.5, 1.8vw, 21.25) / 1.5 |
+| Reading style | `--type-body-size` · `--type-body-leading-ratio` | Hanken | 21px / 32px · 400, emphasis 800 (16/24 on a phone) |
 | Row title | `--type-row-title-size` · `-leading` | Fraunces | 21px / 28.8px |
 | Row metadata | `--type-row-meta-size` · `-leading` · `-weight` · `-tracking` | Hanken | 14px / 18px / 650 / −0.4px |
 | Work title | `--type-work-title-size` · `-leading` | Fraunces | 24px / 28.8px |
@@ -298,6 +297,12 @@ returns the ornamental circled ampersand to *Olá & Welcome*.
 | Caption | `--type-caption-size` | Hanken | 11.5px / 17.25px / 0.4px / 500, uppercase |
 | Fineprint | `--type-fineprint-*` | Hanken | 12px / 17.25px / 1px / 800 — its own micro-label role, not a caption |
 | Action mark | `--type-arrow-size` | Agrandir | 1.18rem / 900 |
+
+**There is no lede type tier.** The homepage intro, the About prose, the
+Archive intro and both case-study ledes are all the same Hanken reading style.
+What makes the intro an intro is where it sits and how wide it runs —
+`--intro-max-width` is 800px against the prose measure of 720px. Hierarchy comes
+from composition, not from a paragraph having a size of its own.
 
 **Writing, Speaking, Around the internet and the whole Archive are one
 component.** They render through the same `.row` and take the same two row

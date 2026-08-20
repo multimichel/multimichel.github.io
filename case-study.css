@@ -45,9 +45,13 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
    ratio. The 1.81 that used to sit here was left over from a superseded
    calibration and set the case-study body looser than any other copy on the
    site for no stated reason. */
-.cs p{max-width:680px;font-family:var(--font-grotesk);font-size:15px;line-height:var(--type-body-leading-ratio);color:var(--dark-dim)}
-.cs p+p{margin-top:16px}
-.cs p b{color:var(--dark-ink)}
+/* :not([class]) so this only claims UNCLASSED paragraphs. It used to claim every
+   <p> inside .cs, which meant it also styled .lede and .cs-back — both of which
+   are their own roles and were silently losing their size, face and weight to a
+   body rule that simply sat later and more specific. */
+.cs p:not([class]){max-width:680px;font-family:var(--font-grotesk);font-size:15px;line-height:var(--type-body-leading-ratio);color:var(--dark-dim)}
+.cs p:not([class])+p:not([class]){margin-top:16px}
+.cs p:not([class]) b{color:var(--dark-ink)}
 .cs ul{max-width:680px;margin:16px 0 0 22px;font-family:var(--font-grotesk);font-size:15px;line-height:var(--type-body-leading-ratio);color:var(--dark-dim)}
 .cs li{margin-bottom:var(--space-8)}
 .cs li b{color:var(--dark-ink)}

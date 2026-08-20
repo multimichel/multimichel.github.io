@@ -97,29 +97,35 @@ h1.display{
 }
 @media(max-width:700px){h1.display{letter-spacing:-.03em}}
 
-/* ---------- lede ----------
-   The opening paragraph under a hero, wherever there is one: home, About,
-   Contact, Archive and both case studies. ONE style — a page does not get its
-   own lede. Larger than body copy because it is a different role, not because
-   it is an important paragraph. */
-.lede{
-  max-width:var(--intro-max-width);
-  margin-top:var(--space-32);
+/* ---------- running copy ----------
+   ONE reading style, shared. The homepage intro and the About prose are the
+   same typography and differ only in measure — the intro runs wider because it
+   opens the page. There is deliberately no .lede type declaration here: a
+   second set of values is what made it a tier, and the tier is gone.
+   Emphasis is the shared --weight-emphasis; the 700 that used to sit on .lede b
+   was a local override that quietly undercut it. */
+.lede,.prose{
   font-family:var(--font-grotesk);
   font-weight:400;
-  font-size:var(--type-lede-size);
-  line-height:var(--type-lede-leading);
-  letter-spacing:var(--type-lede-tracking);
+  font-size:var(--type-body-size);
+  line-height:var(--type-body-leading-ratio);
   color:var(--slate);
 }
+.lede{max-width:var(--intro-max-width);margin-top:var(--space-32)}
 .lede p+p{margin-top:var(--gap-lede-paragraph)}
-/* Emphasis is the SHARED body emphasis. The 700 that used to sit here was a
-   local override that quietly undercut --weight-emphasis. */
 
 
 /* ---------- photo — 1400×788 reference (16:9) ---------- */
 figure.full{margin:var(--space-72) 0 0}
 figure.full img,figure.full video{width:100%;height:auto;aspect-ratio:1400/788;object-fit:cover}
+/* Opt-in, per photo, at EVERY width. The 16:9 reference frame is a crop, and on
+   a 3:2 source it takes ~8% off the top and bottom — enough to cut the Figma
+   logo and the "SYDNEY" lockup out of the Maker Collective shot. .natural means
+   this photograph's whole frame carries meaning, so it runs at its own ratio.
+   It used to say that only below 900px, which left the crop in place on the
+   desktop composition the class exists to protect. Still opt-in: the
+   case-study covers are portrait and are meant to be cropped. */
+figure.full.natural img,figure.full.natural video{aspect-ratio:auto;height:auto}
 figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-caption-size);letter-spacing:.4px;color:var(--muted);text-transform:uppercase;margin-top:var(--space-16)}
 
 /* ---------- quote ----------
@@ -478,7 +484,7 @@ figure.portrait{margin:var(--space-72) 0 0;max-width:var(--portrait-w)}
 figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 
 /* ---------- prose (about) ---------- */
-.prose{max-width:var(--measure);font-family:var(--font-grotesk);font-size:var(--type-body-fluid);line-height:var(--type-body-leading-ratio);color:var(--slate)}
+.prose{max-width:var(--measure)}
 .prose p+p{margin-top:var(--space-16)}
 
 
@@ -721,13 +727,7 @@ footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);p
   /* vertical rhythm compresses; the hero keeps its scale */
   .hero{padding-top:var(--space-72)}
   figure.full{margin-top:var(--space-48)}
-  /* Opt-in, per photo: the 16:9 reference frame is a desktop crop, and on a
-     3:2 source it shaves ~5% off the top and bottom — enough to cut the Figma
-     logo and the "SYDNEY" lockup out of the Maker Collective shot. Where the
-     whole frame carries meaning, the photo runs at its own ratio on mobile.
-     Deliberately NOT global: the case-study covers are portrait and would go
-     absurdly tall on a phone if they stopped being cropped. */
-  figure.full.natural img,figure.full.natural video{aspect-ratio:auto;height:auto}
+
   .quote{margin:var(--space-72) auto;max-width:none}
   #writing{padding-top:var(--space-48)}
   #speaking{padding-top:var(--space-48)}

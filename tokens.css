@@ -198,30 +198,22 @@
   --type-hero-size: 137px;
   --type-hero-tracking: -0.0131em;
 
-  /* LEDE — the opening paragraph under a hero. One style, every page that has
-     one: home, About, Contact, Archive and both case studies. Deliberately
-     larger than body copy; it is a different role, not a bigger body. */
-  --type-lede-size: 24px;
-  --type-lede-leading: 1.4;
-  --type-lede-tracking: -0.8px;
+  /* There is no lede TYPE role. The homepage intro reads in the same Hanken
+     style as every other paragraph on the site; what makes it the intro is
+     where it sits and how wide it runs, not a size of its own. Hierarchy comes
+     from composition. Only the paragraph gap below is intro-specific, and that
+     is layout, not typography. */
   --gap-lede-paragraph: 24px;   /* between the two opening paragraphs */
 
-  /* Running body — About prose, and the ramp everything non-lede sits on.
-     The fixed --type-body-size / --type-body-leading pair that used to sit here
-     is gone: once the lede became its own role nothing referenced them, and a
-     dead token that still states a size is a trap. The fluid pair below is the
-     body role. */
-  /* Running body text is fluid, and every body surface must use the SAME
-     ramp — a fixed 24px next to a clamped one reads as two different type
-     sizes on a phone even though they match on desktop. */
-  --type-body-fluid: clamp(15.5px, 1.8vw, 21.25px);
-  /* 1.5, not the 1.67 this used to carry. That number was calibrated when body
-     copy was standing in for the original design's 24px intro; now that the
-     24px role IS the lede, 1.67 left the About prose setting on a 35.5px line
-     under a lede on a 33.6px one — smaller type, airier lines, hierarchy
-     inverted. 1.5 is the original design's own body ratio and puts body back
-     under the lede where it belongs. */
-  --type-body-leading-ratio: 1.5;
+  /* THE reading style. One Hanken paragraph setting for the whole site — the
+     homepage intro, the About prose, anywhere running copy appears. 21/32 are
+     chosen numbers, not computed ones: 32 sits on the 8pt grid and the ratio is
+     written as the pair itself so the deliberate values stay visible and land
+     exactly, rather than as a rounded decimal that computes to 32.004.
+     The clamp steps down to a second deliberate pair, 16/24, because 21px in a
+     294px phone column sets a 26-character line. Both ends are real values. */
+  --type-body-size: clamp(16px, 1.8vw, 21px);
+  --type-body-leading-ratio: calc(32 / 21);
 
   /* CONTENT ROW — Writing, Speaking, Around the internet and the whole Archive
      are ONE component. There is no per-section row typography and there must
@@ -315,7 +307,10 @@
   /* Left-oriented editorial canvas. NEVER:
      max-width: 1200px; margin: 0 auto;                        */
 
-  --intro-max-width: 1030px;
+  /* The intro runs wider than the About prose measure on purpose. Same
+     typography, different composition — that is where the hierarchy lives now
+     that the intro has no size of its own. */
+  --intro-max-width: 800px;
 
   /* ---------- ORANGE BLOCKS ---------- */
   --block-header-w: 64px;
