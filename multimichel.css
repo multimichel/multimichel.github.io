@@ -190,7 +190,15 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
   left:-5%;
   top:-8%;
   width:110%;
+  /* Height is keyed to the LINE BOX, not to the brush's own width. Left on the
+     SVG's intrinsic aspect it scaled with the phrase, so it only covered the
+     words at roughly the homepage phrase's length — a short highlight ("hard.")
+     collapsed to a thin stripe floating above the text. 155% is the ratio the
+     homepage brush already had at every width, so that quote is unmoved. */
+  height:155%;
   max-width:none;
+  /* fill, not cover: stretching keeps the tapered hand-drawn ends, which is the
+     whole point of the mark. cover would crop it into a hard rectangle. */
   object-fit:fill;
   z-index:-1;
   pointer-events:none;
