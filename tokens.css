@@ -75,44 +75,44 @@
      is the same size in every context by design. */
   --type-arrow-size: 1.18rem;
 
-  /* ---------- Fraunces recipes, one per role ----------
+  /* ---------- Fraunces recipes, one per visual role ----------
 
-     Fraunces is not set the same way everywhere, because the original design
-     did not use its serif the same way everywhere. Family Heavy at 148px and
-     Family Medium at 18px are different typographic jobs, and Fraunces has the
-     axes to say so. One configuration everywhere is what made the serif read
-     as a single flat texture; three recipes restore the ORIGINAL RELATIONSHIP:
+     Fraunces is not set one way, because the design does not use its serif for
+     one job. Four recipes, and a surface takes the one matching its ROLE — never
+     the one matching its section.
 
-       big serif      substantial and confident
-       smaller serif  warm, editorial
-       body sans      quiet
-       Agrandir       identity
+     WONK 0 in all of them. Fraunces ships its wonky alternates on, which is
+     where the ornamental circled ampersand in "Olá & Welcome" came from; WONK 0
+     is the family's own conventional set. Never drop it from a recipe.
 
-     WONK 0 in all three. Fraunces ships its wonky alternates on, which is
-     where the ornamental circled ampersand in "Olá & Welcome" came from; WONK
-     0 is the family's own conventional set. Never drop it from a recipe — and
-     note SOFT above 0 does NOT bring the ornamental & back at these optical
-     sizes, which was checked on the rendered hero, not assumed.
+     opsz is pinned per role rather than left on `font-optical-sizing: auto`.
+     Automatic optical sizing ties the cut to the pixel size, which is not what
+     decides character here — the role is.
 
-     opsz is the axis doing the real work, and it is PINNED per role rather
-     than left on `font-optical-sizing: auto`. Family is a single non-optical
-     face; auto made Fraunces widen and flatten as the type got smaller, which
-     is backwards from what this design wants. Low opsz = sturdy, low contrast.
-     High opsz = finer, more contrast. So the hero takes the LOW number and the
-     row titles the high one — deliberately the inverse of automatic optical
-     sizing, because here it is character, not size compensation.
+     SOFT rounds the terminals and is what keeps the serif warm rather than
+     sharp. It is deliberately low on the quote MARKS alone. */
 
-     SOFT rounds the terminals. It is what makes the small serif warm without
-     making it heavier. Kept low on the quote on purpose: SOFT and a big size
-     together go blobby. */
-  --serif-hero: "opsz" 48, "SOFT" 18, "WONK" 0;
-  --serif-hero-weight: 700;
+  /* Display — the hero and the quote's own two lines. Identical axes and weight
+     by design, so they are one recipe: two tokens holding the same numbers is
+     just a future drift. Only their sizes differ. */
+  --serif-display: "opsz" 118, "SOFT" 48, "WONK" 0;
+  --serif-display-weight: 700;
 
-  --serif-statement: "opsz" 56, "SOFT" 6, "WONK" 0;
-  --serif-statement-weight: 625;
+  /* The quote marks, and only the marks. They sit lighter than the words they
+     enclose on purpose — the punctuation should not weigh as much as the
+     sentence. Opening and closing take the same treatment: they are one role. */
+  --serif-quote-mark: "opsz" 118, "SOFT" 6, "WONK" 0;
+  --serif-quote-mark-weight: 625;
 
-  --serif-editorial: "opsz" 80, "SOFT" 40, "WONK" 0;
-  --serif-editorial-weight: 500;
+  /* Editorial rows — Writing, Speaking, Around the internet, Archive. Inherited
+     from <body>, so it is what the serif does unless a surface says otherwise. */
+  --serif-row: "opsz" 78, "SOFT" 48, "WONK" 0;
+  --serif-row-weight: 500;
+
+  /* Cards — Work and Media share their cut and differ only in size and leading,
+     because they are the same component carrying different hierarchy. */
+  --serif-card: "opsz" 72, "SOFT" 40, "WONK" 0;
+  --serif-card-weight: 500;
 
   /* Emphasis inside running body copy. Hanken's 700 sits far closer to its own
      regular than Founders Grotesk Bold sat to Founders Regular, so <strong>
@@ -190,29 +190,20 @@
   --pen-thickness: 0.34rem;
   --pen-thickness-hover: 0.42rem;
 
-  /* Hero — serif Heavy/Black. 148 → 140: Fraunces' caps are 6% deeper than
-     Family's, so 140px Fraunces stands exactly as tall as 148px Family did.
-     Tracking moves from px to em because it now has to hold across the whole
-     clamp — the fixed -2.664px WAS -0.018em, but only at the 148px end. */
-  --type-hero-size: 140px;
-  --type-hero-tracking: -0.018em;
+  /* Hero — display recipe. 137px is the tuned desktop size; the clamp floor and
+     slope are unchanged, so the headline holds its proportion down to a phone.
+     Tracking is the tuned -1.8px expressed against that 137px as an em, so it
+     stays proportional across the clamp instead of biting harder as type
+     shrinks. */
+  --type-hero-size: 137px;
+  --type-hero-tracking: -0.0131em;
 
   /* LEDE — the opening paragraph under a hero. One style, every page that has
      one: home, About, Contact, Archive and both case studies. Deliberately
      larger than body copy; it is a different role, not a bigger body. */
-  --type-lede-size: clamp(19px, 2.2vw, 24px);
+  --type-lede-size: 24px;
   --type-lede-leading: 1.4;
-  /* -0.033em IS the specified -0.8px, at the 24px the spec is written against.
-     As an em it stays proportional when the clamp steps down, where a fixed
-     -0.8px would go disproportionately tight on a phone. */
-  --type-lede-tracking: -0.033em;
-  /* The clamp is the ONE place this pass departs from the stated numbers, and
-     only at the small end: the ceiling is exactly 24px, so every width from
-     ~1090px up is the specified size. Flat 24px in a 294px phone column sets a
-     24-CHARACTER line — "design agencies," alone on a line, the company names
-     breaking mid-list. That is the lede becoming conspicuous, which is the one
-     thing this system is not allowed to do. 19px restores a ~32-character
-     measure and keeps the lede clearly above body copy. */
+  --type-lede-tracking: -0.8px;
   --gap-lede-paragraph: 24px;   /* between the two opening paragraphs */
 
   /* Running body — About prose, and the ramp everything non-lede sits on.
@@ -271,17 +262,18 @@
   /* Quote — serif Medium, centered. Serif scale, and the tracking follows the
      hero's move to em so it survives the clamp. */
   --type-quote-size: 45px;
-  --type-quote-leading: 48.5px;
+  /* Leading lives on .quote as a ratio so it survives the clamp; the unused
+     --type-quote-leading that used to sit here stated 48.5px against an actual
+     49.68px, which is the kind of dead token that misleads the next reader. */
   --type-quote-tracking: -0.0104em;
 
-  /* CARDS — Work and Media are genuinely different roles, so this is the one
-     place two title sizes are correct. Primary is the case-study cover and
-     outranks everything else in the grid; secondary is a Media card, which sits
-     at the content-row tier. They share a leading because they share a job: a
-     title that wraps inside a narrow column. */
-  --type-card-primary-size: 24px;
-  --type-card-secondary-size: 21px;
-  --type-card-leading: 1.2;
+  /* CARDS — one component, two hierarchy levels. A Work cover outranks
+     everything else in its grid; a Media card sits at the content-row tier.
+     They share a cut (--serif-card) and differ only here. */
+  --type-work-title-size: 24px;
+  --type-work-title-leading: 28.8px;
+  --type-media-title-size: 21px;
+  --type-media-title-leading: 22.5px;
 
   /* Case-study page title — serif Medium */
   --type-case-title-size: 28px;
@@ -406,8 +398,17 @@
   --gutter-page-mobile: 24px;
   --block-marker-mobile: 20px;
 
-  /* Uppercase grotesk micro-labels — figure captions, the footer fineprint,
-     case-study captions and stat labels. These used to borrow
+  /* The footer fineprint is its OWN micro-label role — heavier, wider-tracked
+     and a half-step larger than a caption. It was borrowing --type-caption-size
+     and the caption's weight, which made two different jobs look like one. */
+  --type-fineprint-size: 12px;
+  --type-fineprint-leading: 17.25px;
+  --type-fineprint-tracking: 1px;
+  --type-fineprint-weight: 800;
+
+  /* Uppercase grotesk micro-labels — figure captions, case-study captions and
+     stat labels. Deliberately NOT the fineprint: a caption sits under an image
+     and stays quiet. These used to borrow
      --type-label-size (13px), which is the AGRANDIR label size. That worked
      while the grotesk was Founders, whose caps are 10% shallower than
      Agrandir's; Hanken's caps are within 3% of Agrandir's, so at a shared 13px

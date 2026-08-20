@@ -39,7 +39,7 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 .cs figure.full.bleed{margin-left:calc(-1 * var(--content-start));margin-right:calc(-1 * var(--content-start));border-radius:0}
 
 .cs .next-wrap{margin:96px 0 120px}
-.cs h2{font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);font-size:clamp(28px,4vw,var(--type-case-title-size));letter-spacing:-.01em;color:var(--dark-ink);margin:64px 0 20px}
+.cs h2{font-family:var(--font-serif);font-weight:var(--serif-row-weight);font-size:clamp(28px,4vw,var(--type-case-title-size));letter-spacing:-.01em;color:var(--dark-ink);margin:64px 0 20px}
 /* Running copy on the dark pages. Size is genuinely its own — a narrower
    measure on a dark ground reads denser — but the LEADING is the shared body
    ratio. The 1.81 that used to sit here was left over from a superseded
@@ -60,13 +60,13 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 
 .stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--dark-rule);border:1px solid var(--dark-rule);margin:40px 0}
 .stat div{background:var(--dark-bg);padding:24px}
-.stat b{display:block;font-family:var(--font-serif);font-variation-settings:var(--serif-hero);font-weight:var(--serif-hero-weight);font-size:37.5px;color:var(--orange)}
+.stat b{display:block;font-family:var(--font-serif);font-variation-settings:var(--serif-display);font-weight:var(--serif-display-weight);font-size:37.5px;color:var(--orange)}
 .stat span{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-caption-size);letter-spacing:.4px;color:var(--dark-dim);text-transform:uppercase}
 
 .cs .next{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:1.1px;text-transform:uppercase;color:var(--orange)}
 .cs .next:hover{color:var(--dark-ink)}
 
-.cs .pull{font-family:var(--font-serif);font-variation-settings:var(--serif-statement);font-weight:var(--serif-statement-weight);font-size:clamp(24px,3.4vw,36px);line-height:1.38;color:var(--dark-ink);max-width:920px;margin:64px 0}
+.cs .pull{font-family:var(--font-serif);font-variation-settings:var(--serif-display);font-weight:var(--serif-display-weight);font-size:clamp(24px,3.4vw,36px);line-height:1.38;color:var(--dark-ink);max-width:920px;margin:64px 0}
 .cs .pull .hot{color:var(--orange)}
 
 .cs .imgrid{display:grid;gap:32px;margin:40px 0}
@@ -74,7 +74,7 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 .cs .imgrid.cols-3{grid-template-columns:repeat(3,1fr)}
 .cs .imgrid figure{margin:0}
 .cs .imgrid img{width:100%;height:auto;display:block;background:var(--white);border-radius:4px}
-.cs .imgrid h3{font-family:var(--font-serif);font-weight:var(--serif-editorial-weight);font-size:19px;color:var(--dark-ink);margin-top:var(--space-16)}
+.cs .imgrid h3{font-family:var(--font-serif);font-weight:var(--serif-row-weight);font-size:19px;color:var(--dark-ink);margin-top:var(--space-16)}
 .cs .imgrid p{font-family:var(--font-grotesk);font-size:var(--type-sub-size);line-height:var(--type-body-leading-ratio);margin-top:var(--space-8);color:var(--dark-dim);max-width:none}
 
 .cs video{width:100%;display:block;background:#000;border-radius:4px;margin:40px 0}

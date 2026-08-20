@@ -265,32 +265,45 @@ substitute, and it is not up for replacement.
 | Family — Heavy / Medium | **Fraunces** (variable: opsz · wght · SOFT · WONK) | `Fraunces-latin.woff2`, `Fraunces-latin-ext.woff2` | OFL — `Fraunces-OFL.txt` |
 | Founders Grotesk — Regular / Medium / Bold | **Hanken Grotesk** (variable: wght) | `HankenGrotesk-latin.woff2`, `HankenGrotesk-latin-ext.woff2` | OFL — `HankenGrotesk-OFL.txt` |
 
-### Final visual system — semantic roles
+### FROZEN VISUAL SYSTEM — semantic roles
 
-The type system is expressed as ROLES, not as per-section styles. Two things
-that do the same job take the same token; a section never gets typography
-because it is that section.
+Type is expressed as ROLES, never as per-section styles. Two things that do the
+same job take the same token; a section never gets typography because it is that
+section. There is no `--writing-title`, and there must never be one.
+
+**Fraunces recipes** — a surface takes the one matching its role:
+
+| Recipe | Axes | Weight | Used by |
+|---|---|---|---|
+| `--serif-display` | `opsz 118, SOFT 48, WONK 0` | 700 | hero, the quote's own lines, year headings, pull quotes, stat figures |
+| `--serif-quote-mark` | `opsz 118, SOFT 6, WONK 0` | 625 | the quote marks only — punctuation sits lighter than its sentence |
+| `--serif-row` | `opsz 78, SOFT 48, WONK 0` | 500 | row titles, case-study headings. Inherited from `<body>`, so it is the default |
+| `--serif-card` | `opsz 72, SOFT 40, WONK 0` | 500 | Work and Media card titles |
+
+`WONK 0` in every recipe: it is Fraunces' conventional set, and dropping it
+returns the ornamental circled ampersand to *Olá & Welcome*.
+
+**Sizes and the rest:**
 
 | Role | Token | Face | Value |
 |---|---|---|---|
-| Lede | `--type-lede-size` · `-leading` · `-tracking` | Hanken | 24px (clamped down on phones) / 1.4 / −0.033em, 400, emphasis 800 |
+| Hero | `--type-hero-size` · `-tracking` | Fraunces | 137px / −0.0131em (the tuned −1.8px at 137) |
+| Quote | `--type-quote-size` · `-tracking` | Fraunces | 45px / 1.104 / −0.0104em |
+| Lede | `--type-lede-size` · `-leading` · `-tracking` | Hanken | 24px / 1.4 / −0.8px · 400, emphasis 800 |
 | Body | `--type-body-fluid` · `--type-body-leading-ratio` | Hanken | clamp(15.5, 1.8vw, 21.25) / 1.5 |
-| Row title | `--type-row-title-size` · `-leading` | Fraunces | 21px / 28.8px, editorial recipe |
+| Row title | `--type-row-title-size` · `-leading` | Fraunces | 21px / 28.8px |
 | Row metadata | `--type-row-meta-size` · `-leading` · `-weight` · `-tracking` | Hanken | 14px / 18px / 650 / −0.4px |
-| Card title, primary | `--type-card-primary-size` | Fraunces | 24px — Work case-study covers |
-| Card title, secondary | `--type-card-secondary-size` | Fraunces | 21px — Media cards |
-| Card title leading | `--type-card-leading` | — | 1.2, shared by both cards |
-| Action mark | `--type-arrow-size` | Agrandir | 1.18rem, 900 |
+| Work title | `--type-work-title-size` · `-leading` | Fraunces | 24px / 28.8px |
+| Media title | `--type-media-title-size` · `-leading` | Fraunces | 21px / 22.5px |
+| Caption | `--type-caption-size` | Hanken | 11.5px / 17.25px / 0.4px / 500, uppercase |
+| Fineprint | `--type-fineprint-*` | Hanken | 12px / 17.25px / 1px / 800 — its own micro-label role, not a caption |
+| Action mark | `--type-arrow-size` | Agrandir | 1.18rem / 900 |
 
-**Writing, Speaking, Around the internet and the entire Archive are one
+**Writing, Speaking, Around the internet and the whole Archive are one
 component.** They render through the same `.row` and take the same two row
-tokens. There is no `--writing-title`, and there must never be one: a list of
-titled links anywhere on this site uses the row role.
-
-**Work and Media are the one place two card sizes are correct**, because they
-carry genuinely different hierarchy — a case-study cover outranks a media card.
-Everything else about them is shared: one label rule, one title rule, one
-leading, one spacing stack.
+tokens. Work and Media are the one place two title sizes are correct, because
+they carry genuinely different hierarchy; they share a cut and differ only in
+size and leading.
 
 ### Spacing roles
 
@@ -301,9 +314,10 @@ leading, one spacing stack.
 | Row title → metadata | `--gap-row-title-to-meta` | 12px | every row |
 | Between lede paragraphs | `--gap-lede-paragraph` | 24px | every lede |
 
-Repeated relationships are declared ONCE, for every component that performs
-them. No component owns a private copy of a shared value, and none of them is
-achieved with a positional offset.
+Repeated relationships are declared once, for every component that performs
+them. No component owns a private copy of a shared value, and none is achieved
+with a positional offset — Work's title is `display:block; width:fit-content`
+rather than an `inline-block` sitting on its parent's text baseline.
 
 ### Fraunces is set three ways, not one
 
