@@ -339,6 +339,10 @@ a.row:hover .cat,a.row:focus-visible .cat{background:transparent;color:var(--pap
 .go{color:var(--oak);line-height:1;position:relative;top:.065em}
 /* Inline inside a label, so it takes that label's colour and its hover with it. */
 .arrow{color:inherit;line-height:0;vertical-align:-.065em;margin-left:.3em}
+/* A mark that LEADS its label ("← Back to Home") rather than trailing it. Not a
+   second treatment: same face, same size, same nudge — the gap just moves to
+   the other side of the glyph. */
+.arrow.is-before{margin-left:0;margin-right:.3em}
 a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
 
 /* ---------- kickers: status and category ----------
