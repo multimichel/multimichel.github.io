@@ -80,7 +80,11 @@ nav.main a[aria-current="page"]{color:var(--ink)}
 
 /* ---------- hero — large intentional opening whitespace ---------- */
 .hero{padding-top:var(--space-192)}
-h1.display{
+/* The display role is the page's single statement voice, keyed to the JOB and
+   not to the tag: an <h2> carrying the same weight in the page (about-v2's story
+   headline) must be the same style. Every existing use is an <h1>, so the widened
+   selector changes nothing that already renders. */
+.display{
   font-family:var(--font-serif);
   font-weight:var(--serif-display-weight);
   font-variation-settings:var(--serif-display);
@@ -95,7 +99,7 @@ h1.display{
   line-height:1.02;
   color:var(--slate);
 }
-@media(max-width:700px){h1.display{letter-spacing:-.03em}}
+@media(max-width:700px){.display{letter-spacing:-.03em}}
 
 /* ---------- running copy ----------
    ONE reading style, shared. The homepage intro and the About prose are the
