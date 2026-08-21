@@ -7,8 +7,8 @@
 <meta name="description" content="Michel Ferreira — Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
 <meta property="og:title" content="About — Michel Ferreira">
 <meta property="og:description" content="Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
-<link rel="stylesheet" href="tokens.css?v=57">
-<link rel="stylesheet" href="multimichel.css?v=57">
+<link rel="stylesheet" href="tokens.css?v=58">
+<link rel="stylesheet" href="multimichel.css?v=58">
 <link rel="canonical" href="https://multimichel.com/about-v2">
 <meta name="robots" content="noindex">
 <meta property="og:image" content="https://multimichel.com/img/og-default.jpg">
@@ -186,7 +186,7 @@
   <section id="conversations">
     <div class="sechead"><i class="tab"></i><h2>Selected conversations</h2><a class="more" href="https://open.spotify.com/show/0J3JdhM454AvedlYlXqeRZ" target="_blank" rel="noopener noreferrer">All episodes<span class="arrow" aria-hidden="true">↗&#xFE0E;</span></a></div>
     <div class="rowlist" id="conversations-list"></div>
-    <p class="aside-note">Latinxs Who Design — 29 conversations, 2021&ndash;2023.</p>
+    <p class="aside-note" id="conversations-note"></p>
   </section>
 
   <!-- 8 · BESIDES THE WORK -->
@@ -214,8 +214,8 @@
   </nav>
 </footer>
 
-<script src="content.js?v=57"></script>
-<script src="nav.js?v=57" defer></script>
+<script src="content.js?v=58"></script>
+<script src="nav.js?v=58" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -300,21 +300,45 @@
   });
 
   // ---------- selected conversations ----------
-  // Sourced from the ONE podcast record in the content graph. The graph names
-  // its guests but holds no per-episode titles or links, so a guest links to
-  // the show rather than to an invented episode. Add episodes to content.js and
-  // this list gets more specific without changing shape.
-  var lwd = MM.items.filter(function(i){ return i.id === "p-lwd"; })[0];
-  if (lwd) {
-    var guests = ["Jay Demetillo","Joanna Peña-Bickley","Aubrey Blanche","Kevin Bethune"];
-    var href = lwd.spotify || lwd.url;
-    document.getElementById("conversations-list").innerHTML = guests.map(function(g){
-      return '<a class="row" href="'+href+'"'+MM.linkAttrs(href)+'>'
-           +   '<span class="t">'+g+'</span>'
-           +   MM.actionMark(href)
-           +   '<span class="m">Latinxs Who Design</span>'
+  // A selection, not the archive: the four Michel names in the show record,
+  // resolved against the real episode records so each row carries its own
+  // conversation title and links to that episode rather than to the show.
+  var PICKS = ["Jay Demetillo","Joanna Pe\u00f1a-Bickley","Aubrey Blanche","Kevin Bethune"];
+  var episodes = MM.items.filter(function(i){ return i.type === "Podcast" && i.guest; });
+
+  // Most titles end by naming the guest, which the meta column already carries.
+  // Trim that tail so the row reads as a statement. A title that names the guest
+  // mid-sentence is left whole — there is nothing to cut without rewriting it.
+  var TAILS = [" - ", " \u2013 ", " \u2014 ", ": A Conversation with ", " with "];
+  function headline(ep){
+    for (var i = 0; i < TAILS.length; i++) {
+      var tail = TAILS[i] + ep.guest;
+      if (ep.title.slice(-tail.length) === tail) return ep.title.slice(0, -tail.length);
+    }
+    return ep.title;
+  }
+
+  var rows = PICKS.map(function(name){
+    return episodes.filter(function(e){ return e.guest === name; })[0];
+  }).filter(Boolean);
+
+  if (rows.length) {
+    document.getElementById("conversations-list").innerHTML = rows.map(function(e){
+      return '<a class="row" href="' + e.url + '"' + MM.linkAttrs(e.url) + '>'
+           +   '<span class="t">' + headline(e) + '</span>'
+           +   MM.actionMark(e.url)
+           +   '<span class="m">' + e.guest + '</span>'
            + '</a>';
     }).join("");
+  }
+
+  // The count is read off the graph rather than restated by hand, so it cannot
+  // drift from what the archive actually lists.
+  var note = document.getElementById("conversations-note");
+  if (note && episodes.length) {
+    var years = episodes.map(function(e){ return String(e.year); }).sort();
+    note.textContent = "Latinxs Who Design \u2014 " + episodes.length
+      + " conversations, " + years[0] + "\u2013" + years[years.length - 1] + ".";
   }
 })();
 </script>
