@@ -7,8 +7,8 @@
 <meta name="description" content="Michel Ferreira — Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
 <meta property="og:title" content="About — Michel Ferreira">
 <meta property="og:description" content="Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
-<link rel="stylesheet" href="tokens.css?v=58">
-<link rel="stylesheet" href="multimichel.css?v=58">
+<link rel="stylesheet" href="tokens.css?v=59">
+<link rel="stylesheet" href="multimichel.css?v=59">
 <link rel="canonical" href="https://multimichel.com/about">
 <meta property="og:image" content="https://multimichel.com/img/og-default.jpg">
 <meta property="og:image:width" content="1200">
@@ -19,6 +19,50 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#F8F5F2">
+<style>
+/* About — page-scoped only. Nothing here touches the shared system: every
+   value comes from tokens.css and every type role is the frozen one. */
+
+/* Hero: a two-column editorial composition. Text leads, the portrait anchors it
+   from the right, top-aligned with the block. They never overlap — the portrait
+   is a grid column, not a positioned layer. */
+.v2-hero{display:grid;grid-template-columns:65fr 35fr;gap:var(--space-72);align-items:start}
+.v2-hero .v2-portrait{margin:0}
+.v2-hero .v2-portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
+@media(max-width:900px){
+  /* headline → intro → portrait */
+  .v2-hero{display:block}
+  .v2-hero .v2-portrait{margin-top:var(--space-48);max-width:var(--portrait-w)}
+}
+
+/* The bio selector. Text navigation — not pills, tabs or buttons. It borrows the
+   section-label type role so it reads as part of the same editorial furniture. */
+.bio-nav{display:flex;flex-wrap:wrap;align-items:baseline;gap:0;margin-top:var(--space-24-m)}
+.bio-nav button,.bio-nav a{
+  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  letter-spacing:var(--type-label-tracking);text-transform:uppercase;
+  background:none;border:0;padding:0;margin:0;cursor:pointer;
+  color:var(--muted);
+  background-image:url("img/pen-underline.svg");background-repeat:no-repeat;
+  background-position:0 100%;background-size:100% 0;padding-bottom:.34rem;
+  transition:background-size .15s ease,color .15s ease;
+}
+.bio-nav button:hover,.bio-nav a:hover,
+.bio-nav button:focus-visible,.bio-nav a:focus-visible{background-size:100% var(--pen-thickness)}
+.bio-nav button[aria-pressed="true"]{color:var(--ink);background-size:100% var(--pen-thickness)}
+.bio-nav button:focus-visible,.bio-nav a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.bio-nav .sep{color:var(--rule-strong);padding:0 var(--space-8);font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size)}
+.bio-nav .spacer{flex:1}
+.bio-copy{margin-top:var(--space-24-m)}
+.bio-copy[hidden]{display:none}
+.bio-status{margin-top:var(--space-8);font-family:var(--font-grotesk);font-size:var(--type-caption-size);letter-spacing:.4px;text-transform:uppercase;color:var(--muted);min-height:1.2em}
+
+/* Section rhythm, on the same scale the rest of the site uses. */
+#story,#route,#conversations,#besides{padding-top:var(--gap-section-major)}
+#story .display + .prose{margin-top:var(--space-48)}
+#interlude-figure{padding-top:var(--space-96)}
+#besides{padding-bottom:var(--space-8)}
+</style>
 </head>
 <body>
 <a class="skiplink" href="#main">Skip to content</a>
@@ -26,74 +70,130 @@
 <header class="site">
   <div class="brand">
     <button class="brand-menu" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="menu-icon"><span></span><span></span></span></button>
-    <a class="brand-link" href="index.html">MICHEL FERREIRA</a>
+    <a class="brand-link" href="/">MICHEL FERREIRA</a>
   </div>
   <nav class="main">
-    <a href="index.html#work">WORK</a>
-    <a href="index.html#speaking">SPEAKING</a>
-    <a href="index.html#writing">WRITING</a>
-    <a href="index.html#media">MEDIA</a>
-    <a href="about.html" aria-current="page">ABOUT</a>
+    <a href="/#work">WORK</a>
+    <a href="/#speaking">SPEAKING</a>
+    <a href="/#writing">WRITING</a>
+    <a href="/#media">MEDIA</a>
+    <a href="/about" aria-current="page">ABOUT</a>
   </nav>
   <nav class="mobile-nav" id="mobile-nav" aria-label="Site">
-    <a href="index.html#work">WORK</a>
-    <a href="index.html#speaking">SPEAKING</a>
-    <a href="index.html#writing">WRITING</a>
-    <a href="index.html#media">MEDIA</a>
-    <a href="about.html" aria-current="page">ABOUT</a>
-    <a href="contact.html">CONTACT</a>
+    <a href="/#work">WORK</a>
+    <a href="/#speaking">SPEAKING</a>
+    <a href="/#writing">WRITING</a>
+    <a href="/#media">MEDIA</a>
+    <a href="/about" aria-current="page">ABOUT</a>
+    <a href="/contact">CONTACT</a>
   </nav>
 </header>
 
 <main id="main">
 <div class="wrap">
 
-  <section class="hero">
-    <h1 class="display">It only looks like a straight line in hindsight.</h1>
-    <div class="lede">
-      <p>I&rsquo;m Michel, a Brazilian designer living in Sydney. I&rsquo;ve been designing for the web since the late &rsquo;90s. On paper the route runs from early web work in Brazil to California, <b>Booking.com</b> in Amsterdam, <b>Shopify</b> in Canada, and <b>Atlassian</b>, <b>Xero</b> and <b><a href="https://www.figma.com" target="_blank" rel="noopener noreferrer">Figma</a></b> in Sydney. It looks much tidier written down than it ever felt living it.</p>
+  <!-- 1 + 2 · ABOUT: the multi-bio, anchored by the portrait -->
+  <section class="hero" id="about">
+    <div class="v2-hero">
+      <div>
+        <!-- No marker square here: this is the page opening, not one section
+             among several. Every other sechead on the page keeps its tab. -->
+        <div class="sechead"><h1>About</h1></div>
+
+        <nav class="bio-nav" aria-label="Choose a bio length">
+          <button type="button" data-bio="ten" aria-pressed="false">Quick intro</button>
+          <span class="sep" aria-hidden="true">·</span>
+          <button type="button" data-bio="thirty" aria-pressed="true">A little longer</button>
+          <span class="sep" aria-hidden="true">·</span>
+          <button type="button" data-bio="speaker" aria-pressed="false">Speaker bio</button>
+          <span class="sep" aria-hidden="true">·</span>
+          <a href="#story">Read the full story<span class="arrow" aria-hidden="true">↓&#xFE0E;</span></a>
+          <span class="spacer"></span>
+          <button type="button" id="copy-bio" hidden>Copy bio</button>
+        </nav>
+
+        <div class="prose bio-copy" id="bio-ten" hidden>
+          <p>I&rsquo;m Michel Ferreira, a Brazilian designer, speaker and writer based in Sydney. I&rsquo;ve spent nearly 30 years making digital products, including work at <b>Booking.com</b>, <b>Shopify</b>, <b>Atlassian</b> and <b>Xero</b>. Today I&rsquo;m a Designer Advocate at <b>Figma</b>.</p>
+        </div>
+
+        <div class="prose bio-copy" id="bio-thirty">
+          <p>I&rsquo;m Michel Ferreira, a Brazilian designer based in Sydney. I&rsquo;ve spent nearly 30 years designing digital products and systems across five countries, with stops at <b>Booking.com</b>, <b>Shopify</b>, <b>Atlassian</b>, <b>Xero</b> and now <b>Figma</b>.</p>
+          <p>I care about the whole product &mdash; and how it gets made: the question, the system, the team, the interaction and the pixels. I also write, speak, mentor and make things about design, experimentation and the messy work of turning ideas into products.</p>
+        </div>
+
+        <div class="prose bio-copy" id="bio-speaker" hidden>
+          <p>Michel Ferreira is a Brazilian designer and Designer Advocate at Figma, based in Sydney. Across nearly three decades and five countries, he has worked on digital products and design systems at Booking.com, Shopify, Atlassian and Xero.</p>
+          <p>His talks explore product craft, design systems, experimentation, AI-assisted workflows and how teams make better decisions. Michel has spoken at conferences and events around the world and created Latinxs Who Design, a podcast built to amplify and preserve conversations with diverse voices in design. He also writes and mentors designers.</p>
+        </div>
+
+        <p class="bio-status" id="bio-status" role="status" aria-live="polite"></p>
+      </div>
+
+      <figure class="v2-portrait">
+        <img width="1066" height="1600" src="img/about-portrait.jpg" alt="Michel Ferreira, smiling to camera in a green Maker cap and blue Figma hoodie">
+        <figcaption>Sydney, 2026</figcaption>
+      </figure>
     </div>
   </section>
 
-  <figure class="portrait">
-    <img width="1066" height="1600" src="img/about-portrait.jpg" alt="Michel Ferreira, smiling to camera in a green Maker cap and blue Figma hoodie">
-    <figcaption>Sydney, 2026</figcaption>
-  </figure>
-
-  <section id="how-i-think">
-    <div class="sechead"><i class="tab"></i><h2>How I think</h2></div>
+  <!-- 3 · THE STORY — the quote lands inside it, at the turn -->
+  <section id="story">
+    <div class="sechead"><i class="tab"></i><h2>The story</h2></div>
+    <h2 class="display">A multitude in one</h2>
     <div class="prose">
-      <p>What&rsquo;s changed is the job title. What hasn&rsquo;t is what I pay attention to. I care about the user&rsquo;s actual problem, but also how it connects to the larger product, the system underneath it, and how a team makes decisions under a deadline. And I care about what finally shows up on screen once all of that gets built &mdash; the interaction, the type, the spacing, the component. Not because pixels are precious on their own, but because that&rsquo;s exactly where every decision made upstream either holds up or falls apart.</p>
+      <p>I started making websites in Brazil in the late &rsquo;90s. Over dial-up, before Google existed. And yeah, I know how old that sounds.</p>
+      <p>The web let me mix everything I was interested in at once: design, code, music, words, images, ideas. It started as free creative expression and accidentally became work, without ever quite stopping being something I love.</p>
+      <p>Resumes flatten all of that into bullet points: Brazil, California, Amsterdam, Canada, Sydney. Agencies, startups, Booking.com, Shopify, Atlassian, Figma. Written down now, it looks much straighter than it ever felt while I was living it. A lot of the time, I didn&rsquo;t know what the next step was going to be.</p>
+      <p>What changed from place to place was the language around the work. The things I cared about were already there.</p>
+      <p>At Booking.com, &ldquo;putting the customer at the centre of everything we do&rdquo; meant testing the thing and being willing to let the answer change your mind. At Atlassian, the same instinct had a less polite expression: <i>Don&rsquo;t #@!% the customer.</i></p>
+      <p>I liked both because they put words around something I already believed: start with the person on the other side of the work.</p>
+      <p>I&rsquo;ve always worn a lot of hats &mdash; and I&rsquo;m not talking about my absurdly large baseball cap collection.</p>
+      <p>I liked copywriting and art direction, design and code. And I&rsquo;ve never been much good at caring about only one layer of a product. I want to know whether we&rsquo;re solving the right problem, whether the system underneath makes sense, how the team is making the decision, and then whether the interaction, the type, the spacing and the pixels hold up.</p>
+      <p>The details matter because that&rsquo;s where all the earlier decisions become real.</p>
     </div>
-  </section>
 
-  <section id="at-figma">
-    <div class="sechead"><i class="tab"></i><h2>At Figma</h2></div>
+    <!-- 4 · The homepage quote component, unchanged: .quote-block / .quote /
+         .hl + .hl-mark / .quote-source. No About-specific quote styling. -->
+    <figure class="quote-block">
+      <blockquote class="quote"><span class="quote-mark">&ldquo;</span><span class="quote-tail"><span class="hl"><img class="hl-mark" src="img/highlight.svg" alt="" aria-hidden="true">Good design is hard.</span><span class="quote-mark">&rdquo;</span></span></blockquote>
+      <figcaption class="quote-source">
+        <cite>The Science of Good Design</cite> &middot; London, 2016 &middot; <a href="https://www.youtube.com/watch?v=4Nk0ray32i0" target="_blank" rel="noopener noreferrer">Watch the talk<span class="arrow" aria-hidden="true">↗&#xFE0E;</span></a>
+      </figcaption>
+    </figure>
+
     <div class="prose">
-      <p>At Figma, I sit between the product and the people using it. I learn and stress-test new capabilities before they ship, work with customers to understand how their teams actually design, and bring what I learn back into the product.</p>
-      <p>That also means workshops, talks and practical guidance on design systems and AI-native workflows. The job title is different, but the work is familiar: understand the whole system, help people make better decisions, and make the product better because of it.</p>
+      <p>Being a Designer Advocate at Figma feels like a collision of a lot of those things. I get to stay close to the people using the product, bring what I hear back into the company, help people understand what we&rsquo;re building, experiment with new ways of working, speak, teach, and still make things.</p>
+      <p>The writing, the talks, the mentoring and <a href="https://open.spotify.com/show/0J3JdhM454AvedlYlXqeRZ" target="_blank" rel="noopener noreferrer">Latinxs Who Design</a> all come from the same place. When something interests me, I pull it apart, talk about it, and make something out of what I learned.</p>
+      <p>I&rsquo;m in Sydney now, with my wife, three kids, a dog and a cat. Nearly thirty years into working in this field and still learning.</p>
+      <p>That&rsquo;s part of why this site exists: to share some of the bullet points, expand on them, and keep some of the mess around them too.</p>
     </div>
   </section>
 
+  <!-- 5 · THE ROUTE -->
   <section id="route">
     <div class="sechead"><i class="tab"></i><h2>The route</h2></div>
     <div class="rowlist" id="route-list"></div>
   </section>
 
+  <!-- 6 · RICH MEDIA INTERRUPTION -->
+  <figure class="full natural" id="interlude-figure">
+    <img loading="lazy" decoding="async" width="1400" height="1393" src="img/stage-people-dont-like-to-fail.jpg" alt="Michel Ferreira on a conference stage, mid-sentence, beside a slide reading &ldquo;People don&rsquo;t like to fail&rdquo;">
+    <figcaption>On stage — “People don’t like to fail”</figcaption>
+  </figure>
+
+  <!-- 7 · SELECTED CONVERSATIONS -->
+  <section id="conversations">
+    <div class="sechead"><i class="tab"></i><h2>Selected conversations</h2><a class="more" href="https://open.spotify.com/show/0J3JdhM454AvedlYlXqeRZ" target="_blank" rel="noopener noreferrer">All episodes<span class="arrow" aria-hidden="true">↗&#xFE0E;</span></a></div>
+    <div class="rowlist" id="conversations-list"></div>
+    <p class="aside-note" id="conversations-note"></p>
+  </section>
+
+  <!-- 8 · BESIDES THE WORK -->
   <section id="besides">
     <div class="sechead"><i class="tab"></i><h2>Besides the work</h2></div>
     <div class="prose">
-      <p>Off the clock: husband, father of three, full-time goofball, and &mdash; on the record &mdash; still available for the NBA draft, if my baseball cap collection doesn&rsquo;t give the vibe away first.</p>
-      <p>I host <a href="https://open.spotify.com/show/0J3JdhM454AvedlYlXqeRZ" target="_blank" rel="noopener noreferrer">Latinxs Who Design</a>, a podcast about Latinx designers thriving in this industry. I teach a portfolio and career course, and I&rsquo;ve mentored more than a hundred designers across ten-odd countries &mdash; through <a href="https://mentorcruise.com/mentor/michelferreira/" target="_blank" rel="noopener noreferrer">MentorCruise</a>, <a href="https://adplist.org/mentors/michel-ferreira" target="_blank" rel="noopener noreferrer">ADPList</a>, and as a Design Leadership ambassador with Echos.</p>
-      <p>I write when something has been bothering me long enough to become an argument. Most of it ends up at <a href="https://alistapart.com/article/design-dialects-breaking-the-rules-not-the-system/" target="_blank" rel="noopener noreferrer">A List Apart</a> or on <a href="https://multimichel.medium.com/" target="_blank" rel="noopener noreferrer">Medium</a>.</p>
-    </div>
-  </section>
-
-  <section id="about-links">
-    <div class="sechead"><i class="tab"></i><h2>Elsewhere</h2></div>
-    <div class="rowlist">
-      <a class="row" href="https://www.linkedin.com/in/michelpferreira/" target="_blank" rel="noopener noreferrer"><span class="t">LinkedIn</span><span class="go" aria-hidden="true">↗&#xFE0E;</span><span class="m">Profile</span></a>
-      <a class="row" href="contact.html"><span class="t">Get in touch</span><span class="go" aria-hidden="true">→&#xFE0E;</span><span class="m">Contact</span></a>
+      <p>Outside work, most of my time belongs to my family. I&rsquo;m a dad of three, collect more baseball caps than I need, make music and small side projects, and have a habit of turning whatever I&rsquo;m curious about into something.</p>
+      <p>I mentor designers, and I write when I have something worth arguing about.</p>
     </div>
   </section>
 
@@ -109,12 +209,12 @@
     <a class="social-icon" href="https://www.threads.com/@multimichel" target="_blank" rel="noopener noreferrer" aria-label="Threads" title="Threads"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161"/></svg></a>
     <a class="social-icon" href="https://x.com/multimichel" target="_blank" rel="noopener noreferrer" aria-label="X" title="X"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/></svg></a>
     <a class="social-icon" href="https://multimichel.medium.com/" target="_blank" rel="noopener noreferrer" aria-label="Medium" title="Medium"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M9.025 8c0 2.485-2.02 4.5-4.513 4.5A4.506 4.506 0 0 1 0 8c0-2.486 2.02-4.5 4.512-4.5A4.506 4.506 0 0 1 9.025 8m4.95 0c0 2.34-1.01 4.236-2.256 4.236S9.463 10.339 9.463 8c0-2.34 1.01-4.236 2.256-4.236S13.975 5.661 13.975 8M16 8c0 2.096-.355 3.795-.794 3.795-.438 0-.793-1.7-.793-3.795 0-2.096.355-3.795.794-3.795.438 0 .793 1.699.793 3.795"/></svg></a>
-    <a class="social-icon" href="contact.html" aria-label="Email Michel" title="Email Michel"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/></svg></a>
+    <a class="social-icon" href="/contact" aria-label="Email Michel" title="Email Michel"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/></svg></a>
   </nav>
 </footer>
 
-<script src="content.js?v=58"></script>
-<script src="nav.js?v=58" defer></script>
+<script src="content.js?v=59"></script>
+<script src="nav.js?v=59" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -146,5 +246,102 @@
   document.getElementById("route-list").innerHTML = list;
 })();
 </script>
+<script>
+(function(){
+  // ---------- multi-bio ----------
+  // Text navigation, not a control: the buttons swap which paragraph block is
+  // in the document. Only one is ever present to a screen reader, and the
+  // status line announces the change rather than the buttons re-announcing
+  // themselves. Default is 30 sec — the one that reads as "the" bio.
+  var IDS = {ten:"bio-ten", thirty:"bio-thirty", speaker:"bio-speaker"};
+  var LABEL = {ten:"Quick intro", thirty:"A little longer", speaker:"Speaker bio"};
+  var buttons = [].slice.call(document.querySelectorAll(".bio-nav button[data-bio]"));
+  var status = document.getElementById("bio-status");
+  var copyBtn = document.getElementById("copy-bio");
+  var current = "thirty";
+
+  function show(key){
+    current = key;
+    Object.keys(IDS).forEach(function(k){
+      document.getElementById(IDS[k]).hidden = (k !== key);
+    });
+    buttons.forEach(function(b){
+      b.setAttribute("aria-pressed", String(b.dataset.bio === key));
+    });
+    // Copying is only useful for the bio people actually paste elsewhere, so
+    // the utility rides with the speaker bio instead of sitting there always.
+    copyBtn.hidden = (key !== "speaker");
+    status.textContent = "";
+  }
+  buttons.forEach(function(b){
+    b.addEventListener("click", function(){ show(b.dataset.bio); });
+  });
+
+  // ---------- copy bio ----------
+  // Copies the bio you are actually looking at, as plain text — the thing a
+  // conference organiser asks for. Falls back to a selection when the clipboard
+  // API is unavailable rather than failing silently.
+  copyBtn.addEventListener("click", function(){
+    var block = document.getElementById(IDS[current]);
+    var text = [].map.call(block.querySelectorAll("p"), function(p){
+      return p.textContent.trim();
+    }).join("\n\n");
+    function done(ok){
+      status.textContent = ok ? (LABEL[current] + " copied") : "Press ⌘C to copy";
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(false); });
+    } else {
+      var r = document.createRange(); r.selectNodeContents(block);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      done(false);
+    }
+  });
+
+  // ---------- selected conversations ----------
+  // A selection, not the archive: the four Michel names in the show record,
+  // resolved against the real episode records so each row carries its own
+  // conversation title and links to that episode rather than to the show.
+  var PICKS = ["Jay Demetillo","Joanna Pe\u00f1a-Bickley","Aubrey Blanche","Kevin Bethune"];
+  var episodes = MM.items.filter(function(i){ return i.type === "Podcast" && i.guest; });
+
+  // Most titles end by naming the guest, which the meta column already carries.
+  // Trim that tail so the row reads as a statement. A title that names the guest
+  // mid-sentence is left whole — there is nothing to cut without rewriting it.
+  var TAILS = [" - ", " \u2013 ", " \u2014 ", ": A Conversation with ", " with "];
+  function headline(ep){
+    for (var i = 0; i < TAILS.length; i++) {
+      var tail = TAILS[i] + ep.guest;
+      if (ep.title.slice(-tail.length) === tail) return ep.title.slice(0, -tail.length);
+    }
+    return ep.title;
+  }
+
+  var rows = PICKS.map(function(name){
+    return episodes.filter(function(e){ return e.guest === name; })[0];
+  }).filter(Boolean);
+
+  if (rows.length) {
+    document.getElementById("conversations-list").innerHTML = rows.map(function(e){
+      return '<a class="row" href="' + e.url + '"' + MM.linkAttrs(e.url) + '>'
+           +   '<span class="t">' + headline(e) + '</span>'
+           +   MM.actionMark(e.url)
+           +   '<span class="m">' + e.guest + '</span>'
+           + '</a>';
+    }).join("");
+  }
+
+  // The count is read off the graph rather than restated by hand, so it cannot
+  // drift from what the archive actually lists.
+  var note = document.getElementById("conversations-note");
+  if (note && episodes.length) {
+    var years = episodes.map(function(e){ return String(e.year); }).sort();
+    note.textContent = "Latinxs Who Design \u2014 " + episodes.length
+      + " conversations, " + years[0] + "\u2013" + years[years.length - 1] + ".";
+  }
+})();
+</script>
+
+
 </body>
 </html>
