@@ -7,8 +7,8 @@
 <meta name="description" content="Michel Ferreira — Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
 <meta property="og:title" content="About — Michel Ferreira">
 <meta property="og:description" content="Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
-<link rel="stylesheet" href="tokens.css?v=56">
-<link rel="stylesheet" href="multimichel.css?v=56">
+<link rel="stylesheet" href="tokens.css?v=57">
+<link rel="stylesheet" href="multimichel.css?v=57">
 <link rel="canonical" href="https://multimichel.com/about-v2">
 <meta name="robots" content="noindex">
 <meta property="og:image" content="https://multimichel.com/img/og-default.jpg">
@@ -97,7 +97,9 @@
   <section class="hero" id="about">
     <div class="v2-hero">
       <div>
-        <div class="sechead"><i class="tab"></i><h1>About</h1></div>
+        <!-- No marker square here: this is the page opening, not one section
+             among several. Every other sechead on the page keeps its tab. -->
+        <div class="sechead"><h1>About</h1></div>
 
         <nav class="bio-nav" aria-label="Choose a bio length">
           <button type="button" data-bio="ten" aria-pressed="false">Quick intro</button>
@@ -108,7 +110,7 @@
           <span class="sep" aria-hidden="true">·</span>
           <a href="#story">Read the full story<span class="arrow" aria-hidden="true">↓&#xFE0E;</span></a>
           <span class="spacer"></span>
-          <button type="button" id="copy-bio">Copy bio</button>
+          <button type="button" id="copy-bio" hidden>Copy bio</button>
         </nav>
 
         <div class="prose bio-copy" id="bio-ten" hidden>
@@ -154,7 +156,7 @@
     <!-- 4 · The homepage quote component, unchanged: .quote-block / .quote /
          .hl + .hl-mark / .quote-source. No About-specific quote styling. -->
     <figure class="quote-block">
-      <blockquote class="quote">Good design is <span class="hl"><img class="hl-mark" src="img/highlight.svg" alt="" aria-hidden="true">hard.</span></blockquote>
+      <blockquote class="quote"><span class="quote-mark">&ldquo;</span><span class="quote-tail"><span class="hl"><img class="hl-mark" src="img/highlight.svg" alt="" aria-hidden="true">Good design is hard.</span><span class="quote-mark">&rdquo;</span></span></blockquote>
       <figcaption class="quote-source">
         <cite>The Science of Good Design</cite> &middot; London, 2016 &middot; <a href="https://www.youtube.com/watch?v=4Nk0ray32i0" target="_blank" rel="noopener noreferrer">Watch the talk<span class="arrow" aria-hidden="true">↗&#xFE0E;</span></a>
       </figcaption>
@@ -163,8 +165,8 @@
     <div class="prose">
       <p>Being a Designer Advocate at Figma feels like a collision of a lot of those things. I get to stay close to the people using the product, bring what I hear back into the company, help people understand what we&rsquo;re building, experiment with new ways of working, speak, teach, and still make things.</p>
       <p>The writing, the talks, the mentoring and <a href="https://open.spotify.com/show/0J3JdhM454AvedlYlXqeRZ" target="_blank" rel="noopener noreferrer">Latinxs Who Design</a> all come from the same place. When something interests me, I pull it apart, talk about it, and make something out of what I learned.</p>
-      <p>I&rsquo;m in Sydney now, with my wife, three kids, a dog and a cat. Nearly thirty years into working in this field, I&rsquo;m still learning.</p>
-      <p>That&rsquo;s part of why this site exists: to share some of the bullet points, and keep some of the mess around them too.</p>
+      <p>I&rsquo;m in Sydney now, with my wife, three kids, a dog and a cat. Nearly thirty years into working in this field and still learning.</p>
+      <p>That&rsquo;s part of why this site exists: to share some of the bullet points, expand on them, and keep some of the mess around them too.</p>
     </div>
   </section>
 
@@ -212,8 +214,8 @@
   </nav>
 </footer>
 
-<script src="content.js?v=56"></script>
-<script src="nav.js?v=56" defer></script>
+<script src="content.js?v=57"></script>
+<script src="nav.js?v=57" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -256,6 +258,7 @@
   var LABEL = {ten:"Quick intro", thirty:"A little longer", speaker:"Speaker bio"};
   var buttons = [].slice.call(document.querySelectorAll(".bio-nav button[data-bio]"));
   var status = document.getElementById("bio-status");
+  var copyBtn = document.getElementById("copy-bio");
   var current = "thirty";
 
   function show(key){
@@ -266,6 +269,9 @@
     buttons.forEach(function(b){
       b.setAttribute("aria-pressed", String(b.dataset.bio === key));
     });
+    // Copying is only useful for the bio people actually paste elsewhere, so
+    // the utility rides with the speaker bio instead of sitting there always.
+    copyBtn.hidden = (key !== "speaker");
     status.textContent = "";
   }
   buttons.forEach(function(b){
@@ -276,7 +282,6 @@
   // Copies the bio you are actually looking at, as plain text — the thing a
   // conference organiser asks for. Falls back to a selection when the clipboard
   // API is unavailable rather than failing silently.
-  var copyBtn = document.getElementById("copy-bio");
   copyBtn.addEventListener("click", function(){
     var block = document.getElementById(IDS[current]);
     var text = [].map.call(block.querySelectorAll("p"), function(p){
