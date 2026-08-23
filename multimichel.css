@@ -69,9 +69,15 @@ header.site{display:flex;align-items:flex-end;justify-content:space-between;padd
 .brand-menu:disabled{opacity:1}
 .menu-icon{display:none}
 nav.main{display:flex;gap:var(--nav-gap);padding-bottom:var(--space-8)}
-nav.main a{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--dim)}
+nav.main a{position:relative;font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--dim)}
 
 nav.main a[aria-current="page"]{color:var(--ink)}
+nav.main a[aria-current="page"]::before{
+  content:"";position:absolute;left:50%;transform:translateX(-50%);
+  bottom:calc(100% - .15rem);
+  width:var(--nav-current-marker);height:var(--nav-current-marker);
+  background:var(--orange);
+}
 
 /* The mobile nav panel exists at every width but only ever paints inside
    the ≤900px block below — this base rule just keeps it out of layout
@@ -264,7 +270,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
    cap-height offset: align-items:center now centres what you actually see.
    Browsers without text-box fall back to the untrimmed box, which is the
    behaviour this had before — never worse. */
-.sechead h2,.sechead .more{
+.sechead h1,.sechead h2,.sechead .more{
   font-family:var(--font-label);
   font-weight:900;
   font-size:var(--type-label-size);
@@ -734,12 +740,23 @@ footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);p
     overflow-y:auto;
   }
   .mobile-nav a{
+    position:relative;
     font-family:var(--font-label);font-weight:900;
     font-size:clamp(28px,9vw,40px);
     letter-spacing:var(--type-label-tracking);
     color:var(--dim);text-transform:uppercase;
   }
   .mobile-nav a:active{color:var(--orange)}
+  /* Same current-page marker as the desktop nav. A stacked list cannot take it
+     above without colliding with the item before, so it sits in the left margin
+     — the rail the section markers already use. */
+  .mobile-nav a[aria-current="page"]{color:var(--ink)}
+  .mobile-nav a[aria-current="page"]::before{
+    content:"";position:absolute;top:50%;transform:translateY(-50%);
+    left:calc(-1 * var(--space-24-m));
+    width:var(--nav-current-marker-mobile);height:var(--nav-current-marker-mobile);
+    background:var(--orange);
+  }
 
   /* vertical rhythm compresses; the hero keeps its scale */
   .hero{padding-top:var(--space-72)}

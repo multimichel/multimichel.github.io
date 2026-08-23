@@ -17,7 +17,7 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 
 /* Case-study back link — a compact navigation label, not an editorial row,
    so its arrow stays inline (same exception as "ALL WRITING →"). */
-.cs-back{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);margin-bottom:var(--space-32)}
+.cs-back{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);text-transform:uppercase;margin-bottom:var(--space-32)}
 .cs-back a{color:var(--dark-dim)}
 .cs-back a:hover{color:var(--orange)}
 /* .kicker retired — the case-study eyebrow it styled was replaced by
