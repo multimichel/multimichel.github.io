@@ -17,7 +17,7 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 
 /* Case-study back link — a compact navigation label, not an editorial row,
    so its arrow stays inline (same exception as "ALL WRITING →"). */
-.cs-back{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);text-transform:uppercase;margin-bottom:var(--space-32)}
+.cs-back{font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);text-transform:uppercase;margin-bottom:var(--space-32)}
 .cs-back a{color:var(--dark-dim)}
 .cs-back a:hover{color:var(--orange)}
 /* .kicker retired — the case-study eyebrow it styled was replaced by
@@ -39,7 +39,7 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 .cs figure.full.bleed{margin-left:calc(-1 * var(--content-start));margin-right:calc(-1 * var(--content-start));border-radius:0}
 
 .cs .next-wrap{margin:96px 0 120px}
-.cs h2{font-family:var(--font-serif);font-weight:var(--serif-row-weight);font-size:clamp(28px,4vw,var(--type-case-title-size));letter-spacing:-.01em;color:var(--dark-ink);margin:64px 0 20px}
+.cs h2{font-family:var(--font-serif);font-variation-settings:var(--serif-row);font-weight:var(--serif-row-weight);font-size:clamp(28px,4vw,var(--type-case-title-size));letter-spacing:-.01em;color:var(--dark-ink);margin:64px 0 20px}
 /* Running copy on the dark pages. Size is genuinely its own — a narrower
    measure on a dark ground reads denser — but the LEADING is the shared body
    ratio. The 1.81 that used to sit here was left over from a superseded
@@ -49,10 +49,10 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
    <p> inside .cs, which meant it also styled .lede and .cs-back — both of which
    are their own roles and were silently losing their size, face and weight to a
    body rule that simply sat later and more specific. */
-.cs p:not([class]){max-width:680px;font-family:var(--font-grotesk);font-size:15px;line-height:var(--type-body-leading-ratio);color:var(--dark-dim)}
+.cs p:not([class]){max-width:680px;font-family:var(--font-grotesk);font-variation-settings:normal;font-size:15px;line-height:var(--type-body-leading-ratio);color:var(--dark-dim)}
 .cs p:not([class])+p:not([class]){margin-top:16px}
 .cs p:not([class]) b{color:var(--dark-ink)}
-.cs ul{max-width:680px;margin:16px 0 0 22px;font-family:var(--font-grotesk);font-size:15px;line-height:var(--type-body-leading-ratio);color:var(--dark-dim)}
+.cs ul{max-width:680px;margin:16px 0 0 22px;font-family:var(--font-grotesk);font-variation-settings:normal;font-size:15px;line-height:var(--type-body-leading-ratio);color:var(--dark-dim)}
 .cs li{margin-bottom:var(--space-8)}
 .cs li b{color:var(--dark-ink)}
 .cs figure.full{background:var(--white);border-radius:4px;overflow:hidden;margin:40px 0 0}
@@ -60,14 +60,14 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 /* --dark-dim is tuned for the dark page ground (6.97:1) but these captions
    sit inside a white figure box, where it collapses to 2.68:1. --muted is the
    muted tone that still passes on white (5.05:1). */
-.cs figcaption{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-caption-size);letter-spacing:.4px;color:var(--muted);text-transform:uppercase;margin-top:12px}
+.cs figcaption{font-family:var(--font-grotesk);font-variation-settings:normal;font-weight:500;font-size:var(--type-caption-size);letter-spacing:.4px;color:var(--muted);text-transform:uppercase;margin-top:12px}
 
 .stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--dark-rule);border:1px solid var(--dark-rule);margin:40px 0}
 .stat div{background:var(--dark-bg);padding:24px}
 .stat b{display:block;font-family:var(--font-serif);font-variation-settings:var(--serif-display);font-weight:var(--serif-display-weight);font-size:37.5px;color:var(--orange)}
-.stat span{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-caption-size);letter-spacing:.4px;color:var(--dark-dim);text-transform:uppercase}
+.stat span{font-family:var(--font-grotesk);font-variation-settings:normal;font-weight:500;font-size:var(--type-caption-size);letter-spacing:.4px;color:var(--dark-dim);text-transform:uppercase}
 
-.cs .next{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);letter-spacing:1.1px;text-transform:uppercase;color:var(--orange)}
+.cs .next{font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size);letter-spacing:1.1px;text-transform:uppercase;color:var(--orange)}
 .cs .next:hover{color:var(--dark-ink)}
 
 .cs .pull{font-family:var(--font-serif);font-variation-settings:var(--serif-display);font-weight:var(--serif-display-weight);font-size:clamp(24px,3.4vw,36px);line-height:1.38;color:var(--dark-ink);max-width:920px;margin:64px 0}
@@ -78,8 +78,8 @@ body.dark .fineprint a{color:var(--dark-ink);border-bottom:1px solid var(--orang
 .cs .imgrid.cols-3{grid-template-columns:repeat(3,1fr)}
 .cs .imgrid figure{margin:0}
 .cs .imgrid img{width:100%;height:auto;display:block;background:var(--white);border-radius:4px}
-.cs .imgrid h3{font-family:var(--font-serif);font-weight:var(--serif-row-weight);font-size:19px;color:var(--dark-ink);margin-top:var(--space-16)}
-.cs .imgrid p{font-family:var(--font-grotesk);font-size:var(--type-sub-size);line-height:var(--type-body-leading-ratio);margin-top:var(--space-8);color:var(--dark-dim);max-width:none}
+.cs .imgrid h3{font-family:var(--font-serif);font-variation-settings:var(--serif-row);font-weight:var(--serif-row-weight);font-size:19px;color:var(--dark-ink);margin-top:var(--space-16)}
+.cs .imgrid p{font-family:var(--font-grotesk);font-variation-settings:normal;font-size:var(--type-sub-size);line-height:var(--type-body-leading-ratio);margin-top:var(--space-8);color:var(--dark-dim);max-width:none}
 
 .cs video{width:100%;display:block;background:#000;border-radius:4px;margin:40px 0}
 

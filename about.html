@@ -7,8 +7,8 @@
 <meta name="description" content="Michel Ferreira — Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
 <meta property="og:title" content="About — Michel Ferreira">
 <meta property="og:description" content="Designer Advocate at Figma. Brazil, Amsterdam, Canada, Sydney. Building things on the web since 1998.">
-<link rel="stylesheet" href="tokens.css?v=60">
-<link rel="stylesheet" href="multimichel.css?v=60">
+<link rel="stylesheet" href="tokens.css?v=61">
+<link rel="stylesheet" href="multimichel.css?v=61">
 <link rel="canonical" href="https://multimichel.com/about">
 <meta property="og:image" content="https://multimichel.com/img/og-default.jpg">
 <meta property="og:image:width" content="1200">
@@ -37,9 +37,11 @@
 
 /* The bio selector. Text navigation — not pills, tabs or buttons. It borrows the
    section-label type role so it reads as part of the same editorial furniture. */
-.bio-nav{display:flex;flex-wrap:wrap;align-items:baseline;gap:0;margin-top:var(--space-24-m)}
+/* First thing in the column now that the title is visually gone, so it carries
+   no top margin — the text and the portrait start on the same line. */
+.bio-nav{display:flex;flex-wrap:wrap;align-items:baseline;gap:0;margin-top:0}
 .bio-nav button,.bio-nav a{
-  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size);
   letter-spacing:var(--type-label-tracking);text-transform:uppercase;
   background:none;border:0;padding:0;margin:0;cursor:pointer;
   color:var(--muted);
@@ -51,11 +53,11 @@
 .bio-nav button:focus-visible,.bio-nav a:focus-visible{background-size:100% var(--pen-thickness)}
 .bio-nav button[aria-pressed="true"]{color:var(--ink);background-size:100% var(--pen-thickness)}
 .bio-nav button:focus-visible,.bio-nav a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.bio-nav .sep{color:var(--rule-strong);padding:0 var(--space-8);font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size)}
+.bio-nav .sep{color:var(--rule-strong);padding:0 var(--space-8);font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size)}
 .bio-nav .spacer{flex:1}
 .bio-copy{margin-top:var(--space-24-m)}
 .bio-copy[hidden]{display:none}
-.bio-status{margin-top:var(--space-8);font-family:var(--font-grotesk);font-size:var(--type-caption-size);letter-spacing:.4px;text-transform:uppercase;color:var(--muted);min-height:1.2em}
+.bio-status{margin-top:var(--space-8);font-family:var(--font-grotesk);font-variation-settings:normal;font-size:var(--type-caption-size);letter-spacing:.4px;text-transform:uppercase;color:var(--muted);min-height:1.2em}
 
 /* Section rhythm, on the same scale the rest of the site uses. */
 #story,#route,#conversations,#besides{padding-top:var(--gap-section-major)}
@@ -96,9 +98,10 @@
   <section class="hero" id="about">
     <div class="v2-hero">
       <div>
-        <!-- No marker square here: this is the page opening, not one section
-             among several. Every other sechead on the page keeps its tab. -->
-        <div class="sechead"><h1>About</h1></div>
+        <!-- The page announces itself through the nav marker and the bio, so the
+             title carries no visual weight here. It stays in the document for
+             structure and search rather than being deleted outright. -->
+        <h1 class="visually-hidden">About</h1>
 
         <nav class="bio-nav" aria-label="Choose a bio length">
           <button type="button" data-bio="ten" aria-pressed="false">Quick intro</button>
@@ -213,8 +216,8 @@
   </nav>
 </footer>
 
-<script src="content.js?v=60"></script>
-<script src="nav.js?v=60" defer></script>
+<script src="content.js?v=61"></script>
+<script src="nav.js?v=61" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}

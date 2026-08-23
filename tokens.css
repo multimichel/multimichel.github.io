@@ -316,8 +316,8 @@
   --block-header-w: 64px;
   --block-header-h: 64px;      /* full square, matches the section markers */
   --block-marker: 64px;        /* section markers: 64 × 64 */
-  --nav-current-marker: 6px;   /* current-page dot in the nav — the section marker at label scale */
-  --nav-current-marker-mobile: 10px; /* same marker, scaled to the mobile nav's larger links */
+  --nav-current-marker: 8px;   /* current-page marker in the nav — on the 8/16/32 scale */
+  --nav-current-marker-mobile: 16px; /* same marker, one step up for the mobile nav's larger links */
 
   /* ---------- SPACING SCALE ----------
      8pt grid: 8 · 16 · 32 · 48 · 72, plus multiples for large rhythm.

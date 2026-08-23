@@ -9,14 +9,18 @@ body{
   background:var(--paper);
   border-left:var(--rail-width) solid var(--rail);
   border-right:var(--rail-width) solid var(--rail);
-  color:var(--slate);font-family:var(--font-grotesk);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;
+  color:var(--slate);font-family:var(--font-grotesk);font-variation-settings:normal;font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;
   /* Declared ONCE, here, because font-variation-settings inherits: it reaches
      every serif surface on every page without a per-component repeat, and the
      faces that have no such axes (Agrandir, Hanken Grotesk) ignore it. The
      EDITORIAL recipe is the default — most of the serif on this site is row
      titles — and the two display surfaces override it. See tokens.css for the
      three recipes and why opsz is pinned per role rather than left on `auto`. */
-  font-variation-settings:var(--serif-row);
+  /* No axes here. <body> is set in Hanken, so declaring Fraunces axes on it
+     only pushed them onto every element on the page through inheritance —
+     which is what made Agrandir report "WONK 0" in devtools. Each serif rule
+     now carries its own recipe instead. */
+  font-variation-settings:normal;
 }
 /* height:auto is not optional once images carry intrinsic width/height
    attributes: without it the HTML height attribute dictates layout height and
@@ -41,11 +45,17 @@ b,strong{font-weight:var(--weight-emphasis)}
    then lands on the marker rail like everything else. */
 .skiplink{
   position:absolute;left:-9999px;top:0;z-index:100;
-  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size);
   letter-spacing:var(--type-label-tracking);text-transform:uppercase;
   background:var(--slate);color:var(--paper);padding:var(--space-16);
 }
 .skiplink:focus{left:0}
+/* Kept in the document for structure and search, taken out of the picture.
+   Not display:none — that would remove it from the accessibility tree too. */
+.visually-hidden{
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+  overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0;
+}
 
 /* ---------- masthead & nav ----------
    The brand square is a real <button> (mobile menu control) and the
@@ -53,7 +63,7 @@ b,strong{font-weight:var(--weight-emphasis)}
    without nesting interactive elements. */
 header.site{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:var(--space-32)}
 .brand{display:flex;align-items:center}
-.brand-link{text-box:trim-both cap alphabetic;font-family:var(--font-label);font-weight:900;font-size:var(--type-masthead-size);line-height:var(--type-masthead-leading);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase}
+.brand-link{text-box:trim-both cap alphabetic;font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-masthead-size);line-height:var(--type-masthead-leading);letter-spacing:var(--type-masthead-tracking);color:var(--masthead);text-transform:uppercase}
 /* The header square rides the SAME marker rail as every .sechead .tab:
    both resolve to --block-inset from the page edge, so the square hangs
    out of the content column exactly as the section markers do. Margin is
@@ -69,12 +79,16 @@ header.site{display:flex;align-items:flex-end;justify-content:space-between;padd
 .brand-menu:disabled{opacity:1}
 .menu-icon{display:none}
 nav.main{display:flex;gap:var(--nav-gap);padding-bottom:var(--space-8)}
-nav.main a{position:relative;font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--dim)}
+nav.main a{position:relative;font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--dim)}
 
 nav.main a[aria-current="page"]{color:var(--ink)}
 nav.main a[aria-current="page"]::before{
   content:"";position:absolute;left:50%;transform:translateX(-50%);
-  bottom:calc(100% - .15rem);
+  /* Sits on the top edge of the page, level with the brand square, rather than
+     floating just above the word. Derived from tokens rather than measured: the
+     link sits (header square − its own height − the nav's bottom padding) below
+     the header top, so undoing exactly that lands the marker at 0. */
+  top:calc(100% + var(--space-8) - var(--block-header-h));
   width:var(--nav-current-marker);height:var(--nav-current-marker);
   background:var(--orange);
 }
@@ -91,7 +105,7 @@ nav.main a[aria-current="page"]::before{
    headline) must be the same style. Every existing use is an <h1>, so the widened
    selector changes nothing that already renders. */
 .display{
-  font-family:var(--font-serif);
+  font-family:var(--font-serif);font-variation-settings:var(--serif-row);
   font-weight:var(--serif-display-weight);
   font-variation-settings:var(--serif-display);
   /* Clamp floor and slope move with --type-hero-size on the same serif scale,
@@ -115,7 +129,7 @@ nav.main a[aria-current="page"]::before{
    Emphasis is the shared --weight-emphasis; the 700 that used to sit on .lede b
    was a local override that quietly undercut it. */
 .lede,.prose{
-  font-family:var(--font-grotesk);
+  font-family:var(--font-grotesk);font-variation-settings:normal;
   font-weight:400;
   font-size:var(--type-body-size);
   line-height:var(--type-body-leading-ratio);
@@ -136,7 +150,7 @@ figure.full img,figure.full video{width:100%;height:auto;aspect-ratio:1400/788;o
    desktop composition the class exists to protect. Still opt-in: the
    case-study covers are portrait and are meant to be cropped. */
 figure.full.natural img,figure.full.natural video{aspect-ratio:auto;height:auto}
-figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--type-caption-size);letter-spacing:.4px;color:var(--muted);text-transform:uppercase;margin-top:var(--space-16)}
+figcaption,.cap{font-family:var(--font-grotesk);font-variation-settings:normal;font-weight:500;font-size:var(--type-caption-size);letter-spacing:.4px;color:var(--muted);text-transform:uppercase;margin-top:var(--space-16)}
 
 /* ---------- quote ----------
    The block owns the vertical rhythm; the quote itself no longer carries the
@@ -144,7 +158,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
 .quote-block{margin:var(--space-144) 0;text-align:center}
 .quote{
   text-align:center;
-  font-family:var(--font-serif);
+  font-family:var(--font-serif);font-variation-settings:var(--serif-row);
   font-weight:var(--serif-display-weight);
   font-variation-settings:var(--serif-display);
   /* Ceiling holds cap-height parity with the original 48px Family setting, so
@@ -165,7 +179,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
   margin:var(--space-32) auto 0;
   max-width:var(--measure-form);
   padding:0 var(--space-16);
-  font-family:var(--font-grotesk);
+  font-family:var(--font-grotesk);font-variation-settings:normal;
   font-size:var(--type-row-meta-size);
   line-height:1.5;
   color:var(--muted);
@@ -246,7 +260,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
 .tab-copy-status{
   position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);
   white-space:nowrap;
-  font-family:var(--font-grotesk);font-size:11px;font-weight:600;
+  font-family:var(--font-grotesk);font-variation-settings:normal;font-size:11px;font-weight:600;
   background:var(--ink);color:var(--paper);
   padding:4px 8px;border-radius:3px;
   opacity:0;pointer-events:none;transition:opacity .15s ease;
@@ -255,7 +269,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
 /* Page-level eyebrow — the same label treatment as a section name
    (.sechead h2), used above an H1 rather than above a list. Tied to the
    heading it introduces, never a floating line of body text. */
-.eyebrow{font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--muted);text-transform:uppercase;margin-bottom:var(--space-16)}
+.eyebrow{font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size);line-height:var(--type-label-leading);letter-spacing:var(--type-label-tracking);color:var(--muted);text-transform:uppercase;margin-bottom:var(--space-16)}
 /* Agrandir's caps fill its ascent (cap 720 / asc 750), so the visible
    letterforms sit 0.11em above the centre of their own line box — geometric
    centring alone leaves the label reading high against the square. The padding
@@ -271,7 +285,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-weight:500;font-size:var(--
    Browsers without text-box fall back to the untrimmed box, which is the
    behaviour this had before — never worse. */
 .sechead h1,.sechead h2,.sechead .more{
-  font-family:var(--font-label);
+  font-family:var(--font-label);font-variation-settings:normal;
   font-weight:900;
   font-size:var(--type-label-size);
   line-height:1;
@@ -323,10 +337,10 @@ a.row:hover,a.row:focus-visible{background:var(--slate);outline:none}
 a.row:focus-visible{outline:2px solid var(--orange);outline-offset:-2px}
 .rowlist .row:first-child{border-top:1px solid var(--rule-light)}
 
-.row .t{font-family:var(--font-serif);font-weight:var(--serif-row-weight);font-size:var(--type-row-title-size);line-height:var(--type-row-title-leading);color:var(--ink)}
+.row .t{font-family:var(--font-serif);font-variation-settings:var(--serif-row);font-weight:var(--serif-row-weight);font-size:var(--type-row-title-size);line-height:var(--type-row-title-leading);color:var(--ink)}
 a.row:hover .t,a.row:focus-visible .t{color:var(--orange)}
-.row .m{font-family:var(--font-grotesk);font-weight:var(--type-row-meta-weight);font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);letter-spacing:var(--type-row-meta-tracking);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
-.row .sub{font-family:var(--font-grotesk);font-weight:400;font-size:var(--type-sub-size);line-height:1.4;color:var(--muted);margin-top:var(--space-8);max-width:640px}
+.row .m{font-family:var(--font-grotesk);font-variation-settings:normal;font-weight:var(--type-row-meta-weight);font-size:var(--type-row-meta-size);line-height:var(--type-row-meta-leading);letter-spacing:var(--type-row-meta-tracking);color:var(--oak);margin-top:var(--gap-row-title-to-meta)}
+.row .sub{font-family:var(--font-grotesk);font-variation-settings:normal;font-weight:400;font-size:var(--type-sub-size);line-height:1.4;color:var(--muted);margin-top:var(--space-8);max-width:640px}
 /* Metadata and description flip to paper so they stay readable on the slate. */
 a.row:hover .m,a.row:focus-visible .m,
 a.row:hover .sub,a.row:focus-visible .sub{color:var(--paper)}
@@ -365,7 +379,7 @@ a.row:hover .cat,a.row:focus-visible .cat{background:transparent;color:var(--pap
             line-height 0 takes it out of the line-box calculation entirely, so
             the mark paints at full size and the label's rhythm is untouched. */
 .arrow,.go{
-  font-family:var(--font-arrow);
+  font-family:var(--font-arrow);font-variation-settings:normal;
   font-weight:900;
   font-size:var(--type-arrow-size);
   font-variant-emoji:text;
@@ -395,7 +409,7 @@ a.row:hover .go,a.row:focus-visible .go{color:var(--orange)}
 .row .kicker-line{display:block;margin-bottom:var(--gap-label-to-title)}
 .row .up,.row .cat{
   display:inline-block;
-  font-family:var(--font-label);font-weight:900;font-size:var(--type-chip-size);letter-spacing:var(--type-chip-tracking);
+  font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-chip-size);letter-spacing:var(--type-chip-tracking);
   text-transform:uppercase;
 }
 /* Slate on orange, not white on orange — white was 2.84:1. */
@@ -492,7 +506,7 @@ nav.main a:hover,nav.main a:focus-visible,
 /* Outline is :focus-visible ONLY — never on hover, never at rest. */
 nav.main a:focus-visible,.sechead .more:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 
-.aside-note{margin-top:var(--space-32);font-family:var(--font-grotesk);font-size:var(--type-aside-size);color:var(--dim)}
+.aside-note{margin-top:var(--space-32);font-family:var(--font-grotesk);font-variation-settings:normal;font-size:var(--type-aside-size);color:var(--dim)}
 
 /* ---------- portrait figure ----------
    A vertical portrait must not be forced into the 16:9 landscape frame that
@@ -518,34 +532,34 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
 .field{margin-bottom:var(--space-32)}
 .field label{
   display:block;margin-bottom:var(--space-8);
-  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size);
   letter-spacing:var(--type-label-tracking);text-transform:uppercase;color:var(--muted);
 }
 .field input,.field textarea,.field select{
   width:100%;display:block;
   background:transparent;border:0;border-bottom:1.5px solid var(--rule-strong);
   padding:var(--space-8) 0;
-  font-family:var(--font-grotesk);font-size:var(--type-field-size);color:var(--ink);
+  font-family:var(--font-grotesk);font-variation-settings:normal;font-size:var(--type-field-size);color:var(--ink);
   border-radius:0;-webkit-appearance:none;appearance:none;
 }
 .field textarea{resize:vertical;line-height:1.5}
 .field select{cursor:pointer;background-image:none}
 .field input:focus,.field textarea:focus,.field select:focus{outline:0;border-bottom-color:var(--orange)}
 .field input[aria-invalid="true"],.field textarea[aria-invalid="true"]{border-bottom-color:var(--orange)}
-.err{margin-top:var(--space-8);font-family:var(--font-grotesk);font-size:var(--type-row-meta-size);color:var(--orange)}
+.err{margin-top:var(--space-8);font-family:var(--font-grotesk);font-variation-settings:normal;font-size:var(--type-row-meta-size);color:var(--orange)}
 
 .submit{
   display:inline-block;border:0;cursor:pointer;
   /* slate on orange: white was 2.84:1 */
   background:var(--orange);color:var(--slate);
-  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size);
   letter-spacing:var(--type-label-tracking);text-transform:uppercase;
   padding:var(--space-16) var(--space-32);border-radius:0;
   transition:opacity .15s;
 }
 .submit:hover{opacity:.85}
 .submit:disabled{opacity:.4;cursor:default}
-.form-status{margin-top:var(--space-16);font-family:var(--font-grotesk);font-size:var(--type-row-meta-size);color:var(--dim);min-height:1.2em}
+.form-status{margin-top:var(--space-16);font-family:var(--font-grotesk);font-variation-settings:normal;font-size:var(--type-row-meta-size);color:var(--dim);min-height:1.2em}
 .form-status.is-error{color:var(--orange)}
 .form-status.is-ok{color:var(--oak)}
 
@@ -587,12 +601,12 @@ figure.portrait img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
    spacing value of its own. Only the title SIZE differs, because Work and Media
    are genuinely different hierarchy. */
 .work-label,.media-label{
-  font-family:var(--font-label);font-weight:900;font-size:var(--type-label-size);
+  font-family:var(--font-label);font-variation-settings:normal;font-weight:900;font-size:var(--type-label-size);
   letter-spacing:var(--type-label-tracking);color:var(--orange);text-transform:uppercase;
   margin-top:var(--gap-cover-to-label);
 }
 .work-card-title,.media-card-title{
-  font-family:var(--font-serif);font-weight:var(--serif-card-weight);
+  font-family:var(--font-serif);font-variation-settings:var(--serif-row);font-weight:var(--serif-card-weight);
   font-variation-settings:var(--serif-card);
   color:var(--ink);
   margin-top:var(--gap-label-to-title);
@@ -663,7 +677,7 @@ footer.site .social{display:flex;align-items:center;gap:var(--space-8);flex-wrap
 
 footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);padding:var(--space-32) var(--content-inset) var(--space-48) var(--content-inset);display:flex;flex-wrap:wrap;gap:var(--space-16);justify-content:space-between;align-items:center}
 .fineprint{
-  font-family:var(--font-grotesk);font-weight:var(--type-fineprint-weight);
+  font-family:var(--font-grotesk);font-variation-settings:normal;font-weight:var(--type-fineprint-weight);
   font-size:var(--type-fineprint-size);line-height:var(--type-fineprint-leading);
   letter-spacing:var(--type-fineprint-tracking);color:var(--muted);
 }
@@ -741,7 +755,7 @@ footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);p
   }
   .mobile-nav a{
     position:relative;
-    font-family:var(--font-label);font-weight:900;
+    font-family:var(--font-label);font-variation-settings:normal;font-weight:900;
     font-size:clamp(28px,9vw,40px);
     letter-spacing:var(--type-label-tracking);
     color:var(--dim);text-transform:uppercase;
