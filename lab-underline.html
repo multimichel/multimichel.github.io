@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ink underline — test</title>
+<meta name="description" content="Interaction test.">
+<link rel="stylesheet" href="tokens.css?v=62">
+<link rel="stylesheet" href="multimichel.css?v=62">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#F8F5F2">
+<style>
+/* ── INK UNDERLINE ─────────────────────────────────────────────────────────
+   A pen line drawn under the words on hover, then left very slightly alive.
+
+   Deliberately NOT a border, a scale transform, or a background-size grow:
+   both of those stretch or squash the stroke while it appears, which reads as
+   mechanical. Here the stroke is laid out at its FINAL width and revealed
+   left to right with clip-path, so every wobble in the line arrives already
+   drawn — the same geometry a real pen leaves behind.
+
+   Applied by class, never to every link: this is for a chosen inline link or
+   an emphasised phrase. --pen-thickness and the SVG are the ones the site
+   already uses, so the mark is the same hand as the section markers. */
+/* a.ink, not .ink: inside .prose these links ALREADY carry the site's standing
+   pen underline (0,1,1 specificity), so the class has to match that weight to
+   turn it off. This mark replaces that one — it never sits on top of it. */
+a.ink{
+  position:relative;
+  color:inherit;
+  text-decoration:none;
+  background-image:none;
+  padding:0 .06em;
+  margin:0 -.06em;
+  transition:none;
+}
+a.ink::after{
+  content:"";
+  position:absolute;
+  left:0; right:0;
+  bottom:-.16em;                       /* clear of the baseline, not touching it */
+  height:var(--pen-thickness);
+  background:url("img/pen-underline.svg") no-repeat;
+  background-size:100% 100%;
+  clip-path:inset(0 100% 0 0);         /* undrawn: clipped away from the right */
+  opacity:0;
+  transition:opacity 140ms ease;       /* governs the exit only */
+  pointer-events:none;
+  will-change:clip-path,transform;
+}
+.ink:hover::after,
+.ink:focus-visible::after{
+  opacity:1;
+  transition:none;                     /* the entrance is the animation, not a fade */
+  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards;
+}
+/* The nib accelerates away and eases off at the end, like a hand finishing a
+   stroke — not a linear sweep. */
+@keyframes ink-draw{
+  from{clip-path:inset(0 100% 0 0)}
+  to  {clip-path:inset(0 0 0 0)}
+}
+
+/* ── variant: living wobble ─────────────────────────────────────────────── */
+.ink-live:hover::after,
+.ink-live:focus-visible::after{
+  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
+            ink-wobble 3.2s 210ms ease-in-out infinite;
+}
+/* Sub-pixel on purpose. Big enough to register as alive, too small to read as
+   movement — if you can see it move, it is too much. */
+@keyframes ink-wobble{
+  0%,100%{transform:translate3d(0,0,0)          rotate(0deg)}
+  27%    {transform:translate3d(.35px,-.18px,0) rotate(.07deg)}
+  54%    {transform:translate3d(-.25px,.14px,0) rotate(-.06deg)}
+  78%    {transform:translate3d(.18px,.1px,0)   rotate(.04deg)}
+}
+
+/* ── variant: settle once, then rest ────────────────────────────────────── */
+.ink-settle:hover::after,
+.ink-settle:focus-visible::after{
+  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
+            ink-settle 420ms 210ms cubic-bezier(.33,1.2,.5,1) 1;
+}
+@keyframes ink-settle{
+  0%  {transform:translate3d(0,-.4px,0) rotate(.11deg)}
+  55% {transform:translate3d(0,.2px,0)  rotate(-.05deg)}
+  100%{transform:none}
+}
+
+/* Nothing here moves for anyone who asked for less motion: the line is simply
+   present or absent, with no draw, no wobble and no fade. */
+@media (prefers-reduced-motion: reduce){
+  .ink::after{clip-path:none;transition:none}
+  .ink:hover::after,.ink:focus-visible::after{animation:none}
+}
+
+
+/* ── variant: marker, not pen ───────────────────────────────────────────────
+   The reference is a marker stroke: heavier, wetter, visibly wavier, with the
+   line swelling and thinning along its run. Same draw and same settle — only
+   the mark changes. Thickness steps up because a marker IS thicker; at pen
+   weight the waviness reads as a wobbly hairline rather than a confident
+   stroke. */
+a.ink-marker::after{
+  background-image:url("img/marker-underline.svg");
+  height:var(--marker-thickness);
+  bottom:-.20em;
+}
+
+/* page furniture for the test only */
+:root{--marker-thickness:0.5rem}
+.lab{max-width:var(--measure)}
+.lab h2{font-family:var(--font-label);font-variation-settings:normal;font-weight:900;
+  font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);
+  text-transform:uppercase;color:var(--muted);margin:var(--space-72) 0 var(--space-16)}
+.lab .note{font-family:var(--font-grotesk);font-variation-settings:normal;
+  font-size:var(--type-row-meta-size);line-height:1.5;color:var(--muted);margin-top:var(--space-8)}
+.sizes{display:flex;flex-wrap:wrap;gap:var(--space-32) var(--space-48);align-items:baseline;margin-top:var(--space-24-m)}
+.sizes .s1{font-size:14px}.sizes .s2{font-size:21px}
+.sizes .s3{font-family:var(--font-serif);font-variation-settings:var(--serif-row);font-size:32px}
+.sizes .s4{font-family:var(--font-serif);font-variation-settings:var(--serif-display);
+  font-weight:var(--serif-display-weight);font-size:56px}
+</style>
+</head>
+<body>
+<a class="skiplink" href="#main">Skip to content</a>
+
+<header class="site">
+  <div class="brand">
+    <button class="brand-menu" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span class="menu-icon"><span></span><span></span></span></button>
+    <a class="brand-link" href="/">MICHEL FERREIRA</a>
+  </div>
+  <nav class="main">
+    <a href="/">HOME</a>
+    <a href="/archive">ARCHIVE</a>
+    <a href="/about">ABOUT</a>
+    <a href="/contact" aria-current="page">CONTACT</a>
+  </nav>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Site">
+    <a href="/">HOME</a>
+    <a href="/archive">ARCHIVE</a>
+    <a href="/about">ABOUT</a>
+    <a href="/contact" aria-current="page">CONTACT</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="wrap">
+  <section class="hero">
+    <h1 class="display">A line, drawn.</h1>
+    <div class="lede">
+      <p>Three ways the same pen stroke can arrive. Hover each one, and tab through them
+      too &mdash; the keyboard path is the same interaction.</p>
+    </div>
+  </section>
+
+  <div class="lab">
+    <h2>1 &middot; Draw only</h2>
+    <p class="prose">The stroke is laid out at full width and revealed left to right in
+    210ms, so it arrives already uneven rather than growing into shape. Try
+    <a class="ink" href="#1">this link</a>, or read it in a sentence: the work at
+    <a class="ink" href="#1">Booking.com</a> is where the habit started.</p>
+    <p class="note">Nothing moves once drawn. The quietest of the three.</p>
+
+    <h2>2 &middot; Draw, then a living wobble</h2>
+    <p class="prose">Same entrance, then a sub-pixel drift that never quite settles &mdash;
+    <a class="ink ink-live" href="#2">hold the cursor here</a> for a few seconds and the
+    line keeps breathing. In a sentence: I made
+    <a class="ink ink-live" href="#2">Latinxs Who Design</a> because the conversations
+    weren&rsquo;t being recorded.</p>
+    <p class="note">3.2s cycle, amplitude under half a pixel. If you can see it move, it is too much.</p>
+
+    <h2>3 &middot; Draw, then settle once</h2>
+    <p class="prose">The line overshoots very slightly and comes to rest, the way a hand
+    lifts off &mdash; <a class="ink ink-settle" href="#3">hover here</a>. In a sentence: the
+    details matter because that is where
+    <a class="ink ink-settle" href="#3">the earlier decisions</a> become real.</p>
+    <p class="note">Motion happens once, then stops. Reads as deliberate rather than animated.</p>
+
+    <h2>Across the type scale</h2>
+    <div class="sizes">
+      <a class="ink ink-settle s1" href="#s">14px meta</a>
+      <a class="ink ink-settle s2" href="#s">21px body</a>
+      <a class="ink ink-settle s3" href="#s">32px serif</a>
+      <a class="ink ink-settle s4" href="#s">56px</a>
+    </div>
+    <p class="note">Thickness and offset are in em, so the stroke keeps its proportion at every size.</p>
+
+
+    <h2>4 &middot; Marker, not pen</h2>
+    <p class="prose">Same draw, same settle &mdash; a heavier mark. The stroke swells and
+    thins along its run and lifts at both ends, so it reads as a marker rather than a
+    ruled line: <a class="ink ink-marker ink-settle" href="#4">hover here</a>. In a
+    sentence: I spent three years at
+    <a class="ink ink-marker ink-settle" href="#4">Shopify</a> before Atlassian.</p>
+    <p class="note">Generated as a filled outline rather than a constant-width stroke &mdash; a
+    plain stroke cannot change thickness along its length.</p>
+
+    <h2>5 &middot; Marker, with the living wobble</h2>
+    <p class="prose">The heavier mark with the drift left running:
+    <a class="ink ink-marker ink-live" href="#5">hold here</a> and the line keeps breathing.
+    In a sentence: the thing I keep coming back to is
+    <a class="ink ink-marker ink-live" href="#5">the whole product</a>.</p>
+    <p class="note">Compare against 2 &mdash; the same wobble reads differently at marker weight.</p>
+
+    <h2>Marker across the type scale</h2>
+    <div class="sizes">
+      <a class="ink ink-marker ink-settle s1" href="#m">14px meta</a>
+      <a class="ink ink-marker ink-settle s2" href="#m">21px body</a>
+      <a class="ink ink-marker ink-settle s3" href="#m">32px serif</a>
+      <a class="ink ink-marker ink-settle s4" href="#m">56px</a>
+    </div>
+
+    <h2>Against what the site does today</h2>
+    <p class="prose">The current hover grows the same stroke <i>vertically</i> from zero
+    height &mdash; <a class="more" href="#now">like this one</a> &mdash; which squashes the
+    line while it appears. Next to a drawn one:
+    <a class="ink ink-settle" href="#now">like this one</a>.</p>
+    <p class="note">Reduced motion: no draw, no wobble, no fade &mdash; the line is simply there or not.</p>
+  </div>
+</div>
+</main>
+
+<footer class="site">
+  <p class="fineprint">MULTIMICHEL © 1998–2026 MICHEL FERREIRA · SYDNEY, AUSTRALIA</p>
+  <nav class="social" aria-label="Elsewhere">
+    <a class="social-icon" href="https://www.linkedin.com/in/michelpferreira/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg></a>
+    <a class="social-icon" href="https://www.youtube.com/@multimichel" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.01 2.01 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.01 2.01 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31 31 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.01 2.01 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A100 100 0 0 1 7.858 2zM6.4 5.209v4.818l4.157-2.408z"/></svg></a>
+    <a class="social-icon" href="https://instagram.com/multimichel" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334"/></svg></a>
+    <a class="social-icon" href="https://www.threads.com/@multimichel" target="_blank" rel="noopener noreferrer" aria-label="Threads" title="Threads"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161"/></svg></a>
+    <a class="social-icon" href="https://x.com/multimichel" target="_blank" rel="noopener noreferrer" aria-label="X" title="X"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/></svg></a>
+    <a class="social-icon" href="https://multimichel.medium.com/" target="_blank" rel="noopener noreferrer" aria-label="Medium" title="Medium"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M9.025 8c0 2.485-2.02 4.5-4.513 4.5A4.506 4.506 0 0 1 0 8c0-2.486 2.02-4.5 4.512-4.5A4.506 4.506 0 0 1 9.025 8m4.95 0c0 2.34-1.01 4.236-2.256 4.236S9.463 10.339 9.463 8c0-2.34 1.01-4.236 2.256-4.236S13.975 5.661 13.975 8M16 8c0 2.096-.355 3.795-.794 3.795-.438 0-.793-1.7-.793-3.795 0-2.096.355-3.795.794-3.795.438 0 .793 1.699.793 3.795"/></svg></a>
+    <a class="social-icon" href="/contact" aria-label="Email Michel" title="Email Michel"><svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true" focusable="false"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z"/></svg></a>
+  </nav>
+</footer>
+
+<script src="nav.js?v=62" defer></script>
+</body>
+</html>
