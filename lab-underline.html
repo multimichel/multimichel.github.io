@@ -150,6 +150,52 @@ a.ink-marker::after{
   bottom:-.20em;
 }
 
+
+/* ── WIGGLYPAINT BOIL ──────────────────────────────────────────────────────
+   The earlier boil was too well-behaved: endpoints pinned, geometry varying
+   around a single gesture. A hand-inked boil has registration slop — the pen
+   lands somewhere slightly different, presses differently, and finishes
+   somewhere else again. Each frame here varies its start x, end x, both end
+   heights, an overall dip-or-rise bias, the wander, the pressure and both cap
+   radii. Measured mean frame-to-frame difference is 1.78px against the earlier
+   0.28px — six times the variation, inside the 1-3px the eye reads as the same
+   line redrawn rather than a line that travels.
+
+   Still no transform: the variation is drawn into each frame, not animated
+   onto one. */
+a.wig::after{height:var(--marker-thickness); bottom:-.2em}
+a.wig3:hover::after, a.wig3:focus-visible::after{
+  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
+            wig3 .33s 210ms step-end infinite;      /* 3 frames @ 9.1fps */
+}
+@keyframes wig3{
+  0.0000%{background-image:url("img/wig-b3-1.svg")}
+  33.3333%{background-image:url("img/wig-b3-2.svg")}
+  66.6667%{background-image:url("img/wig-b3-3.svg")}
+  100%{background-image:url("img/wig-b3-1.svg")}
+}
+a.wig8:hover::after, a.wig8:focus-visible::after{
+  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
+            wig8 .88s 210ms step-end infinite;      /* 8 frames @ 9.1fps */
+}
+@keyframes wig8{
+  0.0000%{background-image:url("img/wig-b8-1.svg")}
+  12.5000%{background-image:url("img/wig-b8-2.svg")}
+  25.0000%{background-image:url("img/wig-b8-3.svg")}
+  37.5000%{background-image:url("img/wig-b8-4.svg")}
+  50.0000%{background-image:url("img/wig-b8-5.svg")}
+  62.5000%{background-image:url("img/wig-b8-6.svg")}
+  75.0000%{background-image:url("img/wig-b8-7.svg")}
+  87.5000%{background-image:url("img/wig-b8-8.svg")}
+  100%{background-image:url("img/wig-b8-1.svg")}
+}
+@media (prefers-reduced-motion:reduce){
+  a.wig3:hover::after, a.wig3:focus-visible::after,
+  a.wig8:hover::after, a.wig8:focus-visible::after{animation:none}
+  a.wig3::after{background-image:url("img/wig-b3-1.svg")}
+  a.wig8::after{background-image:url("img/wig-b8-1.svg")}
+}
+
 /* page furniture for the test only */
 :root{--marker-thickness:0.5rem}
 .lab{max-width:var(--measure)}
@@ -241,13 +287,31 @@ a.ink-marker::after{
     <p class="note">Generated as a filled outline rather than a constant-width stroke &mdash; a
     plain stroke cannot change thickness along its length.</p>
 
-    <h2>5 &middot; Marker, boiling</h2>
+    <h2>5 &middot; Marker, boiling <span style="color:var(--muted)">(baseline)</span></h2>
     <p class="prose">The heavier mark, boiling &mdash;
     <a class="ink ink-marker ink-boil" href="#5">hold here</a>. In a sentence: the thing I
     keep coming back to is
     <a class="ink ink-marker ink-boil" href="#5">the whole product</a>.</p>
     <p class="note">Thickness varies frame to frame as well as bend, so the nib appears to have
     been re-pressed each time.</p>
+
+
+    <h2>5A &middot; Three frames, WigglyPaint slop</h2>
+    <p class="prose">The classic three-cel boil. Each drawing starts and ends in a slightly
+    different place, with its own pressure and its own caps &mdash;
+    <a class="ink ink-marker wig wig3" href="#5a">hold the cursor here</a>. In a sentence: the
+    thing I keep coming back to is
+    <a class="ink ink-marker wig wig3" href="#5a">the whole product</a>.</p>
+    <p class="note">9.1fps. Three frames is the tightest loop that still reads as redrawing
+    rather than flickering between two states.</p>
+
+    <h2>5B &middot; Eight frames, same slop</h2>
+    <p class="prose">The same variation spread over eight drawings, so the loop takes longer to
+    give itself away &mdash; <a class="ink ink-marker wig wig8" href="#5b">hold here</a>. In a
+    sentence: three years at
+    <a class="ink ink-marker wig wig8" href="#5b">Shopify</a> before Atlassian.</p>
+    <p class="note">Same 9.1fps. Compare against 5A: three frames has a detectable rhythm,
+    eight does not.</p>
 
     <h2>Marker across the type scale</h2>
     <div class="sizes">
