@@ -63,20 +63,8 @@ a.ink::after{
   to  {clip-path:inset(0 0 0 0)}
 }
 
-/* ── variant: living wobble ─────────────────────────────────────────────── */
-.ink-live:hover::after,
-.ink-live:focus-visible::after{
-  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
-            ink-wobble 3.2s 210ms ease-in-out infinite;
-}
 /* Sub-pixel on purpose. Big enough to register as alive, too small to read as
    movement — if you can see it move, it is too much. */
-@keyframes ink-wobble{
-  0%,100%{transform:translate3d(0,0,0)          rotate(0deg)}
-  27%    {transform:translate3d(.35px,-.18px,0) rotate(.07deg)}
-  54%    {transform:translate3d(-.25px,.14px,0) rotate(-.06deg)}
-  78%    {transform:translate3d(.18px,.1px,0)   rotate(.04deg)}
-}
 
 /* ── variant: settle once, then rest ────────────────────────────────────── */
 .ink-settle:hover::after,
@@ -93,10 +81,62 @@ a.ink::after{
 /* Nothing here moves for anyone who asked for less motion: the line is simply
    present or absent, with no draw, no wobble and no fade. */
 @media (prefers-reduced-motion: reduce){
-  .ink::after{clip-path:none;transition:none}
-  .ink:hover::after,.ink:focus-visible::after{animation:none}
+  /* a.ink, matching the specificity of the rule that sets the clip — .ink alone
+     loses to it and the stroke stays clipped away, i.e. invisible. */
+  a.ink::after{clip-path:none;transition:none}
+  a.ink:hover::after,a.ink:focus-visible::after{animation:none}
 }
 
+
+
+/* ── variant: line boil ────────────────────────────────────────────────────
+   NOT the mark moving. The mark stays exactly where it is — same position,
+   same anchored endpoints — and its GEOMETRY is redrawn: five separately
+   generated strokes, each with different bends, cut between with step-end at
+   8.3fps. That is a boil, the thing hand-inked animation does when every cel
+   is traced afresh. Nothing here translates, rotates, scales or eases; if it
+   did, it would read as an object drifting rather than a line being redrawn.
+
+   The five frames share their start and end points (the centreline is windowed
+   to zero at both ends) so only the interior changes — a redrawn line, not a
+   different line. Cycle order is the one whose consecutive frames differ most,
+   so every cut registers. */
+a.ink-boil:hover::after,
+a.ink-boil:focus-visible::after{
+  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
+            boil-pen .6s 210ms step-end infinite;
+}
+@keyframes boil-pen{
+  0%{background-image:url("img/boil-pen-1.svg")}
+  20%{background-image:url("img/boil-pen-4.svg")}
+  40%{background-image:url("img/boil-pen-2.svg")}
+  60%{background-image:url("img/boil-pen-3.svg")}
+  80%{background-image:url("img/boil-pen-5.svg")}
+  100%{background-image:url("img/boil-pen-1.svg")}
+}
+a.ink-boil.ink-marker:hover::after,
+a.ink-boil.ink-marker:focus-visible::after{
+  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
+            boil-marker .6s 210ms step-end infinite;
+}
+@keyframes boil-marker{
+  0%{background-image:url("img/boil-marker-1.svg")}
+  20%{background-image:url("img/boil-marker-4.svg")}
+  40%{background-image:url("img/boil-marker-2.svg")}
+  60%{background-image:url("img/boil-marker-3.svg")}
+  80%{background-image:url("img/boil-marker-5.svg")}
+  100%{background-image:url("img/boil-marker-1.svg")}
+}
+/* One completed stroke, held still. The animation has to be cancelled here as
+   well as the image pinned: these boil rules sit after the shared
+   reduced-motion block at equal specificity, so without naming them again the
+   boil would keep running for exactly the people who asked for no motion. */
+@media (prefers-reduced-motion:reduce){
+  a.ink-boil:hover::after, a.ink-boil:focus-visible::after,
+  a.ink-boil.ink-marker:hover::after, a.ink-boil.ink-marker:focus-visible::after{animation:none}
+  a.ink-boil::after{background-image:url("img/boil-pen-1.svg")}
+  a.ink-boil.ink-marker::after{background-image:url("img/boil-marker-1.svg")}
+}
 
 /* ── variant: marker, not pen ───────────────────────────────────────────────
    The reference is a marker stroke: heavier, wetter, visibly wavier, with the
@@ -165,13 +205,15 @@ a.ink-marker::after{
     <a class="ink" href="#1">Booking.com</a> is where the habit started.</p>
     <p class="note">Nothing moves once drawn. The quietest of the three.</p>
 
-    <h2>2 &middot; Draw, then a living wobble</h2>
-    <p class="prose">Same entrance, then a sub-pixel drift that never quite settles &mdash;
-    <a class="ink ink-live" href="#2">hold the cursor here</a> for a few seconds and the
-    line keeps breathing. In a sentence: I made
-    <a class="ink ink-live" href="#2">Latinxs Who Design</a> because the conversations
+    <h2>2 &middot; Draw, then boil</h2>
+    <p class="prose">Same entrance, then the line is <em>redrawn</em> &mdash; five separately
+    generated strokes cut between at 8.3fps, the way hand-inked animation boils when every
+    cel is traced afresh. <a class="ink ink-boil" href="#2">Hold the cursor here</a>: the
+    mark never moves, its bends change. In a sentence: I made
+    <a class="ink ink-boil" href="#2">Latinxs Who Design</a> because the conversations
     weren&rsquo;t being recorded.</p>
-    <p class="note">3.2s cycle, amplitude under half a pixel. If you can see it move, it is too much.</p>
+    <p class="note">Nothing translates, rotates or scales. Endpoints are anchored across all five
+    frames, so only the interior changes &mdash; a redrawn line, not a different line.</p>
 
     <h2>3 &middot; Draw, then settle once</h2>
     <p class="prose">The line overshoots very slightly and comes to rest, the way a hand
@@ -199,12 +241,13 @@ a.ink-marker::after{
     <p class="note">Generated as a filled outline rather than a constant-width stroke &mdash; a
     plain stroke cannot change thickness along its length.</p>
 
-    <h2>5 &middot; Marker, with the living wobble</h2>
-    <p class="prose">The heavier mark with the drift left running:
-    <a class="ink ink-marker ink-live" href="#5">hold here</a> and the line keeps breathing.
-    In a sentence: the thing I keep coming back to is
-    <a class="ink ink-marker ink-live" href="#5">the whole product</a>.</p>
-    <p class="note">Compare against 2 &mdash; the same wobble reads differently at marker weight.</p>
+    <h2>5 &middot; Marker, boiling</h2>
+    <p class="prose">The heavier mark, boiling &mdash;
+    <a class="ink ink-marker ink-boil" href="#5">hold here</a>. In a sentence: the thing I
+    keep coming back to is
+    <a class="ink ink-marker ink-boil" href="#5">the whole product</a>.</p>
+    <p class="note">Thickness varies frame to frame as well as bend, so the nib appears to have
+    been re-pressed each time.</p>
 
     <h2>Marker across the type scale</h2>
     <div class="sizes">
