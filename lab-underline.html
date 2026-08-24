@@ -108,23 +108,23 @@ a.ink-boil:focus-visible::after{
 }
 @keyframes boil-pen{
   0%{background-image:url("img/boil-pen-1.svg")}
-  20%{background-image:url("img/boil-pen-4.svg")}
-  40%{background-image:url("img/boil-pen-2.svg")}
+  20%{background-image:url("img/boil-pen-2.svg")}
+  40%{background-image:url("img/boil-pen-5.svg")}
   60%{background-image:url("img/boil-pen-3.svg")}
-  80%{background-image:url("img/boil-pen-5.svg")}
+  80%{background-image:url("img/boil-pen-4.svg")}
   100%{background-image:url("img/boil-pen-1.svg")}
 }
 a.ink-boil.ink-marker:hover::after,
 a.ink-boil.ink-marker:focus-visible::after{
   animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
-            boil-marker .6s 210ms step-end infinite;
+            boil-marker 1s 210ms step-end infinite;
 }
 @keyframes boil-marker{
   0%{background-image:url("img/boil-marker-1.svg")}
-  20%{background-image:url("img/boil-marker-4.svg")}
-  40%{background-image:url("img/boil-marker-2.svg")}
+  20%{background-image:url("img/boil-marker-2.svg")}
+  40%{background-image:url("img/boil-marker-5.svg")}
   60%{background-image:url("img/boil-marker-3.svg")}
-  80%{background-image:url("img/boil-marker-5.svg")}
+  80%{background-image:url("img/boil-marker-4.svg")}
   100%{background-image:url("img/boil-marker-1.svg")}
 }
 /* One completed stroke, held still. The animation has to be cancelled here as
