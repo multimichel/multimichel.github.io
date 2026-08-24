@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ink underline — test</title>
 <meta name="description" content="Interaction test.">
-<link rel="stylesheet" href="tokens.css?v=62">
-<link rel="stylesheet" href="multimichel.css?v=62">
+<link rel="stylesheet" href="tokens.css?v=63">
+<link rel="stylesheet" href="multimichel.css?v=63">
 <meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -151,49 +151,40 @@ a.ink-marker::after{
 }
 
 
-/* ── WIGGLYPAINT BOIL ──────────────────────────────────────────────────────
-   The earlier boil was too well-behaved: endpoints pinned, geometry varying
-   around a single gesture. A hand-inked boil has registration slop — the pen
-   lands somewhere slightly different, presses differently, and finishes
-   somewhere else again. Each frame here varies its start x, end x, both end
-   heights, an overall dip-or-rise bias, the wander, the pressure and both cap
-   radii. Measured mean frame-to-frame difference is 1.78px against the earlier
-   0.28px — six times the variation, inside the 1-3px the eye reads as the same
-   line redrawn rather than a line that travels.
 
-   Still no transform: the variation is drawn into each frame, not animated
-   onto one. */
-a.wig::after{height:var(--marker-thickness); bottom:-.2em}
-a.wig3:hover::after, a.wig3:focus-visible::after{
-  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
-            wig3 .33s 210ms step-end infinite;      /* 3 frames @ 9.1fps */
+
+/* ── SMOOTH MORPH ──────────────────────────────────────────────────────────
+   Not background-image swapping. Each link carries its own inline <svg>, and
+   the path's POINTS are interpolated every frame — so the contour, the
+   pressure and the two ends all travel continuously between hand-drawn states
+   instead of cutting between them.
+
+   Every state has the same point count in the same order, so interpolation is
+   just averaging numbers; there is no path-string morphing and no topology to
+   mismatch. Progress through the loop is strictly linear, so there is no
+   easing pause as each drawing is reached — the line never settles. */
+a.ink-morph{position:relative;color:inherit;text-decoration:none;
+  background-image:none;padding:0 .06em;margin:0 -.06em;transition:none;
+  /* One <svg> cannot follow an inline that breaks across lines — it is a single
+     box, and a wrapped inline is several. The background-image variants get
+     wrapping for free; this one keeps the phrase together instead. Fine for an
+     emphasis mark, and a real constraint to weigh against the other options. */
+  white-space:nowrap}
+a.ink-morph::after{display:none}          /* the SVG replaces the pseudo-element */
+a.ink-morph .mo{
+  position:absolute;left:0;right:0;bottom:-.2em;
+  width:100%;height:var(--marker-thickness);display:block;overflow:visible;
+  clip-path:inset(0 100% 0 0);opacity:0;transition:opacity 140ms ease;
+  pointer-events:none;
 }
-@keyframes wig3{
-  0.0000%{background-image:url("img/wig-b3-1.svg")}
-  33.3333%{background-image:url("img/wig-b3-2.svg")}
-  66.6667%{background-image:url("img/wig-b3-3.svg")}
-  100%{background-image:url("img/wig-b3-1.svg")}
+a.ink-morph:hover .mo, a.ink-morph:focus-visible .mo{
+  opacity:1;transition:none;
+  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards;
 }
-a.wig8:hover::after, a.wig8:focus-visible::after{
-  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards,
-            wig8 .88s 210ms step-end infinite;      /* 8 frames @ 9.1fps */
-}
-@keyframes wig8{
-  0.0000%{background-image:url("img/wig-b8-1.svg")}
-  12.5000%{background-image:url("img/wig-b8-2.svg")}
-  25.0000%{background-image:url("img/wig-b8-3.svg")}
-  37.5000%{background-image:url("img/wig-b8-4.svg")}
-  50.0000%{background-image:url("img/wig-b8-5.svg")}
-  62.5000%{background-image:url("img/wig-b8-6.svg")}
-  75.0000%{background-image:url("img/wig-b8-7.svg")}
-  87.5000%{background-image:url("img/wig-b8-8.svg")}
-  100%{background-image:url("img/wig-b8-1.svg")}
-}
+a.ink-morph:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 @media (prefers-reduced-motion:reduce){
-  a.wig3:hover::after, a.wig3:focus-visible::after,
-  a.wig8:hover::after, a.wig8:focus-visible::after{animation:none}
-  a.wig3::after{background-image:url("img/wig-b3-1.svg")}
-  a.wig8::after{background-image:url("img/wig-b8-1.svg")}
+  a.ink-morph .mo{clip-path:none;transition:none}
+  a.ink-morph:hover .mo, a.ink-morph:focus-visible .mo{animation:none}
 }
 
 /* page furniture for the test only */
@@ -296,22 +287,24 @@ a.wig8:hover::after, a.wig8:focus-visible::after{
     been re-pressed each time.</p>
 
 
-    <h2>5A &middot; Three frames, WigglyPaint slop</h2>
-    <p class="prose">The classic three-cel boil. Each drawing starts and ends in a slightly
-    different place, with its own pressure and its own caps &mdash;
-    <a class="ink ink-marker wig wig3" href="#5a">hold the cursor here</a>. In a sentence: the
-    thing I keep coming back to is
-    <a class="ink ink-marker wig wig3" href="#5a">the whole product</a>.</p>
-    <p class="note">9.1fps. Three frames is the tightest loop that still reads as redrawing
-    rather than flickering between two states.</p>
 
-    <h2>5B &middot; Eight frames, same slop</h2>
-    <p class="prose">The same variation spread over eight drawings, so the loop takes longer to
-    give itself away &mdash; <a class="ink ink-marker wig wig8" href="#5b">hold here</a>. In a
-    sentence: three years at
-    <a class="ink ink-marker wig wig8" href="#5b">Shopify</a> before Atlassian.</p>
-    <p class="note">Same 9.1fps. Compare against 5A: three frames has a detectable rhythm,
-    eight does not.</p>
+
+    <h2>5A &middot; Three shapes, smooth morph</h2>
+    <p class="prose">Three hand-drawn states, interpolated continuously rather than cut
+    between &mdash; <a class="ink-morph" data-morph="m3" data-dur="1050" href="#5a">hold the
+    cursor here</a>. In a sentence: the thing I keep coming back to is
+    <a class="ink-morph" data-morph="m3" data-dur="1050" href="#5a">the whole product</a>.</p>
+    <p class="note">1050ms per loop, linear throughout. The contour, the pressure and both
+    ends are all moving at every instant; nothing ever holds still.</p>
+
+    <h2>5B &middot; Eight shapes, smooth morph</h2>
+    <p class="prose">The same treatment across eight states, so the path wanders further
+    before it returns &mdash; <a class="ink-morph" data-morph="m8" data-dur="1600" href="#5b">hold
+    here</a>. In a sentence: three years at
+    <a class="ink-morph" data-morph="m8" data-dur="1600" href="#5b">Shopify</a> before
+    Atlassian.</p>
+    <p class="note">1600ms per loop. Against 5A: three states return to the same shape often
+    enough to sense a cycle, eight does not.</p>
 
     <h2>Marker across the type scale</h2>
     <div class="sizes">
@@ -344,6 +337,73 @@ a.wig8:hover::after, a.wig8:focus-visible::after{
   </nav>
 </footer>
 
-<script src="nav.js?v=62" defer></script>
+<script src="nav.js?v=63" defer></script>
+<script id="morph-data" type="application/json">{"m3":[{"x":[1.37,8.25,15.13,22.01,28.89,35.77,42.65,49.53,56.41,63.29,70.17,77.05,83.93,90.81,97.69,104.57,111.45,118.33,125.21,132.09,138.97,145.85,152.73,159.61,166.49,173.37],"t":[6.73,6.74,6.26,5.78,5.58,5.32,4.66,4.07,3.82,3.73,3.76,4.35,5.76,7.38,8.35,8.5,8.23,7.69,6.74,5.58,4.84,4.76,5.16,5.7,6.29,7.08],"b":[9.46,10.59,11.25,11.89,12.22,11.86,11.03,10.19,9.65,9.23,8.91,9.16,10.25,11.61,12.38,12.41,12.1,11.61,10.79,9.85,9.38,9.62,9.95,9.93,9.83,9.81]},{"x":[2.03,8.87,15.7,22.54,29.38,36.21,43.05,49.88,56.72,63.55,70.39,77.22,84.06,90.89,97.73,104.56,111.4,118.23,125.07,131.9,138.74,145.57,152.41,159.24,166.08,172.91],"t":[6.55,6.39,5.94,5.21,4.52,4.08,3.81,3.72,3.88,4.35,5.05,5.67,5.85,5.52,4.97,4.61,4.58,4.69,4.62,4.29,3.8,3.28,3.05,3.16,3.52,4.6],"b":[9.63,10.07,10.12,9.82,9.21,8.55,8.12,7.97,8.14,8.7,9.57,10.42,10.88,10.86,10.64,10.6,10.86,11.21,11.33,11.11,10.65,10.08,9.27,8.3,7.61,7.69]},{"x":[1.09,8.0,14.9,21.81,28.72,35.63,42.53,49.44,56.35,63.26,70.16,77.07,83.98,90.89,97.79,104.7,111.61,118.52,125.42,132.33,139.24,146.15,153.05,159.96,166.87,173.78],"t":[6.27,5.33,5.0,4.81,4.64,4.45,4.32,4.47,4.87,5.31,5.6,5.72,5.72,5.49,4.83,3.71,2.47,1.62,1.44,1.82,2.39,2.9,3.49,4.2,4.8,5.1],"b":[8.64,8.23,8.44,8.82,9.0,8.93,8.98,9.37,10.05,10.79,11.38,11.79,12.05,12.03,11.51,10.46,9.22,8.29,7.96,8.13,8.44,8.65,8.56,8.27,7.97,7.47]}],"m8":[{"x":[1.37,8.25,15.13,22.01,28.89,35.77,42.65,49.53,56.41,63.29,70.17,77.05,83.93,90.81,97.69,104.57,111.45,118.33,125.21,132.09,138.97,145.85,152.73,159.61,166.49,173.37],"t":[6.73,6.74,6.26,5.78,5.58,5.32,4.66,4.07,3.82,3.73,3.76,4.35,5.76,7.38,8.35,8.5,8.23,7.69,6.74,5.58,4.84,4.76,5.16,5.7,6.29,7.08],"b":[9.46,10.59,11.25,11.89,12.22,11.86,11.03,10.19,9.65,9.23,8.91,9.16,10.25,11.61,12.38,12.41,12.1,11.61,10.79,9.85,9.38,9.62,9.95,9.93,9.83,9.81]},{"x":[2.03,8.87,15.7,22.54,29.38,36.21,43.05,49.88,56.72,63.55,70.39,77.22,84.06,90.89,97.73,104.56,111.4,118.23,125.07,131.9,138.74,145.57,152.41,159.24,166.08,172.91],"t":[6.55,6.39,5.94,5.21,4.52,4.08,3.81,3.72,3.88,4.35,5.05,5.67,5.85,5.52,4.97,4.61,4.58,4.69,4.62,4.29,3.8,3.28,3.05,3.16,3.52,4.6],"b":[9.63,10.07,10.12,9.82,9.21,8.55,8.12,7.97,8.14,8.7,9.57,10.42,10.88,10.86,10.64,10.6,10.86,11.21,11.33,11.11,10.65,10.08,9.27,8.3,7.61,7.69]},{"x":[1.09,8.0,14.9,21.81,28.72,35.63,42.53,49.44,56.35,63.26,70.16,77.07,83.98,90.89,97.79,104.7,111.61,118.52,125.42,132.33,139.24,146.15,153.05,159.96,166.87,173.78],"t":[6.27,5.33,5.0,4.81,4.64,4.45,4.32,4.47,4.87,5.31,5.6,5.72,5.72,5.49,4.83,3.71,2.47,1.62,1.44,1.82,2.39,2.9,3.49,4.2,4.8,5.1],"b":[8.64,8.23,8.44,8.82,9.0,8.93,8.98,9.37,10.05,10.79,11.38,11.79,12.05,12.03,11.51,10.46,9.22,8.29,7.96,8.13,8.44,8.65,8.56,8.27,7.97,7.47]},{"x":[0.18,7.12,14.06,21.0,27.94,34.88,41.82,48.75,55.69,62.63,69.57,76.51,83.45,90.39,97.33,104.27,111.21,118.15,125.09,132.03,138.97,145.91,152.85,159.79,166.73,173.67],"t":[7.62,6.95,6.44,6.01,5.97,6.42,6.97,7.13,6.63,5.65,4.78,4.47,4.64,4.84,4.68,4.19,3.73,3.58,3.76,4.11,4.51,4.96,5.51,5.97,6.04,5.56],"b":[9.9,9.88,10.12,10.53,11.09,11.83,12.64,13.03,12.69,11.8,10.96,10.58,10.62,10.63,10.23,9.46,8.7,8.25,8.15,8.25,8.46,8.78,9.04,9.05,8.71,7.84]},{"x":[0.54,7.47,14.4,21.32,28.25,35.18,42.11,49.03,55.96,62.89,69.81,76.74,83.67,90.6,97.52,104.45,111.38,118.3,125.23,132.16,139.09,146.01,152.94,159.87,166.79,173.72],"t":[6.95,6.15,5.73,5.67,6.03,6.31,6.13,5.83,5.84,6.0,5.78,5.09,4.43,4.15,3.96,3.47,2.92,2.93,3.7,4.72,5.4,5.74,6.14,6.55,6.56,6.19],"b":[9.26,9.03,9.2,9.81,10.61,11.09,11.14,11.1,11.37,11.77,11.77,11.27,10.73,10.51,10.33,9.78,9.1,8.93,9.49,10.26,10.69,10.77,10.62,10.23,9.52,8.51]},{"x":[0.69,7.6,14.5,21.41,28.31,35.22,42.12,49.03,55.93,62.83,69.74,76.64,83.55,90.45,97.36,104.26,111.17,118.07,124.97,131.88,138.78,145.69,152.59,159.5,166.4,173.31],"t":[4.61,3.66,3.05,2.81,2.8,2.73,2.6,2.72,3.0,3.09,3.06,3.37,4.2,5.04,5.35,5.17,4.91,4.62,4.04,3.15,2.44,2.31,2.79,3.46,4.08,5.09],"b":[7.06,6.73,6.7,7.02,7.26,7.15,7.06,7.29,7.73,8.04,8.25,8.83,9.92,11.03,11.56,11.56,11.42,11.2,10.61,9.65,8.81,8.49,8.29,7.88,7.47,7.54]},{"x":[0.16,7.13,14.1,21.07,28.04,35.01,41.99,48.96,55.93,62.9,69.87,76.84,83.82,90.79,97.76,104.73,111.7,118.67,125.65,132.62,139.59,146.56,153.53,160.5,167.47,174.45],"t":[5.1,5.14,4.56,3.84,3.31,3.03,2.96,3.29,4.12,5.29,6.37,6.92,6.79,6.14,5.27,4.35,3.47,2.69,2.18,2.08,2.35,2.74,3.28,3.92,4.48,4.9],"b":[8.13,8.79,8.7,8.33,7.72,7.04,6.64,6.71,7.38,8.48,9.6,10.3,10.41,10.08,9.58,9.08,8.62,8.25,8.1,8.3,8.78,9.29,9.38,9.01,8.54,7.93]},{"x":[0.71,7.63,14.54,21.45,28.36,35.28,42.19,49.1,56.01,62.93,69.84,76.75,83.66,90.58,97.49,104.4,111.32,118.23,125.14,132.05,138.97,145.88,152.79,159.7,166.62,173.53],"t":[6.62,5.84,5.6,5.56,5.66,5.7,5.48,5.2,5.14,5.34,5.55,5.39,4.71,3.75,2.89,2.46,2.53,2.99,3.73,4.68,5.64,6.34,6.72,6.73,6.5,6.48],"b":[8.74,8.65,9.16,9.95,10.61,10.9,10.95,10.95,11.17,11.62,12.03,12.03,11.44,10.5,9.6,9.05,8.94,9.17,9.66,10.32,11.01,11.44,11.22,10.35,9.34,8.6]}]}</script>
+<script>
+(function(){
+  var SETS = JSON.parse(document.getElementById("morph-data").textContent);
+  var NS = "http://www.w3.org/2000/svg";
+  var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Catmull-Rom through the sample points, emitted as cubics. Straight segments
+  // between 26 points would facet visibly at marker weight.
+  function curve(pts, startAt){
+    var d = startAt ? "" : "M" + pts[0][0].toFixed(2) + " " + pts[0][1].toFixed(2);
+    for (var i = 0; i < pts.length - 1; i++){
+      var p0 = i > 0 ? pts[i-1] : pts[i], p1 = pts[i], p2 = pts[i+1];
+      var p3 = i + 2 < pts.length ? pts[i+2] : p2;
+      d += "C" + (p1[0]+(p2[0]-p0[0])/6).toFixed(2) + " " + (p1[1]+(p2[1]-p0[1])/6).toFixed(2)
+         + " " + (p2[0]-(p3[0]-p1[0])/6).toFixed(2) + " " + (p2[1]-(p3[1]-p1[1])/6).toFixed(2)
+         + " " + p2[0].toFixed(2) + " " + p2[1].toFixed(2);
+    }
+    return d;
+  }
+  function outline(x, top, bot){
+    var n = x.length, T = [], B = [], i;
+    for (i = 0; i < n; i++){ T.push([x[i], top[i]]); B.push([x[i], bot[i]]); }
+    var rR = (bot[n-1] - top[n-1]) / 2, rL = (bot[0] - top[0]) / 2;
+    return curve(T)
+      + "A" + rR.toFixed(2) + " " + rR.toFixed(2) + " 0 0 1 " + x[n-1].toFixed(2) + " " + bot[n-1].toFixed(2)
+      + curve(B.slice().reverse(), true)
+      + "A" + rL.toFixed(2) + " " + rL.toFixed(2) + " 0 0 1 " + x[0].toFixed(2) + " " + top[0].toFixed(2)
+      + "Z";
+  }
+  function mix(a, b, k){ var o = new Array(a.length);
+    for (var i = 0; i < a.length; i++) o[i] = a[i] + (b[i] - a[i]) * k; return o; }
+
+  document.querySelectorAll("a.ink-morph").forEach(function(a){
+    var set = SETS[a.dataset.morph], dur = +a.dataset.dur || 1200;
+    var svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("class", "mo");
+    svg.setAttribute("viewBox", "0 0 175 14");
+    svg.setAttribute("preserveAspectRatio", "none");
+    svg.setAttribute("aria-hidden", "true");
+    var path = document.createElementNS(NS, "path");
+    path.setAttribute("fill", "#FF6C00");
+    svg.appendChild(path); a.appendChild(svg);
+
+    function draw(s){ path.setAttribute("d", outline(s.x, s.t, s.b)); }
+    draw(set[0]);
+    if (still) return;                       // one drawing, held
+
+    var raf = null, t0 = null;
+    function step(ts){
+      if (t0 === null) t0 = ts;
+      var prog = ((ts - t0) / dur) % 1;      // linear: no ease, no pause at a state
+      var f = prog * set.length, i = Math.floor(f), k = f - i;
+      var A = set[i % set.length], B = set[(i + 1) % set.length];
+      path.setAttribute("d", outline(mix(A.x,B.x,k), mix(A.t,B.t,k), mix(A.b,B.b,k)));
+      raf = requestAnimationFrame(step);
+    }
+    function start(){ if (raf === null){ t0 = null; raf = requestAnimationFrame(step); } }
+    function stop(){ if (raf !== null){ cancelAnimationFrame(raf); raf = null; draw(set[0]); } }
+    a.addEventListener("pointerenter", start);
+    a.addEventListener("pointerleave", stop);
+    a.addEventListener("focus", start);
+    a.addEventListener("blur", stop);
+  });
+})();
+</script>
+
 </body>
 </html>
