@@ -157,3 +157,28 @@
     }
   }
 })();
+
+/* ---------- the highlighter, painted on arrival ----------
+   The yellow brush sweeps in left to right the first time the quote reaches
+   the viewport, and only then — it is a moment on the way down the page, not
+   a loop. The hidden state is applied from here rather than from the
+   stylesheet so that a visitor without JS still sees the brush; CSS alone
+   would have clipped it away with nothing left to restore it. */
+(function(){
+  var blocks = document.querySelectorAll('.quote-block');
+  if (!blocks.length) return;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!('IntersectionObserver' in window) || reduce){
+    // no sweep: leave the brush exactly as it has always been
+    return;
+  }
+  document.documentElement.classList.add('js-sweep');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('is-inked');
+      io.unobserve(e.target);            // once, never again
+    });
+  }, {threshold: 0.35});
+  for (var i = 0; i < blocks.length; i++) io.observe(blocks[i]);
+})();

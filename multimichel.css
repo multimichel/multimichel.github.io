@@ -111,7 +111,7 @@ nav.main a[aria-current="page"]::before{
   /* Clamp floor and slope move with --type-hero-size on the same serif scale,
      so the headline holds its optical size at EVERY width — not only at the
      1496px reference. 52/10.2vw/148 → 49/9.6vw/140. */
-  font-size:clamp(49px,9.6vw,var(--type-hero-size));
+  font-size:clamp(49px,8.4vw,var(--type-hero-size));
   letter-spacing:var(--type-hero-tracking);
   /* .96 → 1.02 sets the SAME absolute leading as before: the ratio grew by
      exactly as much as the font-size shrank, so a three-line headline still
@@ -157,6 +157,7 @@ figcaption,.cap{font-family:var(--font-grotesk);font-variation-settings:normal;f
    margin, so the source line sits with it rather than floating off. */
 .quote-block{margin:var(--space-144) 0;text-align:center}
 .quote{
+  position:relative;z-index:0;   /* the brush's stacking context — see .hl */
   text-align:center;
   font-family:var(--font-serif);font-variation-settings:var(--serif-row);
   font-weight:var(--serif-display-weight);
@@ -196,7 +197,13 @@ figcaption,.cap{font-family:var(--font-grotesk);font-variation-settings:normal;f
 /* ---------- yellow marker (highlighter) ----------
    Keep the original painted SVG behind the complete phrase. The image uses
    its natural aspect ratio, with a modest overshoot beyond both text edges. */
-.hl{position:relative;z-index:0;white-space:nowrap;display:inline-block}
+/* The stacking context lives on .quote, not on .hl. With z-index:0 here, .hl
+   became a POSITIONED layer, which paints above ordinary inline content — so
+   the brush, overshooting its own line by 55%, was covering the descenders of
+   the line above it. Raising the context to the block that holds every line
+   lets z-index:-1 sit behind all of them, while still staying in front of the
+   paper. */
+.hl{position:relative;white-space:nowrap;display:inline-block}
 /* The marks sit lighter than the words they enclose — punctuation should not
    weigh as much as the sentence. Opening and closing take the same treatment;
    they are one role, and splitting them would be exactly the kind of local
@@ -205,6 +212,9 @@ figcaption,.cap{font-family:var(--font-grotesk);font-variation-settings:normal;f
 /* The closing ” belongs to the highlighted phrase — on a wide viewport it was
    breaking onto a line of its own. Marker styling is untouched. */
 .quote-tail{white-space:nowrap}
+/* Drawn on arrival: the brush sweeps in left to right the first time the quote
+   reaches the viewport, then never again. nav.js adds .is-inked. Without JS, or
+   with reduced motion, it is simply there. */
 .hl-mark{
   position:absolute;
   left:-5%;
@@ -222,6 +232,20 @@ figcaption,.cap{font-family:var(--font-grotesk);font-variation-settings:normal;f
   object-fit:fill;
   z-index:-1;
   pointer-events:none;
+}
+/* Only hidden once nav.js has confirmed it can reveal it again. A CSS-only
+   clip here would erase the brush for anyone without JS. */
+html.js-sweep .hl-mark{clip-path:inset(0 100% 0 0)}
+html.js-sweep .quote-block.is-inked .hl-mark{
+  animation:hl-sweep 620ms cubic-bezier(.3,.7,.4,1) forwards;
+}
+@keyframes hl-sweep{
+  from{clip-path:inset(0 100% 0 0)}
+  to  {clip-path:inset(0 0 0 0)}
+}
+@media (prefers-reduced-motion:reduce){
+  html.js-sweep .hl-mark{clip-path:none}
+  html.js-sweep .quote-block.is-inked .hl-mark{animation:none}
 }
 
 /* ---------- section markers ----------

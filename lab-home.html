@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Home with living ink — preview</title>
 <meta name="description" content="Preview.">
-<link rel="stylesheet" href="tokens.css?v=69">
-<link rel="stylesheet" href="multimichel.css?v=69">
+<link rel="stylesheet" href="tokens.css?v=70">
+<link rel="stylesheet" href="multimichel.css?v=70">
 <meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -27,8 +27,13 @@
    an underline, and 18 rows all boiling at once would be a different idea. */
 a.ink-live-link{position:relative;white-space:nowrap}
 a.ink-live-link .mo{
-  position:absolute;left:0;right:0;bottom:0;
-  width:100%;height:var(--pen-thickness);display:block;overflow:visible;
+  /* height and bottom are set per link from its own font-size and padding —
+     see the script. A single --pen-thickness for every context was the
+     inconsistency: 5.4px is right under 21px prose and heavy under 13px
+     labels, and positioning from the padding box dropped the nav and the
+     section actions 8px lower than the prose, because that is their padding. */
+  position:absolute;left:0;right:0;
+  width:100%;display:block;overflow:visible;
   clip-path:inset(0 100% 0 0);opacity:0;transition:opacity 140ms ease;
   pointer-events:none;
 }
@@ -159,8 +164,8 @@ a.ink-live-link:hover,a.ink-live-link:focus-visible{background-image:none}
   </nav>
 </footer>
 
-<script src="content.js?v=69"></script>
-<script src="nav.js?v=69" defer></script>
+<script src="content.js?v=70"></script>
+<script src="nav.js?v=70" defer></script>
 <script>
 (function(){
   function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;")}
@@ -241,7 +246,7 @@ a.ink-live-link:hover,a.ink-live-link:focus-visible{background-image:none}
 </script>
 <script>
 // Tag the links the site already underlines, before the engine runs.
-document.querySelectorAll(".lede a, .prose a, .aside-note-link, .quote-source a, .sechead .more")
+document.querySelectorAll(".lede a, .prose a, .aside-note-link, .quote-source a, .sechead .more, nav.main a")
   .forEach(function(a){ a.classList.add("ink-live-link"); });
 </script>
 <script id="morph-data" type="application/json">{"m3":[{"x":[1.37,8.25,15.13,22.01,28.89,35.77,42.65,49.53,56.41,63.29,70.17,77.05,83.93,90.81,97.69,104.57,111.45,118.33,125.21,132.09,138.97,145.85,152.73,159.61,166.49,173.37],"t":[6.7,6.64,6.14,5.64,5.41,5.15,4.53,4.01,3.82,3.8,3.89,4.49,5.81,7.29,8.15,8.24,7.95,7.42,6.54,5.47,4.77,4.68,5.04,5.55,6.12,6.89],"b":[9.43,10.49,11.13,11.75,12.05,11.69,10.9,10.13,9.65,9.3,9.04,9.3,10.3,11.53,12.18,12.15,11.82,11.34,10.59,9.74,9.31,9.54,9.83,9.78,9.66,9.62]},{"x":[2.03,8.87,15.7,22.54,29.38,36.21,43.05,49.88,56.72,63.55,70.39,77.22,84.06,90.89,97.73,104.56,111.4,118.23,125.07,131.9,138.74,145.57,152.41,159.24,166.08,172.91],"t":[6.52,6.35,5.92,5.24,4.6,4.19,3.92,3.82,3.97,4.41,5.06,5.65,5.86,5.6,5.09,4.71,4.6,4.64,4.52,4.18,3.72,3.26,3.1,3.27,3.66,4.7],"b":[9.6,10.03,10.1,9.85,9.29,8.66,8.23,8.07,8.23,8.76,9.58,10.4,10.89,10.94,10.76,10.7,10.88,11.16,11.23,11.0,10.57,10.06,9.32,8.41,7.75,7.79]},{"x":[1.09,8.0,14.9,21.81,28.72,35.63,42.53,49.44,56.35,63.26,70.16,77.07,83.98,90.89,97.79,104.7,111.61,118.52,125.42,132.33,139.24,146.15,153.05,159.96,166.87,173.78],"t":[6.32,5.47,5.14,4.92,4.73,4.51,4.34,4.43,4.78,5.18,5.46,5.61,5.66,5.5,4.91,3.87,2.73,1.94,1.75,2.05,2.54,3.0,3.56,4.24,4.84,5.18],"b":[8.69,8.37,8.58,8.93,9.09,8.99,9.0,9.33,9.96,10.66,11.24,11.68,11.99,12.04,11.59,10.62,9.48,8.61,8.27,8.36,8.59,8.75,8.63,8.31,8.01,7.55]}]}</script>
@@ -441,6 +446,18 @@ document.querySelectorAll(".lede a, .prose a, .aside-note-link, .quote-source a,
     var path = document.createElementNS(NS, "path");
     path.setAttribute("fill", "#FF6C00");
     svg.appendChild(path); a.appendChild(svg);
+
+    // Sit the stroke against THIS link's RENDERED TEXT — 0.26em thick, starting
+    // 0.14em below it — rather than against its padding box. Deriving it from
+    // padding put the line through the middle of the section actions: those
+    // carry text-box:trim-both, so their padding starts at the baseline rather
+    // than below the descenders and the same arithmetic lands somewhere else.
+    // A Range reports where the glyphs actually are in every context.
+    var cs = getComputedStyle(a), fs = parseFloat(cs.fontSize);
+    var rg = document.createRange(); rg.selectNodeContents(a);
+    var below = a.getBoundingClientRect().bottom - rg.getBoundingClientRect().bottom;
+    svg.style.height = (fs * 0.26).toFixed(2) + "px";
+    svg.style.bottom = (below - fs * 0.14).toFixed(2) + "px";
 
     paint(path, set[0]);
     if (still) return;                       // one drawing, held
