@@ -43,6 +43,20 @@ a.ink-live-link:hover .mo,a.ink-live-link:focus-visible .mo{
 }
 /* the standing stroke steps aside while the ink is live */
 a.ink-live-link:hover,a.ink-live-link:focus-visible{background-image:none}
+
+/* The word thickens under the cursor. NOT via font-weight: several of these
+   links are already at the ceiling — the intro's are inside <b> and render at
+   800, and the labels are Agrandir 900, so asking for bolder either does
+   nothing or, measured, makes "Figma" 1px NARROWER. A hairline stroke in the
+   text's own colour thickens every glyph whatever weights the face has, and
+   changes the advance width by exactly 0.0px, so no line ever reflows. */
+a.ink-live-link{
+  -webkit-text-stroke:0 currentColor;
+  transition:-webkit-text-stroke-width 130ms ease;
+}
+a.ink-live-link:hover,a.ink-live-link:focus-visible{
+  -webkit-text-stroke-width:0.022em;
+}
 @keyframes ink-draw{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
 @media (prefers-reduced-motion:reduce){
   a.ink-live-link .mo{clip-path:none;transition:none}
@@ -447,17 +461,26 @@ document.querySelectorAll(".lede a, .prose a, .aside-note-link, .quote-source a,
     path.setAttribute("fill", "#FF6C00");
     svg.appendChild(path); a.appendChild(svg);
 
-    // Sit the stroke against THIS link's RENDERED TEXT — 0.26em thick, starting
-    // 0.14em below it — rather than against its padding box. Deriving it from
-    // padding put the line through the middle of the section actions: those
-    // carry text-box:trim-both, so their padding starts at the baseline rather
-    // than below the descenders and the same arithmetic lands somewhere else.
-    // A Range reports where the glyphs actually are in every context.
+    // Everything is measured from the BASELINE. Both earlier references — the
+    // padding box, then the text's own Range — carry each context's padding,
+    // line-height and text-box trim with them, so the same arithmetic produced
+    // anything from 0.10em under the intro prose to 0.83em under the section
+    // actions: an eight-fold spread, which is what read as wild spacing. The
+    // baseline is the one line every context agrees on.
+    //
+    // A zero-height inline-block aligned to the baseline sits with its bottom
+    // edge exactly on it, which is the cheapest way to find it from script.
     var cs = getComputedStyle(a), fs = parseFloat(cs.fontSize);
-    var rg = document.createRange(); rg.selectNodeContents(a);
-    var below = a.getBoundingClientRect().bottom - rg.getBoundingClientRect().bottom;
-    svg.style.height = (fs * 0.26).toFixed(2) + "px";
-    svg.style.bottom = (below - fs * 0.14).toFixed(2) + "px";
+    var probe = document.createElement("span");
+    probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+    a.appendChild(probe);
+    var baseline = probe.getBoundingClientRect().bottom;
+    probe.remove();
+
+    var h = fs * 0.19;                                   // stroke weight, per text size
+    var drop = fs * 0.17;                                // baseline → top of the stroke
+    svg.style.height = h.toFixed(2) + "px";
+    svg.style.bottom = (a.getBoundingClientRect().bottom - baseline - drop - h).toFixed(2) + "px";
 
     paint(path, set[0]);
     if (still) return;                       // one drawing, held
