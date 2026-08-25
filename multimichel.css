@@ -683,8 +683,8 @@ footer.site .social{display:flex;align-items:center;gap:var(--space-8);flex-wrap
    Scale plus a 2px lift, in that order, so the icon reads as coming forward
    rather than merely growing. Transform never reflows, so nothing in the row
    moves and the footer keeps its height; z-index is there to let the icon pass
-   over a neighbour if it ever needs to, though at 1.12 the growth (1.9px a
-   side) stays inside the 8px gap and no overlap actually occurs.
+   over a neighbour if it ever needs to, at 1.25 the growth (4px a side)
+   still sits inside the 8px gap, so it comes close without colliding.
 
    Asymmetric by design: the :hover rule times the way IN, the base rule times
    the way OUT. Quick to answer, slower to let go. z-index reverts on a delay
@@ -696,7 +696,7 @@ footer.site .social{display:flex;align-items:center;gap:var(--space-8);flex-wrap
              z-index 0s linear .22s;
 }
 .social-icon:is(:hover,:focus-visible){
-  transform:translateY(-2px) scale(1.12);
+  transform:translateY(-2px) scale(1.25);
   z-index:2;
   transition:color .12s ease,background-color .12s ease,
              transform .13s cubic-bezier(.22,.61,.36,1),
