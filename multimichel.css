@@ -675,6 +675,53 @@ footer.site .social{display:flex;align-items:center;gap:var(--space-8);flex-wrap
 .social-icon:hover,.social-icon:focus-visible{color:var(--orange);background:var(--rule-light)}
 .social-icon:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
+/* Dock magnification. The point is that the NEIGHBOURS answer: one icon
+   growing on its own reads as a button, three tiers reading off each other
+   read as a row with give in it.
+
+   Pure selector work, no script. Icons to the RIGHT of the active one are
+   reachable with +; icons to the LEFT need :has(), which is why this was not
+   possible until recently. Focus is wired identically to hover throughout, so
+   the keyboard gets the same shape rather than a lesser version of it.
+
+   Transform never reflows, so nothing in the row shifts and the footer does
+   not resize — the icons grow over their own space. The tile grows with the
+   icon because it is on the same element, which is what the Dock does too. */
+.social-icon{transition:color .15s ease,background-color .15s ease,
+                       transform .165s cubic-bezier(.22,.61,.36,1)}
+
+/* second neighbours */
+.social-icon:is(:hover,:focus-visible) + .social-icon + .social-icon:not(:hover,:focus-visible),
+.social-icon:not(:hover,:focus-visible):has(+ .social-icon + .social-icon:is(:hover,:focus-visible)){
+  transform:scale(1.05);
+}
+/* immediate neighbours */
+.social-icon:is(:hover,:focus-visible) + .social-icon:not(:hover,:focus-visible),
+.social-icon:not(:hover,:focus-visible):has(+ .social-icon:is(:hover,:focus-visible)){
+  transform:scale(1.15);
+}
+/* the icon under the cursor. :not() on the tiers above keeps this exclusive,
+   so an icon can never be told to be 1.4 and 1.05 at the same time. */
+.social-icon:is(:hover,:focus-visible){transform:scale(1.4)}
+
+/* Magnification is the motion; the colour and tile are the state. Reduced
+   motion keeps the state and drops the motion. */
+@media (prefers-reduced-motion:reduce){
+  /* These have to repeat the tier selectors EXACTLY, :not() included. Written
+     shorter they are less specific than the rules they are meant to cancel,
+     and the neighbours keep magnifying while only the hovered icon obeys — the
+     half-working state this replaced. */
+  .social-icon,
+  .social-icon:is(:hover,:focus-visible),
+  .social-icon:is(:hover,:focus-visible) + .social-icon:not(:hover,:focus-visible),
+  .social-icon:not(:hover,:focus-visible):has(+ .social-icon:is(:hover,:focus-visible)),
+  .social-icon:is(:hover,:focus-visible) + .social-icon + .social-icon:not(:hover,:focus-visible),
+  .social-icon:not(:hover,:focus-visible):has(+ .social-icon + .social-icon:is(:hover,:focus-visible)){
+    transform:none;
+    transition:color .15s ease,background-color .15s ease;
+  }
+}
+
 footer.site{border-top:1px solid var(--rule-strong);margin-top:var(--space-96);padding:var(--space-32) var(--content-inset) var(--space-48) var(--content-inset);display:flex;flex-wrap:wrap;gap:var(--space-16);justify-content:space-between;align-items:center}
 .fineprint{
   font-family:var(--font-grotesk);font-variation-settings:normal;font-weight:var(--type-fineprint-weight);
