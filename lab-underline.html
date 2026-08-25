@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ink underline — test</title>
 <meta name="description" content="Interaction test.">
-<link rel="stylesheet" href="tokens.css?v=65">
-<link rel="stylesheet" href="multimichel.css?v=65">
+<link rel="stylesheet" href="tokens.css?v=66">
+<link rel="stylesheet" href="multimichel.css?v=66">
 <meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -289,20 +289,15 @@ a.ink-morph:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
 
 
-    <h2>5A &middot; Fixed three-shape morph</h2>
-    <p class="prose">Hover the mark: the thing I keep coming back to is
-    <a class="ink-morph" data-morph="m3" data-mode="fixed" data-segs="330,390,350" href="#5a">the whole product</a>.</p>
-    <p class="note">Three drawings, always in the same order, always 330 / 390 / 350ms. The reference: everything below changes one thing against it.</p>
-
-    <h2>5B &middot; Same shapes, irregular timing</h2>
-    <p class="prose">Hover the mark: the thing I keep coming back to is
-    <a class="ink-morph" data-morph="m3" data-mode="irregular" href="#5b">the whole product</a>.</p>
-    <p class="note">The same three drawings and the same interpolation. Only the leg durations are re-drawn each completed cycle, anywhere in 280&ndash;430ms, so the loop stops keeping time with itself. No new geometry.</p>
-
-    <h2>5C &middot; Organic non-repeating drift</h2>
+    <h2>5C &middot; Organic drift</h2>
     <p class="prose">Hover the mark: the thing I keep coming back to is
     <a class="ink-morph" data-morph="m3" data-mode="drift" href="#5c">the whole product</a>.</p>
-    <p class="note">No fixed loop at all. A fresh drawing is generated every 250&ndash;450ms and the line interpolates toward it; on arrival, another. The deviation is a couple of low-frequency waves read along the path, so neighbouring points move together &mdash; a redraw, not per-point jitter.</p>
+    <p class="note">A fresh drawing every 250&ndash;450ms, interpolated toward. The contour envelope is sin(&pi;u), which reaches zero exactly at the two ends &mdash; so the wander dies where the pen touches down. The ends still travel (measured at 93% of the middle) but they travel <em>rigidly</em>: same curve, same cap, parked somewhere new.</p>
+
+    <h2>5D &middot; Organic drift, living extremities</h2>
+    <p class="prose">Hover the mark: the thing I keep coming back to is
+    <a class="ink-morph" data-morph="m3" data-mode="drift-live" href="#5d">the whole product</a>.</p>
+    <p class="note">The same mechanism with the envelope running 0.3 &rarr; 1 &rarr; 0.3, so the ends curve instead of only moving. Pressure becomes a field read along the line rather than one multiplier for the whole mark, and each terminal takes its own radius &mdash; so the caps redraw rather than being carried about. The middle keeps 5C&rsquo;s amplitude.</p>
 
     <h2>Marker across the type scale</h2>
     <div class="sizes">
@@ -335,7 +330,7 @@ a.ink-morph:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
   </nav>
 </footer>
 
-<script src="nav.js?v=65" defer></script>
+<script src="nav.js?v=66" defer></script>
 <script id="morph-data" type="application/json">{"m3":[{"x":[1.37,8.25,15.13,22.01,28.89,35.77,42.65,49.53,56.41,63.29,70.17,77.05,83.93,90.81,97.69,104.57,111.45,118.33,125.21,132.09,138.97,145.85,152.73,159.61,166.49,173.37],"t":[6.7,6.64,6.14,5.64,5.41,5.15,4.53,4.01,3.82,3.8,3.89,4.49,5.81,7.29,8.15,8.24,7.95,7.42,6.54,5.47,4.77,4.68,5.04,5.55,6.12,6.89],"b":[9.43,10.49,11.13,11.75,12.05,11.69,10.9,10.13,9.65,9.3,9.04,9.3,10.3,11.53,12.18,12.15,11.82,11.34,10.59,9.74,9.31,9.54,9.83,9.78,9.66,9.62]},{"x":[2.03,8.87,15.7,22.54,29.38,36.21,43.05,49.88,56.72,63.55,70.39,77.22,84.06,90.89,97.73,104.56,111.4,118.23,125.07,131.9,138.74,145.57,152.41,159.24,166.08,172.91],"t":[6.52,6.35,5.92,5.24,4.6,4.19,3.92,3.82,3.97,4.41,5.06,5.65,5.86,5.6,5.09,4.71,4.6,4.64,4.52,4.18,3.72,3.26,3.1,3.27,3.66,4.7],"b":[9.6,10.03,10.1,9.85,9.29,8.66,8.23,8.07,8.23,8.76,9.58,10.4,10.89,10.94,10.76,10.7,10.88,11.16,11.23,11.0,10.57,10.06,9.32,8.41,7.75,7.79]},{"x":[1.09,8.0,14.9,21.81,28.72,35.63,42.53,49.44,56.35,63.26,70.16,77.07,83.98,90.89,97.79,104.7,111.61,118.52,125.42,132.33,139.24,146.15,153.05,159.96,166.87,173.78],"t":[6.32,5.47,5.14,4.92,4.73,4.51,4.34,4.43,4.78,5.18,5.46,5.61,5.66,5.5,4.91,3.87,2.73,1.94,1.75,2.05,2.54,3.0,3.56,4.24,4.84,5.18],"b":[8.69,8.37,8.58,8.93,9.09,8.99,9.0,9.33,9.96,10.66,11.24,11.68,11.99,12.04,11.59,10.62,9.48,8.61,8.27,8.36,8.59,8.75,8.63,8.31,8.01,7.55]}]}</script>
 <script>
 (function(){
@@ -408,6 +403,50 @@ a.ink-morph:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
     return {x:x, t:t, b:b};
   }
 
+  // 5D. Same mechanism, four changes, all aimed at the two extremities.
+  //
+  //   1. The contour envelope runs 0.3 → 1 → 0.3 instead of 0 → 1 → 0. In 5C
+  //      sin(pi*u) zeroes the wander exactly where the pen touches down, so the
+  //      ends could only ever be carried bodily up and down by the dy term —
+  //      measured at 93% of the middle's travel, but rigid: the same curve every
+  //      time, just parked somewhere new. Now they curve too.
+  //   2. Pressure is a FIELD read along the line, not one multiplier for the
+  //      whole mark, so different stretches thicken and thin independently while
+  //      staying smooth. Still two low-frequency sines — no per-point noise.
+  //   3. Each terminal gets its own radius scale, ramped over the first and last
+  //      15% of the run. outline() derives the cap arcs from the end half-widths,
+  //      so the cap GEOMETRY redraws rather than one fixed cap being moved about.
+  //   4. That ramp spans roughly the first and last three sample points, so those
+  //      points move together instead of an endpoint sliding on its own.
+  function driftTargetLive(base){
+    var n = base.x.length;
+    // Identical to 5C. Trimming these while ALSO raising the envelope floor
+    // cancelled the change out — measured end tangent and end position both
+    // came back slightly LOWER than 5C. The envelope floor is what does the
+    // work here; the amplitudes must stay put for it to show.
+    var a1 = rnd(0.60, 1.36), f1 = rnd(0.7, 1.5), p1 = rnd(0, TAU);
+    var a2 = rnd(0.17, 0.47), f2 = rnd(1.8, 3.0), p2 = rnd(0, TAU);
+    var dx0 = rnd(-1.19, 1.19), dx1 = rnd(-1.19, 1.19);
+    var dy0 = rnd(-1.02, 1.02), dy1 = rnd(-1.02, 1.02);
+    var q1 = rnd(-0.05, 0.05), qf1 = rnd(0.4, 1.1), qp1 = rnd(0, TAU);
+    var q2 = rnd(-0.03, 0.03), qf2 = rnd(1.2, 2.0), qp2 = rnd(0, TAU);
+    var capL = rnd(0.93, 1.08), capR = rnd(0.93, 1.08);
+    var x = [], t = [], b = [];
+    for (var i = 0; i < n; i++){
+      var u = i / (n - 1);
+      var w  = 0.30 + 0.70 * Math.sin(Math.PI * u);      // never reaches zero
+      var dy = (a1*Math.sin(u*f1*TAU + p1) + a2*Math.sin(u*f2*TAU + p2)) * w
+             + (dy0*(1-u) + dy1*u);
+      var press = 1 + q1*Math.sin(u*qf1*TAU + qp1) + q2*Math.sin(u*qf2*TAU + qp2);
+      var eL = Math.max(0, 1 - u / 0.15), eR = Math.max(0, 1 - (1 - u) / 0.15);
+      var capf = 1 + (capL - 1) * eL + (capR - 1) * eR;
+      var c  = (base.t[i] + base.b[i]) / 2 + dy;
+      var hw = (base.b[i] - base.t[i]) / 2 * press * capf;
+      x.push(base.x[i] + (dx0*(1-u) + dx1*u)); t.push(c - hw); b.push(c + hw);
+    }
+    return {x:x, t:t, b:b};
+  }
+
   document.querySelectorAll("a.ink-morph").forEach(function(a){
     var set  = SETS[a.dataset.morph];
     var mode = a.dataset.mode || "fixed";
@@ -446,12 +485,12 @@ a.ink-morph:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
     var base, from, to, legStart, legDur;
     function newLeg(now){
       from = to || meanShape(set);
-      to = driftTarget(base);
+      to = (mode === "drift-live") ? driftTargetLive(base) : driftTarget(base);
       legStart = now; legDur = rnd(250, 450);
     }
 
     function step(ts){
-      if (mode === "drift"){
+      if (mode === "drift" || mode === "drift-live"){
         if (ts - legStart >= legDur) newLeg(legStart + legDur);   // no drift in the clock
         var k = Math.min(1, (ts - legStart) / legDur);            // linear inside the leg
         path.setAttribute("d", outline(mix(from.x,to.x,k), mix(from.t,to.t,k), mix(from.b,to.b,k)));
@@ -472,7 +511,7 @@ a.ink-morph:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
     function start(){
       if (raf !== null) return;
-      if (mode === "drift"){ base = meanShape(set); to = null; newLeg(performance.now()); }
+      if (mode === "drift" || mode === "drift-live"){ base = meanShape(set); to = null; newLeg(performance.now()); }
       else { setSegs(mode === "irregular" ? rollSegs() : fixedSegs()); t0 = null; }
       raf = requestAnimationFrame(step);
     }
