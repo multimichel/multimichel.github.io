@@ -675,48 +675,38 @@ footer.site .social{display:flex;align-items:center;gap:var(--space-8);flex-wrap
 .social-icon:hover,.social-icon:focus-visible{color:var(--orange);background:var(--rule-light)}
 .social-icon:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
-/* Dock magnification. The point is that the NEIGHBOURS answer: one icon
-   growing on its own reads as a button, three tiers reading off each other
-   read as a row with give in it.
+/* Lift on hover. Only the icon under the cursor answers — the neighbours hold
+   their size, so the row reads normal / normal / LARGE / normal / normal
+   rather than a Dock's falling-off magnification. The Dock is the reference
+   for the FEELING of something rising to meet the cursor, not for its physics.
 
-   Pure selector work, no script. Icons to the RIGHT of the active one are
-   reachable with +; icons to the LEFT need :has(), which is why this was not
-   possible until recently. Focus is wired identically to hover throughout, so
-   the keyboard gets the same shape rather than a lesser version of it.
+   Scale plus a 2px lift, in that order, so the icon reads as coming forward
+   rather than merely growing. Transform never reflows, so nothing in the row
+   moves and the footer keeps its height; z-index is there to let the icon pass
+   over a neighbour if it ever needs to, though at 1.12 the growth (1.9px a
+   side) stays inside the 8px gap and no overlap actually occurs.
 
-   Transform never reflows, so nothing in the row shifts and the footer does
-   not resize — the icons grow over their own space. The tile grows with the
-   icon because it is on the same element, which is what the Dock does too. */
-.social-icon{transition:color .15s ease,background-color .15s ease,
-                       transform .165s cubic-bezier(.22,.61,.36,1)}
-
-/* second neighbours */
-.social-icon:is(:hover,:focus-visible) + .social-icon + .social-icon:not(:hover,:focus-visible),
-.social-icon:not(:hover,:focus-visible):has(+ .social-icon + .social-icon:is(:hover,:focus-visible)){
-  transform:scale(1.05);
+   Asymmetric by design: the :hover rule times the way IN, the base rule times
+   the way OUT. Quick to answer, slower to let go. z-index reverts on a delay
+   equal to the exit, so a shrinking icon never drops behind mid-flight. */
+.social-icon{
+  position:relative;z-index:0;
+  transition:color .15s ease,background-color .15s ease,
+             transform .22s cubic-bezier(.22,.61,.36,1),
+             z-index 0s linear .22s;
 }
-/* immediate neighbours */
-.social-icon:is(:hover,:focus-visible) + .social-icon:not(:hover,:focus-visible),
-.social-icon:not(:hover,:focus-visible):has(+ .social-icon:is(:hover,:focus-visible)){
-  transform:scale(1.15);
+.social-icon:is(:hover,:focus-visible){
+  transform:translateY(-2px) scale(1.12);
+  z-index:2;
+  transition:color .12s ease,background-color .12s ease,
+             transform .13s cubic-bezier(.22,.61,.36,1),
+             z-index 0s;
 }
-/* the icon under the cursor. :not() on the tiers above keeps this exclusive,
-   so an icon can never be told to be 1.4 and 1.05 at the same time. */
-.social-icon:is(:hover,:focus-visible){transform:scale(1.4)}
 
-/* Magnification is the motion; the colour and tile are the state. Reduced
-   motion keeps the state and drops the motion. */
+/* Reduced motion keeps the state — colour and tile — and drops the movement. */
 @media (prefers-reduced-motion:reduce){
-  /* These have to repeat the tier selectors EXACTLY, :not() included. Written
-     shorter they are less specific than the rules they are meant to cancel,
-     and the neighbours keep magnifying while only the hovered icon obeys — the
-     half-working state this replaced. */
   .social-icon,
-  .social-icon:is(:hover,:focus-visible),
-  .social-icon:is(:hover,:focus-visible) + .social-icon:not(:hover,:focus-visible),
-  .social-icon:not(:hover,:focus-visible):has(+ .social-icon:is(:hover,:focus-visible)),
-  .social-icon:is(:hover,:focus-visible) + .social-icon + .social-icon:not(:hover,:focus-visible),
-  .social-icon:not(:hover,:focus-visible):has(+ .social-icon + .social-icon:is(:hover,:focus-visible)){
+  .social-icon:is(:hover,:focus-visible){
     transform:none;
     transition:color .15s ease,background-color .15s ease;
   }
