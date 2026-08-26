@@ -27,11 +27,11 @@
    an underline, and 18 rows all boiling at once would be a different idea. */
 a.ink-live-link{position:relative;white-space:nowrap}
 a.ink-live-link .mo{
-  /* height and bottom are set per link from its own font-size and padding —
-     see the script. A single --pen-thickness for every context was the
-     inconsistency: 5.4px is right under 21px prose and heavy under 13px
-     labels, and positioning from the padding box dropped the nav and the
-     section actions 8px lower than the prose, because that is their padding. */
+  /* height and bottom are set from the script: one flat weight, taken from
+     --pen-thickness-hover, and one flat 5px gap under the baseline. Deriving
+     either from font-size was the mistake — it made the labels' stroke thin
+     and pulled it up tight against them, when what the page needed was for
+     every context to land in the SAME place, which only the baseline gives. */
   position:absolute;left:0;right:0;
   width:100%;display:block;overflow:visible;
   clip-path:inset(0 100% 0 0);opacity:0;transition:opacity 140ms ease;
@@ -41,8 +41,25 @@ a.ink-live-link:hover .mo,a.ink-live-link:focus-visible .mo{
   opacity:1;transition:none;
   animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards;
 }
+/* The RESTING pen line is redrawn as an absolutely positioned layer instead of
+   a background on the link itself, because a background cannot go where this
+   one needs to. The unified stroke sits BELOW the padding box in every context
+   but the nav, backgrounds are clipped to the border box, and offsetting one
+   down past that edge erases it — measured, "background-position:0 calc(100%
+   + 5.77px)" on the intro link paints exactly zero pixels. An absolute layer
+   has no such ceiling, is anchored off the same number as the ink, and adds no
+   geometry. The doubled class is only there to outrank nav.main a (0,1,2). */
+a.ink-live-link.ink-live-link{background-image:none}
+a.ink-live-link::after{
+  content:"";position:absolute;left:0;right:0;
+  bottom:var(--ink-bottom,0px);height:var(--ink-rest,0px);
+  background:url("img/pen-underline.svg") no-repeat 0 0/100% 100%;
+  pointer-events:none;transition:opacity .15s ease;
+}
 /* the standing stroke steps aside while the ink is live */
-a.ink-live-link:hover,a.ink-live-link:focus-visible{background-image:none}
+a.ink-live-link:hover::after,a.ink-live-link:focus-visible::after{
+  opacity:0;transition:none;
+}
 
 /* The word thickens under the cursor. NOT via font-weight: several of these
    links are already at the ceiling — the intro's are inside <b> and render at
@@ -448,6 +465,60 @@ document.querySelectorAll(".lede a, .prose a, .aside-note-link, .quote-source a,
     return {x:x, t:t, b:b};
   }
 
+  // ---- where the ink sits ------------------------------------------------
+  // WEIGHT is the site's own hover stroke, --pen-thickness-hover, flat at
+  // every size — the same value the CSS pen line grows to. Deriving it from
+  // font-size instead gave 2.5px under the 13px labels against the token's
+  // 6.7px, which is why every line went thin. The token is a rem, so resolve
+  // it once through a probe rather than parsing the declaration.
+  var tp = document.createElement("div");
+  tp.style.cssText = "position:absolute;visibility:hidden;height:var(--pen-thickness-hover)";
+  document.body.appendChild(tp);
+  var PEN = tp.getBoundingClientRect().height;
+  tp.remove();
+
+  // GAP is flat too: 5px of paper between the baseline and the top of the
+  // stroke, everywhere. That is where the intro's line already sits — the one
+  // the eye reads as correct — and it clears the deepest descender on the page
+  // (Fraunces at 21px, 4.5px) with room to spare. Scaling it by font-size is
+  // what pulled the nav and the section actions up tight against their labels.
+  var GAP = 5;
+
+  var PLACED = [];
+
+  function place(a, svg){
+    // A zero-height inline-block aligned to the baseline sits with its bottom
+    // edge exactly on it — the cheapest way to find the baseline from script.
+    var probe = document.createElement("span");
+    probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+    a.appendChild(probe);
+    var baseline = probe.getBoundingClientRect().bottom;
+    probe.remove();
+
+    // Distance from the baseline down to the padding box, which is what
+    // `bottom` on the absolute SVG resolves against.
+    var below = a.getBoundingClientRect().bottom - baseline;
+    var lift  = below - GAP - PEN;
+
+    svg.style.height = PEN.toFixed(2) + "px";
+    svg.style.bottom = lift.toFixed(2) + "px";
+
+    // The resting layer hangs off the same two numbers. Its weight is whatever
+    // this context's background-size already resolved to — --pen-thickness for
+    // the links that carry a visible line, and zero for the nav and the section
+    // actions, which reveal theirs from nothing.
+    var rest = getComputedStyle(a).backgroundSize.split(" ")[1] || "0px";
+    a.style.setProperty("--ink-bottom", lift.toFixed(2) + "px");
+    a.style.setProperty("--ink-rest", rest);
+  }
+
+  // Web fonts land after this script runs and change the line box under some
+  // of these links by ~1px, which quietly desynced the measured contexts from
+  // the unmeasured ones. Re-place once the real faces are in, and on resize.
+  function replace(){ for (var i = 0; i < PLACED.length; i++) place(PLACED[i][0], PLACED[i][1]); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(replace);
+  addEventListener("resize", replace);
+
   document.querySelectorAll("a.ink-live-link").forEach(function(a){
     var set  = SETS.m3;
     var mode = "ink";
@@ -467,20 +538,8 @@ document.querySelectorAll(".lede a, .prose a, .aside-note-link, .quote-source a,
     // anything from 0.10em under the intro prose to 0.83em under the section
     // actions: an eight-fold spread, which is what read as wild spacing. The
     // baseline is the one line every context agrees on.
-    //
-    // A zero-height inline-block aligned to the baseline sits with its bottom
-    // edge exactly on it, which is the cheapest way to find it from script.
-    var cs = getComputedStyle(a), fs = parseFloat(cs.fontSize);
-    var probe = document.createElement("span");
-    probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
-    a.appendChild(probe);
-    var baseline = probe.getBoundingClientRect().bottom;
-    probe.remove();
-
-    var h = fs * 0.19;                                   // stroke weight, per text size
-    var drop = fs * 0.17;                                // baseline → top of the stroke
-    svg.style.height = h.toFixed(2) + "px";
-    svg.style.bottom = (a.getBoundingClientRect().bottom - baseline - drop - h).toFixed(2) + "px";
+    place(a, svg);
+    PLACED.push([a, svg]);
 
     paint(path, set[0]);
     if (still) return;                       // one drawing, held
