@@ -530,6 +530,57 @@ nav.main a:hover,nav.main a:focus-visible,
 /* Outline is :focus-visible ONLY — never on hover, never at rest. */
 nav.main a:focus-visible,.sechead .more:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 
+/* ---------- living ink ----------
+   ink.js gives every link above a hand-drawn pen line that is REDRAWN, frame
+   after frame, while the cursor is on it. All of the geometry, and both of the
+   numbers that position it, are set from the script — see ink.js for why they
+   cannot come from CSS. These rules only say how the two layers take turns.
+
+   The whole thing is additive: without the script none of these selectors
+   match, and the CSS pen line above stands on its own exactly as before. */
+a.ink-live-link{position:relative;white-space:nowrap}
+a.ink-live-link .mo{
+  position:absolute;left:0;right:0;width:100%;display:block;overflow:visible;
+  clip-path:inset(0 100% 0 0);opacity:0;transition:opacity 140ms ease;
+  pointer-events:none;
+}
+a.ink-live-link:hover .mo,a.ink-live-link:focus-visible .mo{
+  opacity:1;transition:none;
+  animation:ink-draw 210ms cubic-bezier(.22,.61,.36,1) forwards;   /* drawn on, left to right */
+}
+/* The RESTING pen line moves off the link's own background and onto a layer of
+   its own, because a background cannot go where this one needs to: the unified
+   stroke sits BELOW the padding box in every context but the nav, backgrounds
+   are clipped to the border box, and an offset past that edge paints nothing.
+   An absolute layer has no such ceiling, hangs off the same number as the ink,
+   and adds no geometry. The doubled class is only there to outrank nav.main a. */
+a.ink-live-link.ink-live-link{background-image:none}
+a.ink-live-link::after{
+  content:"";position:absolute;left:0;right:0;
+  bottom:var(--ink-bottom,0px);height:var(--ink-rest,0px);
+  background:url("img/pen-underline.svg") no-repeat 0 0/100% 100%;
+  pointer-events:none;transition:opacity .15s ease;
+}
+/* the standing stroke steps aside while the ink is live */
+a.ink-live-link:hover::after,a.ink-live-link:focus-visible::after{opacity:0;transition:none}
+@keyframes ink-draw{from{clip-path:inset(0 100% 0 0)} to{clip-path:inset(0 0 0 0)}}
+
+/* The word thickens under the cursor. NOT with font-weight: several of these
+   links are already at the ceiling — the intro's sit inside <b> and render at
+   800, the labels are Agrandir 900 — so asking for bolder either does nothing
+   or, measured, makes "Figma" a pixel NARROWER. A hairline stroke in the text's
+   own colour thickens every glyph whatever weights the face carries, and moves
+   no advance width, so nothing on the page reflows. */
+a.ink-live-link{-webkit-text-stroke:0 currentColor;transition:-webkit-text-stroke-width 130ms ease}
+a.ink-live-link:hover,a.ink-live-link:focus-visible{-webkit-text-stroke-width:0.022em}
+
+@media (prefers-reduced-motion:reduce){
+  /* One still drawing, revealed rather than drawn on. ink.js paints it and
+     never starts the loop. */
+  a.ink-live-link .mo{clip-path:none;transition:none}
+  a.ink-live-link:hover .mo,a.ink-live-link:focus-visible .mo{animation:none}
+}
+
 .aside-note{margin-top:var(--space-32);font-family:var(--font-grotesk);font-variation-settings:normal;font-size:var(--type-aside-size);color:var(--dim)}
 
 /* ---------- portrait figure ----------
