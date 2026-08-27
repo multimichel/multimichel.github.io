@@ -407,6 +407,20 @@ a.row:hover .cat,a.row:focus-visible .cat{background:transparent;color:var(--pap
   font-weight:900;
   font-size:var(--type-arrow-size);
   font-variant-emoji:text;
+  /* Agrandir draws its arrow as a HAIRLINE. Measured on the section action:
+     the mark paints a 1.0px stroke beside letterforms whose stems are 3.5px,
+     so it reads as a different, lighter typeface than the label it belongs to
+     — and on a phone it thins out past the point of being seen at all, which
+     is why the arrows looked absent there while merely looking wrong on a
+     desktop. --type-arrow-size fixes the mark's SIZE against the cap height;
+     it can do nothing about its weight.
+     900 is already the only weight the face has, so the stroke has to come
+     from outside it. .065em on an 18.88px mark is 1.23px of stroke, which
+     takes the hairline to roughly the 3.5px of the stems beside it. Stroke
+     grows the glyph inward and outward from its own outline and moves no
+     advance width, so no label changes width and nothing reflows.
+     These two selectors only ever contain the mark itself, never any text. */
+  -webkit-text-stroke:.065em currentColor;
   /* The mark belongs to the word it follows: never break between them, and
      never let the mark start a line on its own. */
   white-space:nowrap;
