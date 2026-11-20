@@ -173,7 +173,7 @@
   </nav>
 </footer>
 
-<script src="content.js?v=72"></script>
+<script src="content.js?v=73"></script>
 <script src="nav.js?v=72" defer></script>
 <script src="ink.js?v=72" defer></script>
 <script>
@@ -214,17 +214,18 @@
   // Speaking on Home is an edited selection that tells the ARC — current work
   // deliberately mixed with historical anchors, so the section reads as a long
   // speaking career rather than the Figma era alone. Recency is not the rule
-  // and "pre-2026" is not a hiding rule: an entry appears because it is
-  // upcoming, or because featured:true marks it as an anchor worth showing.
+  // and "pre-2026" is not a hiding rule: an entry appears because its date
+  // is upcoming, or because featured:true marks it as an anchor worth showing.
   // The full history lives in archive.html.
   var speakingFormats = {talk:1, keynote:1, panel:1, workshop:1, webinar:1};
   var talks = MM.items.filter(function(i){
     if (i.type !== "Talk" || !speakingFormats[i.format]) return false;
-    if (i.status === "upcoming") return true;
-    return i.status === "past" && i.featured === true && i.format !== "webinar";
+    if (MM.isUpcoming(i)) return true;
+    return i.featured === true && i.format !== "webinar";
   });
   talks.sort(function(a,b){
-    if ((a.status==="upcoming") !== (b.status==="upcoming")) return a.status==="upcoming" ? -1 : 1;
+    var aUpcoming = MM.isUpcoming(a), bUpcoming = MM.isUpcoming(b);
+    if (aUpcoming !== bUpcoming) return aUpcoming ? -1 : 1;
     return String(b.date).localeCompare(String(a.date));
   });
   // eventName is editorial — rendered exactly as stored, never rebuilt from
@@ -241,7 +242,7 @@
     // Status gets its own line above the title — it is neither part of the
     // title nor part of the metadata sentence. It disappears on its own the
     // moment an event stops being "upcoming".
-    var kicker = i.status==="upcoming" ? '<span class="up">UPCOMING</span>' : null;
+    var kicker = MM.isUpcoming(i) ? '<span class="up">UPCOMING</span>' : null;
     return row(i.url, esc(title), metaParts.filter(Boolean).join(" · "), kicker);
   }).join("");
 
