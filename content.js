@@ -43,7 +43,7 @@ items: [
 {id:"t-maker-collective-canberra", type:"Talk", year:2026, date:"2026-09-02", displayDate:"Sep 2, 2026", talkTitle:null, eventName:"Maker Collective Canberra", location:"Canberra", showLocation:false, status:"past", format:"talk", role:"speaker", organization:"Figma", url:"https://fig-events.figma.com/mc-cbr/", verification:"primary"},
 {id:"t-figma-code-workflows", type:"Talk", year:2026, date:"2026-05", displayDate:"May 2026", talkTitle:"Exploring new design workflows with Code", eventName:"Figma Office Hours", location:null, showLocation:false, status:"past", format:"webinar", role:"speaker", organization:"Figma", url:"https://fig-events.figma.com/code-sot-apac/", verification:"primary"},
 {id:"t-figma-make-system-code", type:"Talk", year:2026, date:"2026-04-01", displayDate:"Apr 1, 2026", talkTitle:"Using your code on Figma Make", eventName:"Figma Office Hours", location:null, showLocation:false, status:"past", format:"webinar", role:"speaker", organization:"Figma", url:"https://fig-events.figma.com/ds-make-apac/", verification:"primary"},
-{id:"t-design-matters", type:"Talk", year:2026, date:"2026-11", displayDate:"Nov 2026", talkTitle:null, eventName:"Design Matters 26", location:"Tokyo", showLocation:true, featured:true, status:"upcoming", format:"talk", role:"speaker", url:"https://dm26.spectrumtokyo.com/speakers/michel/", verification:"user"},
+{id:"t-design-matters", type:"Talk", year:2026, date:"2026-11-15", displayDate:"Nov 15, 2026", talkTitle:null, eventName:"Design Matters 26", location:"Tokyo", showLocation:true, featured:true, status:"past", format:"talk", role:"speaker", timeZone:"Asia/Tokyo", url:"https://dm26.spectrumtokyo.com/speakers/michel/", verification:"user"},
 {id:"t-maker-collective", type:"Talk", year:2026, date:"2026-08", displayDate:"Aug 2026", talkTitle:null, eventName:"Maker Collective", location:"Sydney", showLocation:true, featured:true, status:"past", format:"talk", role:"speaker", verification:"user"},
 {id:"t-fof-perth", type:"Talk", year:2026, date:"2026-07", displayDate:"Jul 2026", talkTitle:null, eventName:"Friends of Figma Perth", location:"Perth", showLocation:true, status:"past", format:"talk", role:"speaker", organization:"Figma", verification:"user"},
 {id:"t-config", type:"Talk", year:2026, date:"2026-06", displayDate:"Jun 2026", talkTitle:"Figma learning lab: workflow tips \u2014 from slow to flow", eventName:"Config 2026", location:"San Francisco", showLocation:true, status:"past", format:"talk", role:"speaker", sub:"With Chad Bergman.", organization:"Figma", url:"https://config.figma.com/san-francisco/speakers/", verification:"primary"},
@@ -140,6 +140,27 @@ items: [
 // mark is aria-hidden. See .arrow/.go in multimichel.css for the other half.
 window.MM.MARK_EXTERNAL = "\u2197\uFE0E";
 window.MM.MARK_INTERNAL = "\u2192\uFE0E";
+// Speaking labels are calculated from event dates, not manually maintained statuses.
+// Specify a full ISO date for future talks; optional endDate covers multi-day events.
+window.MM.isUpcoming = function isUpcoming(item,todayISO) {
+  if (!item || item.type !== "Talk") return false;
+  // Full dates are required: a month/year alone cannot prove an event is still ahead.
+  var eventLastDay = item.endDate || item.date;
+  if (typeof eventLastDay !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(eventLastDay)) return false;
+  if (!todayISO) {
+    var now = new Date();
+    if (item.timeZone) {
+      var parts = new Intl.DateTimeFormat("en-US", {timeZone:item.timeZone,year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(now);
+      var values = {};
+      parts.forEach(function(part){ values[part.type] = part.value; });
+      todayISO = values.year + "-" + values.month + "-" + values.day;
+    } else {
+      todayISO = now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2,"0") + "-" + String(now.getDate()).padStart(2,"0");
+    }
+  }
+  return eventLastDay >= todayISO;
+};
+
 window.MM.isExternal = function(href){
   return /^(https?:)?\/\//i.test(href || "") || /^mailto:/i.test(href || "");
 };
